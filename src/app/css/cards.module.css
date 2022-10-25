@@ -4,6 +4,7 @@
     height: 100%;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
+    position: relative;
 }
 .cards-container::-webkit-scrollbar {
     display: none;
@@ -15,4 +16,12 @@
     background-size: cover;
     background-repeat: no-repeat;
     scroll-snap-align: center;
+}
+.fixed{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
 }
