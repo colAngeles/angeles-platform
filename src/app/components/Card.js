@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "../css/cards.module.css";
 
 export default function Card(){
+    useEffect(()=>{
+        let $cardsContainer = document.querySelector(`.${styles["cards-container"]}`)
+        console.log($cardsContainer.scrollWidth)
+
+    }, [])
     return(
         <div className={styles["cards-container"]}>
             <div className={`${styles["item"]} ${styles["image1"]}`} style={{backgroundImage: `url(./media/LAB01.jpg)`}}>
