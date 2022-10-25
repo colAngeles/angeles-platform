@@ -2,11 +2,7 @@ let tolo = /\.css$/;
 module.exports = {
     mode: 'production',
     entry: { 
-      index: '/src/app/index.js',
-      //shome: '/src/app/home.js',
-      voter: '/src/app/voter.js',
-      middleschool: '/src/app/middleschool.js',
-      highschool: '/src/app/highschool.js',
+      app: '/src/app/App.js',
     },
     output: {
       path: __dirname + '/src/public/js',
