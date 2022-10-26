@@ -7,9 +7,7 @@ function Index(params) {
     return(
         <>
             <main>
-                <div className={styles["grid-item"]}>
-                    <Card/>
-                </div>
+                <Card/>
                 <div className={styles["grid-item"]}>
                     <form className={styles["contact-form"]} name="contact" id="contact-form">
                             <span>
