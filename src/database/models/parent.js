@@ -7,4 +7,5 @@ const parent = new Schema({
     identificationCard:{type: Number, required: true},
     name:{type: String, required: true},
     email:{type: String, required: true},
+    token:{}
 })

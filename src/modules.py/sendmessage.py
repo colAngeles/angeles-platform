@@ -1,3 +1,4 @@
+from tokenize import Token
 import yagmail
 import random, string
 
@@ -28,10 +29,10 @@ def send(yag, toemail, name, token):
                         
                         
                         Duván Motavita Pérez
-                        Soporte Técnico, Colegio Los Ángeles.
+                        Software Developer, Colegio Los Ángeles.
                         
                         ''')
-            print(True)
+            print(token)
         except:
             print(False)
 email = input()
