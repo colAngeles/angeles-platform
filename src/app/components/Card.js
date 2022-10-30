@@ -36,17 +36,16 @@ export default function Card(){
     return(
         <section className={styles["section-cards-container"]}>
             <div className={`${styles["fixed"]}`}>
-                <h1>Matriculas 2023</h1>
-                <h2>Colegio Los Ángeles</h2>
+                <h1>Matriculas <b>2023</b></h1>
             </div>
             <div className={`${styles["cards-container"]} ${styles["active"]}`}>
-                <div className={`${styles["item"]} ${styles["image1"]}`} style={{backgroundImage: `url(./media/LAB01.jpg)`}}>
+                <div className={`${styles["item"]} ${styles["image1"]}`} style={{backgroundImage: `url(./media/cardimg1.jpg)`}}>
                 </div>
-                <div className={`${styles["item"]} ${styles["image2"]}`} style={{backgroundImage: `url(./media/LAB02.jpg)`}}>   
+                <div className={`${styles["item"]} ${styles["image2"]}`} style={{backgroundImage: `url(./media/cardimg2.jpg)`}}>   
                 </div>
-                <div className={`${styles["item"]} ${styles["image3"]}`} style={{backgroundImage: `url(./media/LAB03.jpg)`}}> 
+                <div className={`${styles["item"]} ${styles["image3"]}`} style={{backgroundImage: `url(./media/cardimg3.jpg)`}}> 
                 </div>
-                <div className={`${styles["item"]} ${styles["image1"]}`} style={{backgroundImage: `url(./media/LAB01.jpg)`}}>
+                <div className={`${styles["item"]} ${styles["image1"]}`} style={{backgroundImage: `url(./media/cardimg1.jpg)`}}>
                 </div>
             </div>
         </section>

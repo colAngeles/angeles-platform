@@ -41,10 +41,13 @@
     background-color: #0000004D;
 }
 .fixed h1 {
-    font-family: 'Tolo';
+    font-family: 'FuturaBT';
     font-size: 4rem;
-    color: #F7901E;
+    color: #fff;
 }
+    .fixed h1 b {
+        color: rgb(247, 144, 30, .9)
+    }
 .fixed h2 {
     color: #fff;
     font-size: 2rem;
