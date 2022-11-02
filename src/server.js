@@ -24,6 +24,7 @@ app.post('/token', upload.none(), async (req, res, next)=> {
         const child = fork(resolve('src/modules/sendEmail'));
         child.on('message', (message) => {
             console.log('Returning /total results');
+            console.log(message)
             res.json({conf: message}) 
         });
         child.send(`START ${parent.name} ${parent.identification} ${parent.email}`);
