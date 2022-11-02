@@ -56,7 +56,7 @@ export default function Form(props) {
             if(data.conf) {
                 console.log(data)
                 loader.classList.add(props["loaderHiddenClass"])
-                alert(data.conf)
+                alert("Tolo")
                 return
             }
             if(data.refused) {
