@@ -17,14 +17,14 @@ app.get('/', (req, res, next)=> {
 })
 app.post('/token', upload.none(), async (req, res, next)=> {
     console.log(req.body)
-    let parent = await Parents.findOne({"identificationCard": req.body.parentId})
+    let parent = await Parents.findOne({"identification": req.body.parentId})
     if(parent){
         const child = fork(resolve('src/modules/sendEmail'));
         child.on('message', (message) => {
             console.log('Returning /total results');
-            res.json({conf: true}) 
+            res.json({conf: message}) 
         });
-        child.send(`START ${parent.name} ${parent.email}`);
+        child.send(`START ${parent.name} ${parent.identification} ${parent.email}`);
         return
     } 
     // res.json({refused: true})

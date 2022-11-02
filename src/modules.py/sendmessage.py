@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import yagmail
 import random, string
 
@@ -35,6 +34,7 @@ def send(yag, name, toemail, token):
             print(token)
         except:
             print('error:email')
+
 data = input()
 data = data.split(";")
 token = genToken()

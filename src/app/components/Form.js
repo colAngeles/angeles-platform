@@ -54,7 +54,7 @@ export default function Form(props) {
         .then( data => {
             if(data.conf) {
                 loader.classList.add(props["loaderHiddenClass"])
-                alert("This is a test")
+                alert(data.conf)
                 return
             }
             if(data.refused) {
