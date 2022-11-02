@@ -1,4 +1,4 @@
-from tokenize import Token
+from asyncio.windows_events import NULL
 import yagmail
 import random, string
 
@@ -14,7 +14,7 @@ def genToken():
     return a + n + g + e + l + x + s
 
 yag = yagmail.SMTP(user="angelesmoodle@gmail.com", password="ygjpwmulsxtskkzi")
-def send(yag, toemail, name, token):
+def send(yag, name, toemail, token):
         try:
             yag.send(to=f"{toemail}", subject="Token de validación Colegio Los Ángeles", 
                         contents=f'''
@@ -34,8 +34,8 @@ def send(yag, toemail, name, token):
                         ''')
             print(token)
         except:
-            print(False)
-email = input()
-name = input()
+            print('error:email')
+data = input()
+data = data.split(";")
 token = genToken()
-send(yag, email, name, token)
+send(yag, data[0], data[1], token)

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import styles from "../css/cards.module.css";
 
-export default function Card(){
+export default function Card(props){
     let count = useRef(1)
     useEffect(()=>{
         let $cardsContainer = document.querySelector(`.${styles["cards-container"]}`)
@@ -27,11 +27,10 @@ export default function Card(){
                     setTimeout(timerHandle, 20000)
                     return
                 }
-                $cardsContainer.scrollLeft += 8
+                $cardsContainer.scrollLeft += 10
             }, 0)
         }
         setTimeout(timerHandle, 5000)
-
     }, [])
     return(
         <section className={styles["section-cards-container"]}>
@@ -39,13 +38,17 @@ export default function Card(){
                 <h1>Matriculas <b>2023</b></h1>
             </div>
             <div className={`${styles["cards-container"]} ${styles["active"]}`}>
-                <div className={`${styles["item"]} ${styles["image1"]}`} style={{backgroundImage: `url(./media/cardimg1.jpg)`}}>
-                </div>
-                <div className={`${styles["item"]} ${styles["image2"]}`} style={{backgroundImage: `url(./media/cardimg2.jpg)`}}>   
-                </div>
-                <div className={`${styles["item"]} ${styles["image3"]}`} style={{backgroundImage: `url(./media/cardimg3.jpg)`}}> 
-                </div>
-                <div className={`${styles["item"]} ${styles["image1"]}`} style={{backgroundImage: `url(./media/cardimg1.jpg)`}}>
+                {
+                    props.images.map((img, index)=>{
+                        return (
+                                <div className={`${styles["item"]} ${styles["image" + (index + 1)]}`}>
+                                    <img src={img}/>
+                                </div>
+                        )
+                    })
+                }
+                <div className={`${styles["item"]} ${styles["image1"]}`}>
+                    <img src={props.images[0]}/>
                 </div>
             </div>
         </section>

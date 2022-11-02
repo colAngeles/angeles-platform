@@ -1,7 +1,8 @@
-.section-cards-container{
+.section-cards-container {
     position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .cards-container {
@@ -22,10 +23,14 @@
     flex-shrink: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
+    overflow: hidden;
     scroll-snap-align: center;
     text-rendering: optimizeLegibility;
+}
+.item > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .fixed {
     position: absolute;
@@ -52,4 +57,20 @@
     color: #fff;
     font-size: 2rem;
     font-family: sans-serif;
+}
+@media all and (max-width: 1200px) {
+    .section-cards-container {
+        grid-column-start: 1;
+        grid-row-start: 1;
+    }
+
+    .fixed {
+        justify-content: flex-start;
+    }
+}
+
+@media all and (max-width: 579px) {
+    .fixed {
+        justify-content: flex-start;
+    }
 }

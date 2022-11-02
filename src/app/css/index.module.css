@@ -5,3 +5,10 @@ main {
     grid-template-rows: 1fr;
     background-color: #162f54;
 }
+
+@media all and (max-width: 1200px) {
+    main {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+    }
+}

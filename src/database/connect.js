@@ -1,5 +1,5 @@
 const db = require('mongoose')
-const url = "mongodb://localhost/enrollmens"
+const url = "mongodb://localhost/enrollments"
 
 db.connect(url)
     .then(data => console.log('DB has been connected'))
