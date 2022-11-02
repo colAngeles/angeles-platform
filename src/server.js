@@ -18,7 +18,9 @@ app.get('/', (req, res, next)=> {
 app.post('/token', upload.none(), async (req, res, next)=> {
     console.log(req.body)
     let parent = await Parents.findOne({"identification": req.body.parentId})
+    console.log("Test", parent)
     if(parent){
+        console.log("Within is stament")
         const child = fork(resolve('src/modules/sendEmail'));
         child.on('message', (message) => {
             console.log('Returning /total results');
@@ -27,7 +29,7 @@ app.post('/token', upload.none(), async (req, res, next)=> {
         child.send(`START ${parent.name} ${parent.identification} ${parent.email}`);
         return
     } 
-    // res.json({refused: true})
+    res.json({refused: true})
     
 })
 app.listen(8080, ()=> {
