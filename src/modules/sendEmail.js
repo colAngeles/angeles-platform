@@ -24,7 +24,7 @@ process.on('message', (message) => {
       !async function save() {
         console.log(data, data[2])
         console.log("Starting save")
-        let parent = await Token.findByIdAndUpdate({parentIdentification: "1057186692"}, {$set: {token: stdout}}, {upsert: true})
+        let parent = await Token.findByIdAndUpdate({parentid: "1057186692"}, {$set: {token: stdout}}, {upsert: true})
         console.log("This is a test from save -> parent", parent)
         process.send('successful');
       }()
