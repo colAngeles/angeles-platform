@@ -52,11 +52,10 @@ export default function Form(props) {
         })
         .then( res => res.json())
         .then( data => {
-            console.log(data)
             if(data.conf) {
                 console.log(data)
                 loader.classList.add(props["loaderHiddenClass"])
-                alert("Tolo")
+                alert(data.conf)
                 return
             }
             if(data.refused) {
