@@ -53,7 +53,7 @@ export default function Form(props) {
         .then( res => res.json())
         .then( data => {
             if(data.conf) {
-                console.log(data.conf)
+                console.log(data)
                 loader.classList.add(props["loaderHiddenClass"])
                 alert(data.conf)
                 return
