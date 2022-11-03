@@ -31,11 +31,11 @@ def send(yag, name, toemail, token):
                         Software Developer, Colegio Los Ángeles.
                         
                         ''')
-            print(token)
+            print(token, end="")
         except:
-            print('error:email')
+            print('error:email', end="")
 
 data = input()
-data = data.split(";")
+data = data.split(" ")
 token = genToken()
 send(yag, data[0], data[1], token)
