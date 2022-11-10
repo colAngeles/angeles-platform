@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from "react";
 import styles from "../css/cards.module.css";
-
 export default function Card(props){
     let count = useRef(1)
     useEffect(()=>{
@@ -9,7 +8,7 @@ export default function Card(props){
         let timerHandle = ()=> {
             let scrollWidth = $cardsContainer.scrollWidth
             let thumb = scrollWidth / childrenSize
-            let endScroll = scrollWidth / childrenSize * (childrenSize - 1)
+            let endScroll = thumb * (childrenSize - 1)
             let nextPosition = thumb * count.current
             $cardsContainer.classList.remove(styles["active"])
             let timer = setInterval(()=> {
