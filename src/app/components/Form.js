@@ -46,16 +46,16 @@ export default function Form(props) {
         }
     });
     const repeat = ()=> {
-        let $form = document.getElementById('contactform')
-        let formData = new FormData($form)
-        const loader = document.querySelector(`.${props["loaderClass"]}`)
-        let tokenInput = document.getElementById(styles["token"])
-        repeatSize += 1
-        console.log('repeatSize: ', repeatSize)
+        let $form = document.getElementById('contactform');
+        let formData = new FormData($form);
+        const loader = document.querySelector(`.${props["loaderClass"]}`);
+        let tokenInput = document.getElementById(styles["token"]);
+        repeatSize += 1;
+        console.log('repeatSize: ', repeatSize);
         if (repeatSize > 3) {
-            loader.classList.add(props["loaderHiddenClass"])
-            setInfocontent({infoType: 'info', title: 'Solicitud No Procesada', message: 'Por favor, inténtelo más tarde.'})
-            setOpen(true)
+            loader.classList.add(props["loaderHiddenClass"]);
+            setInfocontent({infoType: 'info', title: 'Solicitud No Procesada', message: 'Por favor, inténtelo más tarde.'});
+            setOpen(true);
             return
         }
         fetch('/get-token', {
@@ -64,7 +64,6 @@ export default function Form(props) {
         })
         .then( res => res.json())
         .then( data => {
-            console.log(data)
             if (data.successful) {
                 let relativeInput = document.getElementById('relative')
                 let studentInput = document.getElementById('student')
@@ -93,57 +92,59 @@ export default function Form(props) {
                 return
             }
             else if (data.error) {
-                console.log(data.error)
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, comuníquese con soporte.'})
-                setOpen(true)
+                console.log(data);
+                console.log(data.error);
+                loader.classList.add(props["loaderHiddenClass"]);
+                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, comuníquese con soporte.'});
+                setOpen(true);
                 return
             }
             else if (data.stderr) {
-                console.log(data.stderr)
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Stderr', message: 'Por favor, comuníquese con soporte.'})
-                setOpen(true)
+                console.log(data.stderr);
+                loader.classList.add(props["loaderHiddenClass"]);
+                setInfocontent({infoType: 'error', title: 'Stderr', message: 'Por favor, comuníquese con soporte.'});
+                setOpen(true);
                 return
             }
             else if (data.emailerror) {
-                console.log(data.emailerror)
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Email Error', message: 'Por favor, comuníquese con soporte.'})
-                setOpen(true)
+                console.log(data.emailerror);
+                loader.classList.add(props["loaderHiddenClass"]);
+                setInfocontent({infoType: 'error', title: 'Email Error', message: 'Por favor, comuníquese con soporte.'});
+                setOpen(true);
                 return
             }
             else if (data.repeat) {
-                setTimeout(repeat, 10000)
+                setTimeout(repeat, 10000);
             }
             if (data.refused) {
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: '', message: 'Acceso Inválido. Por favor, verifica tus datos.'})
-                setOpen(true)
+                console.log(data);
+                loader.classList.add(props["loaderHiddenClass"]);
+                setInfocontent({infoType: 'error', title: '', message: 'Acceso Inválido. Por favor, verifica tus datos.'});
+                setOpen(true);
             }
         })
         .catch( e => {
-            console.log(e)
-            loader.classList.add(props["loaderHiddenClass"])
-            setInfocontent({infoType: 'error', title: 'Error de comunicación', message: 'Por favor, comuníquese con soporte.'})
-            setOpen(true)
+            console.log(e);
+            loader.classList.add(props["loaderHiddenClass"]);
+            setInfocontent({infoType: 'error', title: 'Error de comunicación', message: 'Por favor, comuníquese con soporte.'});
+            setOpen(true);
             return
         })
     }
     
     const handleToken = () => {
-        let $form = document.getElementById('contactform')
-        let formData = new FormData($form)
-        let relativeId = formData.get('relativeId')
-        let studentId = formData.get('studentId')
+        let $form = document.getElementById('contactform');
+        let formData = new FormData($form);
+        let relativeId = formData.get('relativeId');
+        let studentId = formData.get('studentId');
         if (!relativeId || !studentId) {
-                setInfocontent({infoType: 'warning', title: '', message: 'Por favor, complete todos los campos.'})
-                setOpen(true)
+                setInfocontent({infoType: 'warning', title: '', message: 'Por favor, complete todos los campos.'});
+                setOpen(true);
                 return
         }
-        const loader = document.querySelector(`.${props["loaderClass"]}`)
-        let tokenInput = document.getElementById(styles["token"])
-        loader.classList.remove(props["loaderHiddenClass"])
+        const loader = document.querySelector(`.${props["loaderClass"]}`);
+        let tokenInput = document.getElementById(styles["token"]);
+        loader.classList.remove(props["loaderHiddenClass"]);
         
         fetch('/get-token', {
             method: 'POST',
@@ -219,81 +220,38 @@ export default function Form(props) {
         
     }
     const handleSignin = () => {
-        let $form = document.getElementById('contactform')
-        let formData = new FormData($form)
-        let relativeId = formData.get('relativeId')
-        let studentId = formData.get('studentId')
-        if (!relativeId || !studentId) {
-                setInfocontent({infoType: 'warning', title: '', message: 'Por favor, complete todos los campos.'})
-                setOpen(true)
+        let relativeInput = document.getElementById('relative')
+        let studentInput = document.getElementById('student')
+        relativeInput.removeAttribute('disabled')
+        studentInput.removeAttribute('disabled')
+        let $form = document.getElementById('contactform');
+        let formData = new FormData($form);
+        let relativeId = formData.get('relativeId');
+        let studentId = formData.get('studentId');
+        let token = formData.get('token');
+        if (!relativeId || !studentId || !token) {
+                setInfocontent({infoType: 'warning', title: '', message: 'Por favor, complete todos los campos.'});
+                setOpen(true);
                 return
-        }
-        const loader = document.querySelector(`.${props["loaderClass"]}`)
-        let tokenInput = document.getElementById(styles["token"])
-        loader.classList.remove(props["loaderHiddenClass"])
-        
+        };
+        const loader = document.querySelector(`.${props["loaderClass"]}`);
+        let tokenInput = document.getElementById(styles["token"]);
+        loader.classList.remove(props["loaderHiddenClass"]);
         fetch('/signin', {
             method: 'POST',
             body: formData,
         })
         .then( res => res.json())
         .then( data => {
-            console.log(data)
-            if (data.successful) {
-                let relativeInput = document.getElementById('relative')
-                let studentInput = document.getElementById('student')
-
-                let relativeValue = relativeInput.value
-                let studentValue = studentInput.value
-                
-                relativeInput.setAttribute('disabled', '')
-                studentInput.setAttribute('disabled', '')
-                
-                relativeInput.onfocus = (e)=> {
-                    relativeInput.setAttribute('disabled', '')
-                    e.currentTarget.value = relativeValue
-                }
-
-                studentInput.onfocus = (e)=> {
-                    studentInput.setAttribute('disabled', '')
-                    e.currentTarget.value = studentValue
-                }
-
-                tokenInput.classList.remove(styles["hidden"])
-                loader.classList.add(props["loaderHiddenClass"])
-                setHandler(SignButton)
-                setInfocontent({infoType: 'success', title: 'Token Activado', message: 'Por favor, revisa tu correo electrónico.'})
-                setOpen(true)
-                return
-            }
-            else if (data.error) {
-                console.log(data.error)
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, comuníquese con soporte.'})
-                setOpen(true)
-                return
-            }
-            else if (data.stderr) {
-                console.log(data.stderr)
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Stderr', message: 'Por favor, comuníquese con soporte.'})
-                setOpen(true)
-                return
-            }
-            else if (data.emailerror) {
-                console.log(data.emailerror)
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Email Error', message: 'Por favor, comuníquese con soporte.'})
-                setOpen(true)
-                return
-            }
-            else if (data.repeat) {
-                setTimeout(repeat, 10000)
-            }
             if (data.refused) {
                 loader.classList.add(props["loaderHiddenClass"])
                 setInfocontent({infoType: 'error', title: '', message: 'Acceso Inválido. Por favor, verifica tus datos.'})
                 setOpen(true)
+                return
+            }
+            if (data) {
+                window.location.href = `${window.origin}/sign-page?id=${data.token}`
+                return
             }
         })
         .catch( e => {

@@ -7,10 +7,9 @@ async function createToken(student, relativeId, Token, sender) {
     let person = relationship == 'mother' ? student.parents.mother : relationship == 'father' ? student.parents.father : student.relative;
     let email = {
         from: "matriculas@colegiolosangelestunja.com",
-        // to:'navud20@gmail.com',
         to: person.email,
         subject: "Token de validación - Matriculas 2022",
-        html: ` 
+        html: `
             <div> 
                 <p>¡Cordial saludo señor(a) ${person.name}!</p>
 
@@ -18,7 +17,7 @@ async function createToken(student, relativeId, Token, sender) {
 
                 <p>NOTA: Este Token de validación sólo tendrá vigencia de una hora, desde el momento que recibio éste correo. Despues de éste tiempo tendrá que volver a generarlo.</p>
 
-                <p><b>Token:</b> <b style="color: #f7901e;"> ${token} </b></p>
+                <p><b>Token:</b> <b style="color: #f7901e; font-family: Arial, Helvetica, sans-serif;"> ${token} </b></p>
                 
                 <p><a href="www.avcla.com">Matriculas 2023 - Colegio Los Ángeles</a></p>
                 
@@ -31,12 +30,12 @@ async function createToken(student, relativeId, Token, sender) {
                 Software Developer, Colegio Los Ángeles.
             </div> 
         ` 
-    };
+    }
     let conf = await sender.sendMail(email);
     // console.log("Email was send successfully");
     if(conf) {
         try {
-            let dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, relative: person}}, {upsert: true});
+            let dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person: person, student}}, {upsert: true});
             if (dbToken) {
                 // console.log("Token saved successfully")
                 return {successful: true};

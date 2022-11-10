@@ -1,13 +1,13 @@
 const db = require("mongoose")
 const { Schema } = db
 const student = new Schema({
-    name: {type: String, required: true}, 
+    name: {type: String, required: true},
     surname: {type: String, required: true},
     gender: String,
     grade: String,
     address: String,
     identification: {
-        id: {type: String, required: true},
+        id: {type: String, required: true, trim: true},
         type: {type: String, required: true}
     },
     parents: {
@@ -15,7 +15,7 @@ const student = new Schema({
             name: String,
             surname: String,
             identification: {
-                type: {type: String},
+                type: {type: String, trim: true},
                 id: String,
             },
             location: {
@@ -29,7 +29,7 @@ const student = new Schema({
             name: String,
             surname: String,
             identification: {
-                type: {type: String},
+                type: {type: String, trim: true},
                 id: String,
             },
             location: {
@@ -44,7 +44,7 @@ const student = new Schema({
         name: String,
         surname: String,
         identification: {
-            id: {type: String, required: true},
+            id: {type: String, required: true, trim: true},
             type: {type: String},
         },
         location: {

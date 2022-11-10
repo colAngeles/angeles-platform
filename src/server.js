@@ -1,5 +1,4 @@
 const cluster = require('cluster');
-const {resolve} = require("path");
 
 if(cluster.isMaster){
     const { cpus } = require('os');
@@ -17,12 +16,13 @@ if(cluster.isMaster){
 else {
     require('./database/connect');
     const Students = require('./database/models/student');
-    const Token = require('./database/models/tokens')
+    const Token = require('./database/models/tokens');
+    const { resolve } = require("path");
     const createToken = require('./modules/createToken');
     const Email = require('./modules/email');
     const express = require('express');
     const multer  = require('multer');
-    const cookieParser = require('cookie-parser')
+    const cookieParser = require('cookie-parser');
     const ip = require("./modules/getIp");
     const upload = multer({ dest: 'uploads/' });
     const app = express();
@@ -37,7 +37,6 @@ else {
         }
     }
     const sender = new Email(config)
-    // let request = 0
     app.use(express.json());
     app.use(cookieParser('qnapcloud'));
     app.use(express.urlencoded({ extended: true }));
@@ -50,24 +49,34 @@ else {
     });
 
     app.post('/get-token', upload.none(), async (req, res, next)=> {
-        // if(request > 100) {
-        //     res.json({repeat: true});
-        //     return
-        // }
-        // request += 1;
         let student = await Students.findOne({"identification.id": req.body.studentId});
         if (student) {
             let message = await createToken(student, req.body.relativeId, Token, sender);
             res.json(message);
-            // request -= 1
         } 
         else {
             res.json({refused: true});
-            // request -= 1
         }
     })
-    app.post('/signin', (req, res)=> {
+
+    app.post('/signin', upload.none(), async (req, res)=> {
+        const token = await Token.findOne({"studentid": req.body.studentId, token: req.body.token.trim()});
+        if (token) {
+            res.cookie('token', token.token, {expires: new Date(Date.now() + 8 * 3600000), signed: true});
+            res.json(token);
+            return
+        }
+        res.json({refused: true});
         
+    })
+
+    app.get('/sign-page', (req, res)=> {
+        if(req.cookies.token == req.query.token){
+            res.sendFile(resolve('src/public/contract.html'))
+            return
+        }
+        res.redirect('/')
+       
     })
     app.listen(8080, ()=> {
         if(!ip) return console.log(`Server on http://localhost:8080 -> ${process.pid}`);
