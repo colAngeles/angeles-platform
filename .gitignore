@@ -1,4 +1,37 @@
 node_modules
-test.html
+test*
 server_copy.js
 createToken_copy.js
+autocannon.js
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage tools
+lib-cov
+coverage
+coverage.html
+.cover*
+
+# Dependency directory
+node_modules
+
+# Example build directory
+example/dist
+.publish
+
+# Editor and other tmp files
+*.swp
+*.un~
+*.iml
+*.ipr
+*.iws
+*.sublime-*
+.idea/
+*.DS_Store
+.vscode

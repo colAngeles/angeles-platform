@@ -8,6 +8,7 @@ import stylesLoader from "./css/loader.module.css"
 function Index() {
     let images = ["./media/cardimg1.jpg", "./media/cardimg2.jpg", "./media/cardimg3.jpg", "./media/cardimg4.jpg", "./media/cardimg5.jpg"]
     useEffect(()=>{
+        localStorage.clear()
         const loader = document.querySelector(`.${stylesLoader["background-load"]}`)
         loader.classList.add(stylesLoader["hidden"])
     }, [])

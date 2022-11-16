@@ -132,7 +132,7 @@ export default function Form(props) {
         })
     }
     
-    const handleToken = () => {
+    const getToken = () => {
         let $form = document.getElementById('contactform');
         let formData = new FormData($form);
         let relativeId = formData.get('relativeId');
@@ -219,7 +219,7 @@ export default function Form(props) {
         })
         
     }
-    const handleSignin = () => {
+    const validateToken = () => {
         let relativeInput = document.getElementById('relative')
         let studentInput = document.getElementById('student')
         relativeInput.removeAttribute('disabled')
@@ -237,7 +237,7 @@ export default function Form(props) {
         const loader = document.querySelector(`.${props["loaderClass"]}`);
         let tokenInput = document.getElementById(styles["token"]);
         loader.classList.remove(props["loaderHiddenClass"]);
-        fetch('/signin', {
+        fetch('/validate-token', {
             method: 'POST',
             body: formData,
         })
@@ -250,7 +250,8 @@ export default function Form(props) {
                 return
             }
             if (data) {
-                window.location.href = `${window.origin}/sign-page?id=${data.token}`
+                localStorage.setItem('data', JSON.stringify(data))
+                window.location.href = `${window.origin}/signin?id=${data.token}`
                 return
             }
         })
@@ -262,12 +263,13 @@ export default function Form(props) {
             return
         })
     }
-    const TokenButton = <SendButton variant="contained" component="label" sx={{marginTop: "10px"}} onClick={handleToken}>Get Token</SendButton>
-    const SignButton = <SendButton variant="contained" component="label"  sx={{marginTop: "10px"}} onClick={handleSignin}>Sign In</SendButton>
+    const TokenButton = <SendButton variant="contained" component="label" sx={{marginTop: "10px"}} onClick={getToken}>Get Token</SendButton>
+    const SignButton = <SendButton variant="contained" component="label"  sx={{marginTop: "10px"}} onClick={validateToken}>Sign In</SendButton>
 
     let [ButtonHandler, setHandler] = useState(TokenButton)
     let [open, setOpen] = useState(false)
     let [infoContent, setInfocontent] = useState("")
+    
     const handleResize = ()=> {
         let $form = document.querySelector(`.${styles['contact-form']}`)
         let minHeight = $form.getBoundingClientRect().width

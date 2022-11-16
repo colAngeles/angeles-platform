@@ -5,6 +5,7 @@ const token = new Schema({
     createdAt: Date,
     studentid: {type: String, required: true},
     token: {type: String, required: true},
-    relationship: String
+    person: Object,
+    student: Object
 })
 module.exports = db.model('tokens', token)

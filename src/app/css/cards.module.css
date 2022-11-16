@@ -12,7 +12,6 @@
     overflow-x: scroll;
     position: relative;
     box-shadow: 1px 0 1rem #ffffff75;
-    
 }
 .cards-container.active {
     scroll-snap-type: x mandatory;

@@ -1,27 +1,28 @@
-const generateRandomString = require('./generateRandomString')
+const generateRandomString = require('./generateRandomString');
+
 async function createToken(student, relativeId, Token, sender) {
-    const token = generateRandomString(6)
+    const token = generateRandomString(6);
     let relationship = student.parents.mother.identification.id == relativeId ? 'mother'
         : student.parents.father.identification.id == relativeId ? 'father'
         : student.relative.identification.id == relativeId ? 'relative': null;
     let person = relationship == 'mother' ? student.parents.mother : relationship == 'father' ? student.parents.father : student.relative;
     let email = {
-        from: "matriculas@colegiolosangelestunja.com",
+        from: '"Matriculas - Colegio Los Ángles" <no-reply@colegiolosangelestunja.com>',
         to: person.email,
         subject: "Token de validación - Matriculas 2022",
         html: `
             <div> 
-                <p>¡Cordial saludo señor(a) ${person.name}!</p>
+                <p>¡Cordial saludo ${person.name}!</p>
 
                 <p>Queremos confirmarle los datos que le permitirán acceder a la plataforma de matriculas.</p>
 
-                <p>NOTA: Este Token de validación sólo tendrá vigencia de una hora, desde el momento que recibio éste correo. Despues de éste tiempo tendrá que volver a generarlo.</p>
+                <p>NOTA: Este Token de validación sólo tendrá vigencia de una hora, desde el momento de la recepción de éste correo. Despues de éste tiempo tendrá que volver a generarlo.</p>
 
                 <p><b>Token:</b> <b style="color: #f7901e; font-family: Arial, Helvetica, sans-serif;"> ${token} </b></p>
                 
                 <p><a href="www.avcla.com">Matriculas 2023 - Colegio Los Ángeles</a></p>
                 
-                <p style="text-align: justify;">Si tiene algún problema a la hora de acceder a la plataforma, puede escribir al correo duvanmotavita@colegiolosangelestunja.com o al número de <a style="color: #f7901e;" href="wa.me//+573228317980">WhatsApp</a></p>
+                <p style="text-align: justify;">Si tiene algún problema a la hora de acceder a la plataforma, puede escribir al correo admin@colegiolosangelestunja.com o al número de <a style="color: #f7901e;" href="wa.me//+573228317980">WhatsApp</a></p>
                 
                 <p>Cordialmente,</p> 
                 <br/>
@@ -31,25 +32,24 @@ async function createToken(student, relativeId, Token, sender) {
             </div> 
         ` 
     }
-    let conf = await sender.sendMail(email);
-    // console.log("Email was send successfully");
-    if(conf) {
-        try {
-            let dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person: person, student}}, {upsert: true});
-            if (dbToken) {
-                // console.log("Token saved successfully")
+    try {
+        let dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
+        if (dbToken) {
+            try {
+                // let conf = await sender.sendMail(email);
+                console.log(dbToken)
                 return {successful: true};
             }
+            catch (e) {
+                return {emailerror: "error:email"};
+            }
         }
-        catch (error) {
-            // console.log("Token saved trow error")
-            return {error: "database"};
-        }
+        return {error: "database"};
     }
-    // console.log("The email was not send")
-    return {emailerror: "error:email"};
+    catch (error) {
+        return {error: "database"};
+    }
 }
-
-module.exports = createToken
+module.exports = createToken;
 
 

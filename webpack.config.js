@@ -3,10 +3,13 @@ module.exports = {
     mode: 'production',
     entry: { 
       index: '/src/app/Index.js',
+      contract: '/src/app/Contract.js',
     },
     output: {
       path: __dirname + '/src/public/js',
       filename: '[name].bundle.js',
+      library: 'AudioRecorder',
+      libraryTarget: 'var'
     },
 
     module: {

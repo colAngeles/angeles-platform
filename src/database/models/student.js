@@ -1,3 +1,4 @@
+// require('../connect')
 const db = require("mongoose")
 const { Schema } = db
 const student = new Schema({
@@ -6,10 +7,21 @@ const student = new Schema({
     gender: String,
     grade: String,
     address: String,
+    annualAmountText: String,
+    annualAmount: String,
+    enrollmentAmountText: String,
+    enrollmentAmount: String,
+    remainingAmountText: String,
+    remainingAmount: String,
+    pensionText: String,
+    pension: String,
+    anotherAmountText: String,
+    anotherAmount: String,
     identification: {
         id: {type: String, required: true, trim: true},
         type: {type: String, required: true}
     },
+    enrolled: {type: Boolean, default: false},
     parents: {
         mother: {
             name: String,
@@ -63,11 +75,22 @@ module.exports = db.model("students", student)
 // !async function(){
 //     await Student.create([{
 //         name: "Duván", 
-//         surname: "Motavita Pérez", 
+//         surname: "Motavita Pérez",
+//         grade: "PRIMERO",
 //         identification: {
 //             id: "1057186692", 
 //             type: "C.C."
 //         },
+//         annualAmountText: "QUICE MILLONES DE PESOS",
+//         anotherAmount: "15,000,000",
+//         enrollmentAmountText:"UN MILLON DE PESOS",
+//         enrollmentAmount: "1,000,000",
+//         remainingAmountText: "CINCO MILLONES",
+//         remainingAmount: "5,000,000",
+//         pensionText: "QUIENTOS MIL PESOS",
+//         pension: "500,000",
+//         anotherAmountText: "UN MILLON DE PESOS",
+//         anotherAmount: "1,000,000",
 //         parents: {
 //             mother: {
 //                 name: "Maria Elvira",
@@ -86,7 +109,7 @@ module.exports = db.model("students", student)
 //             },
 //             father: {
 //                 name: "Jose",
-//                 surname: "Mptavita",
+//                 surname: "Motavita",
 //                 identification: {
 //                     type: "C.C.",
 //                     id: "54464654"
@@ -107,7 +130,7 @@ module.exports = db.model("students", student)
 //                 id: "1057186308",
 //             },
 //             location: {
-//                 address: "Yopal",
+//                 address: "CALLE 55 # 10-12. PRADOS DEL NORTE",
 //                 city: "Yopal"
 //             },
 //             email: "duvanmotavita@colegiolosangelestunja.com",
