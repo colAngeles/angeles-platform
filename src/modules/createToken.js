@@ -1,6 +1,6 @@
 const generateRandomString = require('./generateRandomString');
-
-async function createToken(student, relativeId, Token, sender) {
+const Token = require('../database/models/tokens');
+async function createToken(student, relativeId, sender) {
     const token = generateRandomString(6);
     let relationship = student.parents.mother.identification.id == relativeId ? 'mother'
         : student.parents.father.identification.id == relativeId ? 'father'
@@ -37,16 +37,30 @@ async function createToken(student, relativeId, Token, sender) {
         if (dbToken) {
             try {
                 // let conf = await sender.sendMail(email);
-                console.log(dbToken)
+                console.log(token);
                 return {successful: true};
             }
             catch (e) {
                 return {emailerror: "error:email"};
             }
         }
+        dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
+        if (dbToken) {
+            try {
+                // let conf = await sender.sendMail(email);
+                console.log('Second try: ', token);
+                return {successful: true};
+            }
+            catch (e) {
+                return {emailerror: "error:email"};
+            }
+        }
+        console.log('Try error');
+        console.log(dbToken)
         return {error: "database"};
     }
     catch (error) {
+        console.log("Catch error");
         return {error: "database"};
     }
 }

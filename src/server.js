@@ -17,6 +17,7 @@ else {
     require('./database/connect');
     const Students = require('./database/models/student');
     const Token = require('./database/models/tokens');
+    const Increment = require('./database/models/increment');
     const { resolve } = require("path");
     const createToken = require('./modules/createToken');
     const Email = require('./dist/email');
@@ -48,44 +49,56 @@ else {
 
 
     app.get('/', (req, res, next)=> {
-        res.clearCookie('sesskey', {path: '/'})
+        res.clearCookie('token', {path: '/'})
         res.sendFile(resolve('src/public/index.html'));
     });
 
     app.post('/get-token', upload.none(), async (req, res, next)=> {
-        let student = await Students.findOne({$where: `this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`});
-        if (student) {
-            let message = await createToken(student, req.body.relativeId, Token, sender);
-            res.json(message);
-        } 
-        else {
-            res.json({refused: true});
-        }
+        Students.findOne(
+            {$where: `this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
+        })
+        .then(data => {
+            if (data) {
+                return createToken(data, req.body.relativeId, sender);
+            }
+            return {refused: true};
+        })
+        .then( data => {
+            res.json(data);
+        })
+        .catch( err => {
+            console.log(err)
+            res.json({error: "database"});
+        });
     })
 
     app.post('/validate-token', upload.none(), async (req, res)=> {
-        const token = await Token.findOne({"studentid": req.body.studentId.trim(), token: req.body.token.trim()});
-        if (token) {
-            res.cookie('token', token.token, {expires: new Date(Date.now() + 8 * 3600), signed: true});
-            res.json(token);
-            return
+        try {
+            let [token, increment] = await Promise.all([Token.findOne({"studentid": req.body.studentId, token: req.body.token.trim()}), Increment.findOneAndUpdate({name: "main"}, {$inc: {num: 1}})]);
+            if (token && increment) {
+                res.cookie('token', token.token, {expires: new Date(Date.now() + 4 * 3600000), signed: true});
+                res.json({token, number: increment.num});
+                return
+            }
+            res.json({refused: true});
         }
-        res.json({refused: true});
-        
+        catch ( err ) {
+            res.json({error: "database"});
+        }
     })
 
     app.get('/signin', (req, res)=> {
-        if(req.cookies.token == req.query.token){
-            res.sendFile(resolve('src/public/contract.html'))
+        if(req.signedCookies.token === req.query.id){
+            res.sendFile(resolve('src/public/contract.html'));
             return
         }
-        res.redirect('/')
+        res.redirect('/');
     })
     const cpUpload = upload.fields([{ name: 'contract', maxCount: 1 }, { name: 'audio', maxCount: 1 }])
-        app.post('/save-data', cpUpload, (req, res) => {
-        console.log(req.body);
-        console.log(req.file);
-        res.json({successful: true})
+    app.post('/save-data', cpUpload, (req, res) => {
+    console.log(req.body);
+    console.log(req.file);
+    res.json({successful: true})
     })
     app.listen(8080, ()=> {
         if(!ip) return console.log(`Server on http://localhost:8080 -> ${process.pid}`);

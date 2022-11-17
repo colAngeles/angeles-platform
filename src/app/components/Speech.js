@@ -8,7 +8,7 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import Fab from '@mui/material/Fab';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
-import SaveIcon from '@mui/icons-material/Save';
+import SaveIcon from '@mui/icons-material/Save'; 
 import Box from "@mui/material/Box";
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
@@ -49,9 +49,9 @@ export default function Speech({ getAudio, close, openSnack}) {
         if (isListening) {
             startRecording();
             mic.start();
-            // mic.onend = () => {
-            //     console.log('end');
-            // }
+            mic.onend = () => { //Commnet
+                console.log('end');
+            }
         }
         else {
             mic.stop();
@@ -117,7 +117,7 @@ export default function Speech({ getAudio, close, openSnack}) {
                 </div>
                 <div className={styles["container"]}>
                     <div className={styles["box"]}>
-                        <h2>Tolo Current Note</h2>
+                        <h2>Por favor, lea las siguientes instrucciones: </h2>
                         <p>{note}</p>
                     </div>
                     {
@@ -135,8 +135,10 @@ export default function Speech({ getAudio, close, openSnack}) {
                         ): null
                     }
                     <div className={styles["box"]}>
-                        <h2>Texto de Verificación</h2>
-                        <p>{note}</p>
+                        <h2 style={{textAlign: 'center'}}>Texto de Verificación</h2>
+                        <p style={{textAlign: 'justify'}}>
+                            Acepto los términos, condiciones y cláusulas del contrato de prestación del servicio educativo suscrito con el Colegio Los Angeles, y del pagaré anexo a dicho documento. De igual manera,  autorizo al Colegio Los Angeles al tratamiento  de mis datos personales, de acuerdo con las disposiciones legales.
+                        </p>
                     </div>
                 </div>
                 <div className={stylesCanvas["alert-container"]}>

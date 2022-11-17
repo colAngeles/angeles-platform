@@ -1,9 +1,17 @@
-import React from "react";
-import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import React, {useEffect} from "react";
+import { Page, Text, View, Document, StyleSheet, Image, Font} from '@react-pdf/renderer';
 import DocText from "./DocText";
 export default function Doc({signURL}){
         let data = localStorage.getItem('data');
         let objData = JSON.parse(data);
+        Font.register({
+            family: 'Arial',
+            src: '/fonts/arial.ttf'
+        });
+        Font.register({
+            family: 'Arialbd',
+            src: '/fonts/arialbd.ttf'
+        });
         const styles = StyleSheet.create({
             page: {
                 flexDirection: 'column',
@@ -15,24 +23,11 @@ export default function Doc({signURL}){
                 paddingHorizontal: 50,
             },
             title: {
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: 'bold',
                 textAlign: 'center',
                 color: '#000',
-                fontFamily: 'Helvetica-Bold'
-            },
-            text: {
-                marginVertical: 12,
-                fontSize: 11,
-                textAlign: 'left',
-                fontFamily: 'Helvetica'
-            },
-            bold: {
-                display: 'inline',
-                fontFamily: 'Helvetica-Bold',
-                margin: 12,
-                fontSize: 11,
-                textAlign: 'justify',
+                fontFamily: 'Arialbd'
             },
             section: {
                 margin: 10,
@@ -62,19 +57,41 @@ export default function Doc({signURL}){
                 display: 'flex',
                 width: '100%',
             },
+            view: {
+                marginVertical: 10,
+                paddingHorizontal: 10,
+                borderBottom: '1px solid #000',
+                display: 'flex',
+                width: '100%',
+                height: '70px'
+            },
             headerImage: {
+                display: 'inline-block',
                 width: '100%',
                 objectFit: 'cover',
+            },
+            text: {
+                marginVertical: 12,
+                fontSize: 12,
+                textAlign: 'left',
+                fontFamily: 'Arial'
             },
             textSign: {
                 marginVertical: 12,
                 fontSize: 10,
                 textAlign: 'left',
-                fontFamily: 'Helvetica'
+                fontFamily: 'Arial'
+            },
+            bold: {
+                display: 'inline',
+                fontFamily: 'Arialbd',
+                margin: 12,
+                fontSize: 12,
+                textAlign: 'justify',
             },
             boldSign: {
                 display: 'inline',
-                fontFamily: 'Helvetica-Bold',
+                fontFamily: 'Arialbd',
                 fontSize: 10,
                 textAlign: 'left',
             },
@@ -95,15 +112,6 @@ export default function Doc({signURL}){
                 flexDirection: 'column',
                 alignItems: 'flex-start'
             },
-            textFooter: {
-                fontFamily: 'Helvetica',
-                fontSize: 10,
-                textAlign: 'left',
-                color: '#001E46',
-            },
-            footerImage: {
-                height: '15px'
-            },
             mainSignContainer: {
                 width: '100%',
                 paddingHorizontal: 10,
@@ -113,8 +121,16 @@ export default function Doc({signURL}){
                 flexWrap: 'wrap',
                 marginTop: 10,
             },
+            textFooter: {
+                fontFamily: 'Arial',
+                fontSize: 10,
+                textAlign: 'left',
+                color: '#001E46',
+            },
+            footerImage: {
+                height: '15px'
+            },
             signs: {
-                marginVertical: 10,
                 flexShrink: 0,
                 display: 'flex',
                 flexDirection: 'column',
@@ -124,17 +140,9 @@ export default function Doc({signURL}){
                 paddingHorizontal: 10,
                 paddingVertical: 10,
             },
-            view: {
-                marginVertical: 10,
-                paddingHorizontal: 10,
-                borderBottom: '1px solid #000',
-                display: 'flex',
-                width: '100%',
-                height: '70px'
-            },
             sign: {
                 height: '95%',
-                objectFit: 'scale-down',
+                objectFit: 'scale-down'
             }
         });
         return (

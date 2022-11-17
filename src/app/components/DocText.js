@@ -1,7 +1,7 @@
 import React from "react";
 import {Text, StyleSheet} from '@react-pdf/renderer';
 
-export default function TextContent({data}) {
+export default function DocText({data}) {
     const dateObj = new Date(data.createdAt);
     const date = dateObj.getDate();
     const monthNum = dateObj.getMonth();
@@ -10,14 +10,15 @@ export default function TextContent({data}) {
 
     const styles = StyleSheet.create({
         text: {
-        margin: 11,
-        fontSize: 11,
-        textAlign: 'justify',
-        fontFamily: 'Arial'
+            margin: 11,
+            fontSize: 11,
+            textAlign: 'justify',
+            fontFamily: 'Helvetica'
         },
         bold: {
-        display: 'inline',
-        fontFamily: 'Arialbd'
+            fontSize: 11,
+            display: 'inline',
+            fontFamily: 'Helvetica-Bold'
         },
     });
     return (

@@ -2,15 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import { render } from 'react-dom';
 import { BlobProvider } from '@react-pdf/renderer';
 import SliderView from './components/SliderView';
-import RenderDocument from './components/RenderDocument';
+import RenderDocuments from './components/RenderDocuments.js';
 import Sign from './components/Sign';
 import Doc from './components/Doc';
+import Promissorynote from './components/Promissorynote';
 import Button from '@mui/material/Button';
 
 function Contract() {
+    const [signURL, setSignURL] = useState(null);
+    const [contractLoaded, setContractLoaded] = useState(false);
+    const [promissoryLoaded, setPromissoryLoaded ] = useState(false);
+    const [audioURL, setAudioURL] = useState(null);
+    const [showMainButton, setShowMainButton] = useState(false);
+    const [contractBlob, setContractBlob] = useState(null);
+    const [promisePayBlob, setPromiseBlob] = useState(null);
     let formData = new FormData()
     let saveData = () => {
-        formData.set("contract", contractBlob, "test.pdf");
+        formData.set("contract", contractBlob, "contract.pdf");
+        formData.set("contract", promisePayBlob, "promissorynote.pdf");
         let pdf = formData.get('contract');
         let audio = formData.get('audio');
         if (!pdf || !audio) {
@@ -59,10 +68,7 @@ function Contract() {
             image: './media/04.jpg'
         },
     ]
-    const [signURL, setSignURL] = useState(null);
-    const [audioURL, setAudioURL] = useState(null);
-    const [showMainButton, setShowMainButton] = useState(false);
-    const [contractBlob, setContractBlob] = useState(null);
+    
     useEffect(() => {
         if(audioURL) {
             formData.set('audio', audioURL, 'audio.weba');
@@ -74,21 +80,49 @@ function Contract() {
             <div style={{backgroundColor: '#162F54'}}>
                 <SliderView content={sliderviewContent}/>
             </div>
-            <RenderDocument/>
+            <RenderDocuments/>
             <Sign setSign={(url)=>{
                 setSignURL(url);
             }} setAudio={(blob) => {
                 setAudioURL(blob);
-            }} showButton={ (value) => setShowMainButton(value)}/>
+            }} showButton={(value) => setShowMainButton(value)}/>
             {
-                signURL && !audioURL ? (
-                <BlobProvider document={<Doc signURL={signURL}/>}>
-                    {({ blob, url, loading, error }) => {
-                        if (url) {
-                            setContractBlob(blob)
-                        }
-                    }}
-                </BlobProvider>): null
+                signURL  && !contractLoaded ? (
+                <>
+                    <BlobProvider document={<Doc signURL={signURL}/>}>
+                        {({ blob, url, loading, error }) => {
+                            if (url) {
+                                // let link = document.createElement("a");
+                                // link.download = "contrato.pdf";
+                                // link.href = url;
+                                // link.click();
+                                setContractBlob(blob);
+                                setContractLoaded(true);
+                            }
+                        }}
+                    </BlobProvider>
+                </>
+                
+                ): null
+            }
+            {
+                signURL  && !promissoryLoaded ? (
+                <>
+                    <BlobProvider document={<Promissorynote signURL={signURL}/>}>
+                        {({ blob, url, loading, error }) => {
+                            if (url) {
+                                // let link2 = document.createElement("a");
+                                // link2.download = "pagare.pdf";
+                                // link2.href = url;
+                                // link2.click();
+                                setPromiseBlob(blob);
+                                setPromissoryLoaded(true);
+                            }
+                        }}
+                    </BlobProvider>
+                </>
+                
+                ): null
             }
             {
                 showMainButton ? (

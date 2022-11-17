@@ -45,92 +45,7 @@ export default function Form(props) {
           boxShadow: "0 0 0 0.2rem rgba(255, 255, 255, 0.438)"
         }
     });
-    const repeat = ()=> {
-        let $form = document.getElementById('contactform');
-        let formData = new FormData($form);
-        const loader = document.querySelector(`.${props["loaderClass"]}`);
-        let tokenInput = document.getElementById(styles["token"]);
-        repeatSize += 1;
-        console.log('repeatSize: ', repeatSize);
-        if (repeatSize > 3) {
-            loader.classList.add(props["loaderHiddenClass"]);
-            setInfocontent({infoType: 'info', title: 'Solicitud No Procesada', message: 'Por favor, inténtelo más tarde.'});
-            setOpen(true);
-            return
-        }
-        fetch('/get-token', {
-            method: 'POST',
-            body: formData,
-        })
-        .then( res => res.json())
-        .then( data => {
-            if (data.successful) {
-                let relativeInput = document.getElementById('relative')
-                let studentInput = document.getElementById('student')
-
-                let relativeValue = relativeInput.value
-                let studentValue = studentInput.value
-                
-                relativeInput.setAttribute('disabled', '')
-                studentInput.setAttribute('disabled', '')
-                
-                relativeInput.onfocus = (e)=> {
-                    relativeInput.setAttribute('disabled', '')
-                    e.currentTarget.value = relativeValue
-                }
-
-                studentInput.onfocus = (e)=> {
-                    studentInput.setAttribute('disabled', '')
-                    e.currentTarget.value = studentValue
-                }
-
-                tokenInput.classList.remove(styles["hidden"])
-                loader.classList.add(props["loaderHiddenClass"])
-                setHandler(SignButton)
-                setInfocontent({infoType: 'success', title: 'Token Activado', message: 'Por favor, revisa tu correo electrónico.'})
-                setOpen(true)
-                return
-            }
-            else if (data.error) {
-                console.log(data);
-                console.log(data.error);
-                loader.classList.add(props["loaderHiddenClass"]);
-                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, comuníquese con soporte.'});
-                setOpen(true);
-                return
-            }
-            else if (data.stderr) {
-                console.log(data.stderr);
-                loader.classList.add(props["loaderHiddenClass"]);
-                setInfocontent({infoType: 'error', title: 'Stderr', message: 'Por favor, comuníquese con soporte.'});
-                setOpen(true);
-                return
-            }
-            else if (data.emailerror) {
-                console.log(data.emailerror);
-                loader.classList.add(props["loaderHiddenClass"]);
-                setInfocontent({infoType: 'error', title: 'Email Error', message: 'Por favor, comuníquese con soporte.'});
-                setOpen(true);
-                return
-            }
-            else if (data.repeat) {
-                setTimeout(repeat, 10000);
-            }
-            if (data.refused) {
-                console.log(data);
-                loader.classList.add(props["loaderHiddenClass"]);
-                setInfocontent({infoType: 'error', title: '', message: 'Acceso Inválido. Por favor, verifica tus datos.'});
-                setOpen(true);
-            }
-        })
-        .catch( e => {
-            console.log(e);
-            loader.classList.add(props["loaderHiddenClass"]);
-            setInfocontent({infoType: 'error', title: 'Error de comunicación', message: 'Por favor, comuníquese con soporte.'});
-            setOpen(true);
-            return
-        })
-    }
+    
     
     const getToken = () => {
         let $form = document.getElementById('contactform');
@@ -152,7 +67,6 @@ export default function Form(props) {
         })
         .then( res => res.json())
         .then( data => {
-            console.log(data)
             if (data.successful) {
                 let relativeInput = document.getElementById('relative')
                 let studentInput = document.getElementById('student')
@@ -181,28 +95,18 @@ export default function Form(props) {
                 return
             }
             else if (data.error) {
-                console.log(data.error)
+                console.error(data.error)
                 loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, comuníquese con soporte.'})
-                setOpen(true)
-                return
-            }
-            else if (data.stderr) {
-                console.log(data.stderr)
-                loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Stderr', message: 'Por favor, comuníquese con soporte.'})
+                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, intentelos más tarde.'})
                 setOpen(true)
                 return
             }
             else if (data.emailerror) {
                 console.log(data.emailerror)
                 loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Email Error', message: 'Por favor, comuníquese con soporte.'})
+                setInfocontent({infoType: 'error', title: 'Email Error', message: 'Por favor, intentelo más tarde.'})
                 setOpen(true)
                 return
-            }
-            else if (data.repeat) {
-                setTimeout(repeat, 10000)
             }
             if (data.refused) {
                 loader.classList.add(props["loaderHiddenClass"])
@@ -229,11 +133,13 @@ export default function Form(props) {
         let relativeId = formData.get('relativeId');
         let studentId = formData.get('studentId');
         let token = formData.get('token');
+        
         if (!relativeId || !studentId || !token) {
                 setInfocontent({infoType: 'warning', title: '', message: 'Por favor, complete todos los campos.'});
                 setOpen(true);
                 return
         };
+
         const loader = document.querySelector(`.${props["loaderClass"]}`);
         let tokenInput = document.getElementById(styles["token"]);
         loader.classList.remove(props["loaderHiddenClass"]);
@@ -241,17 +147,18 @@ export default function Form(props) {
             method: 'POST',
             body: formData,
         })
-        .then( res => res.json())
-        .then( data => {
-            if (data.refused) {
+        .then(res => res.json())
+        .then(({token, number, refused}) => {
+            console.log(token, number, refused)
+            if (refused) {
                 loader.classList.add(props["loaderHiddenClass"])
                 setInfocontent({infoType: 'error', title: '', message: 'Acceso Inválido. Por favor, verifica tus datos.'})
                 setOpen(true)
                 return
             }
-            if (data) {
-                localStorage.setItem('data', JSON.stringify(data))
-                window.location.href = `${window.origin}/signin?id=${data.token}`
+            if (token && number) {
+                localStorage.setItem('data', JSON.stringify({...token, number}))
+                window.location.href = `${window.origin}/signin?id=${token.token}`
                 return
             }
         })

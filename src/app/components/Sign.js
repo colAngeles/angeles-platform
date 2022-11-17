@@ -80,7 +80,6 @@ export default function Sign(props) {
         props.setAudio(audio);
     }, [audio])
     useEffect(() => {
-        console.log('This is a test')
         if (!showAudioButton) props.showButton(true);
     }, [showAudioButton])
     const tryAgain = () => {
