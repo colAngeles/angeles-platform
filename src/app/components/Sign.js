@@ -100,7 +100,7 @@ export default function Sign(props) {
         setOpenSnack(true);
         setTimeout(() => {
             setOpenSnack(false)
-        }, 6000);
+        }, 6500);
     }
     return (
         <div className={styles['main-container']}>
@@ -159,7 +159,12 @@ export default function Sign(props) {
                                 }} close={close} openSnack={(value, infoType, title, message, hideButtom) => {
                                     setInfocontent({infoType, title, message});
                                     setOpenSnack(value);
-                                    if (hideButtom) setShowAudioButton(false);
+                                    if (hideButtom) {
+                                        setTimeout(() => {
+                                            setOpenSnack(false)
+                                        }, 6500)
+                                        setShowAudioButton(false);
+                                    }
                                 }}/>
                             )
                         )

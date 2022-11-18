@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
 import styles from "../css/sliderview.module.css";
+import contractStyles from "../css/contract.module.css"
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Button from "@mui/material/Button";
@@ -26,12 +27,12 @@ export default function SliderView(props) {
 
     useEffect(()=>{
         if(!entry || !elements.conf) return
-        let num = entry.target.dataset.page
-        elements.imageActive = document.querySelector(`.${styles["image-content"]}.${styles["active"]}`)
-        elements.image = document.querySelector(`.${styles["image-content"]}.image${num}`)
-        elements.imageActive.classList.remove(styles["active"])
-        elements.image.classList.add(styles["active"])
-        setPage(Number(num))
+        let num = entry.target.dataset.page;
+        elements.imageActive = document.querySelector(`.${styles["image-content"]}.${styles["active"]}`);
+        elements.image = document.querySelector(`.${styles["image-content"]}.image${num}`);
+        elements.imageActive.classList.remove(styles["active"]);
+        elements.image.classList.add(styles["active"]);
+        setPage(Number(num));
     }, [entry])
     
     let handleChange = (_, value) => {
@@ -71,6 +72,21 @@ export default function SliderView(props) {
         }
         setPage(value)
     }
+    let handleWindowScroll = (height) => {
+        console.log("Test")
+        if (document.documentElement.scrollTop >= height) {
+            return
+        }
+        document.documentElement.scrollTop += 10;
+        setTimeout(handleWindowScroll.bind(null, height), 0)
+    }
+    let activefiles = () => {
+        let files = document.querySelector(`.${contractStyles['files-container']}`);
+        let slider = document.querySelector(`.${styles["slider-view-container"]}`);
+        files.classList.add(contractStyles['active']);
+        // let sliderHeight = slider.getBoundingClientRect().height;
+        // setTimeout(handleWindowScroll.bind(null, sliderHeight), 0)
+    }
     return (
         <section className={styles["slider-view-container"]}>
             <div className={styles["slider-main-description-container"]}>
@@ -82,7 +98,9 @@ export default function SliderView(props) {
                                         <div className={styles["description"]} data-page={index + 1}>
                                             <h3>{element.title}</h3>
                                             <p>{element.description}</p>
-                                            <Button variant="contained" component="label" sx={{marginTop: "10px"}}>Comenzar</Button>
+                                            <a href="#documents" style={{textDecoration: 'none'}}>
+                                                <Button variant="contained" component="label" sx={{marginTop: "10px"}} onClick={activefiles}>Comenzar</Button>
+                                            </a>
                                         </div>
                                     </>
                                 )

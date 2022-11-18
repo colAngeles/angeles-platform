@@ -1,0 +1,7 @@
+.files-container {
+    display: none;
+}
+.files-container.active {
+    display: initial;
+    scroll-behavior: smooth;
+}

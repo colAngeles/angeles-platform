@@ -22,8 +22,14 @@ mic.interimResults = false;
 mic.lang = 'es-ES';
 
 export default function Speech({ getAudio, close, openSnack}) {
-    let [audio, isRecording, startRecording, stopRecording] = useRecorder();
-
+    let data = localStorage.getItem('data');
+    let objData = JSON.parse(data);
+    const dateObj = new Date(objData.createdAt);
+    const date = dateObj.getDate();
+    const monthNum = dateObj.getMonth();
+    const year = dateObj.getFullYear();
+    const month = monthNum == 0  ? 'Enero' : monthNum == 1 ? 'Febrero' : monthNum == 2 ? 'Marzo': monthNum == 3 ? 'Abril': monthNum == 4 ? 'Mayo': monthNum == 5 ? 'Junio': monthNum == 6 ? 'Julio': monthNum == 7 ? 'Agosto': monthNum == 8 ? 'Septiembre': monthNum == 9 ? 'Octubre': monthNum == 10 ? 'Noviembre': monthNum == 11 ? 'Diciembre': ''
+    let [audio, _, startRecording, stopRecording] = useRecorder();
     const voices = speechSynthesis.getVoices();
     const [isListening, setIsListening] = useState(false);
     const [play, setPlay] = useState(false);
@@ -52,6 +58,7 @@ export default function Speech({ getAudio, close, openSnack}) {
             mic.onend = () => { //Commnet
                 console.log('end');
             }
+            setAlertModal(false)
         }
         else {
             mic.stop();
@@ -81,6 +88,7 @@ export default function Speech({ getAudio, close, openSnack}) {
     }
     const saveAudio = () => {
         if(audio && note) {
+            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}\\D*${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITOCONELCOLEGIOLOSANGELESY?DEL?PAGAREANEXOADICHODOCUMENTOAUTORIZO(AL)|(EL)COLEGIOLOSANGELES(AL)|ATRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
             let upperNote = note.toUpperCase();
             let list = upperNote.split(' ');
             let throwAlert = list.reduce((acumulator, word) => {
@@ -89,13 +97,26 @@ export default function Speech({ getAudio, close, openSnack}) {
                                         return conf
                                     }, false)
             if (throwAlert) {
-                setInfocontent({infoType: 'warning', title: '', message:'Verificación de audio fallida. Por favor, leea el texto de verificación.'});
+                setInfocontent({infoType: 'warning', title: '', message:'Para continuar se deben aceptar los terminos y condiciones. Por favor, vuelva a leer el texto de verificación.'});
                 setAlertModal(true);
                 return
             }
-            getAudio(audio);
-            close();
-            openSnack(true, 'success', '', 'Audio guardado exitosamente!', true);
+            upperNote = upperNote.replaceAll('Á', 'A');
+            upperNote = upperNote.replaceAll('É', 'E');
+            upperNote = upperNote.replaceAll('Í', 'I');
+            upperNote = upperNote.replaceAll('Ó', 'O');
+            upperNote = upperNote.replaceAll('Ú', 'U');
+            upperNote = upperNote.replaceAll('Ü', 'U');
+            upperNote = upperNote.replaceAll(',', ',');
+            upperNote = upperNote.replaceAll(' ', '');
+            if (re.test(upperNote)) {
+                getAudio(audio);
+                close();
+                openSnack(true, 'success', '', 'Audio guardado exitosamente!', true);
+                return
+            }
+            setInfocontent({infoType: 'warning', title: '', message:'Se han detectado inconcistencias en audio. Por favor, vuelva a leer el texto de verificación.'});
+            setAlertModal(true);
             return
         }
         setInfocontent({infoType: 'error', title: '', message:'No se ha detectado ningún dato. Por favor, intentelo de nuevo.'});
@@ -136,8 +157,8 @@ export default function Speech({ getAudio, close, openSnack}) {
                     }
                     <div className={styles["box"]}>
                         <h2 style={{textAlign: 'center'}}>Texto de Verificación</h2>
-                        <p style={{textAlign: 'justify'}}>
-                            Acepto los términos, condiciones y cláusulas del contrato de prestación del servicio educativo suscrito con el Colegio Los Angeles, y del pagaré anexo a dicho documento. De igual manera,  autorizo al Colegio Los Angeles al tratamiento  de mis datos personales, de acuerdo con las disposiciones legales.
+                        <p className={styles["text-content"]}>
+                            Hoy {date} de {month} del año {year} acepto los términos, condiciones y cláusulas del contrato de prestación del servicio educativo suscrito con el Colegio Los Ángeles, y del pagaré anexo a dicho documento. Autorizo al Colegio Los Ángeles al tratamiento de mis datos personales, de acuerdo con las disposiciones legales.
                         </p>
                     </div>
                 </div>
@@ -148,7 +169,7 @@ export default function Speech({ getAudio, close, openSnack}) {
                                     color="inherit"
                                     size="small"
                                     onClick={() => {
-                                        setAlertCanvas(false);
+                                        setAlertModal(false);
                                     }}
                                     >
                                         <CloseIcon fontSize="inherit" />

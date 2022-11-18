@@ -7,7 +7,7 @@ import Sign from './components/Sign';
 import Doc from './components/Doc';
 import Promissorynote from './components/Promissorynote';
 import Button from '@mui/material/Button';
-
+import styles from './css/contract.module.css'
 function Contract() {
     const [signURL, setSignURL] = useState(null);
     const [contractLoaded, setContractLoaded] = useState(false);
@@ -19,7 +19,7 @@ function Contract() {
     let formData = new FormData()
     let saveData = () => {
         formData.set("contract", contractBlob, "contract.pdf");
-        formData.set("contract", promisePayBlob, "promissorynote.pdf");
+        formData.set("promissorynote", promisePayBlob, "promissorynote.pdf");
         let pdf = formData.get('contract');
         let audio = formData.get('audio');
         if (!pdf || !audio) {
@@ -49,7 +49,7 @@ function Contract() {
     let sliderviewContent = [
         {
             title: 'Matriculas 2023', 
-            description: 'En éste panel podrá encontrar el paso a paso que debera seguir para realizar el proceso de matricula de manera exitosa.', 
+            description: 'En éste panel podrá encontrar las instrucciones que debera seguir para realizar el proceso de matricula de manera exitosa. Para ver cada una de ellas por favor utilice los botenes de paginación, ubicados el parte inferior.\nEn cualquier moneto puede puede dar clic en COMENZAR para diligenciar los documentos.', 
             image: './media/01.jpg'
         },
         {
@@ -80,57 +80,52 @@ function Contract() {
             <div style={{backgroundColor: '#162F54'}}>
                 <SliderView content={sliderviewContent}/>
             </div>
-            <RenderDocuments/>
-            <Sign setSign={(url)=>{
-                setSignURL(url);
-            }} setAudio={(blob) => {
-                setAudioURL(blob);
-            }} showButton={(value) => setShowMainButton(value)}/>
-            {
-                signURL  && !contractLoaded ? (
-                <>
-                    <BlobProvider document={<Doc signURL={signURL}/>}>
-                        {({ blob, url, loading, error }) => {
-                            if (url) {
-                                // let link = document.createElement("a");
-                                // link.download = "contrato.pdf";
-                                // link.href = url;
-                                // link.click();
-                                setContractBlob(blob);
-                                setContractLoaded(true);
-                            }
-                        }}
-                    </BlobProvider>
-                </>
-                
-                ): null
-            }
-            {
-                signURL  && !promissoryLoaded ? (
-                <>
-                    <BlobProvider document={<Promissorynote signURL={signURL}/>}>
-                        {({ blob, url, loading, error }) => {
-                            if (url) {
-                                // let link2 = document.createElement("a");
-                                // link2.download = "pagare.pdf";
-                                // link2.href = url;
-                                // link2.click();
-                                setPromiseBlob(blob);
-                                setPromissoryLoaded(true);
-                            }
-                        }}
-                    </BlobProvider>
-                </>
-                
-                ): null
-            }
-            {
-                showMainButton ? (
-                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: "10px"}}>
-                        <Button variant="contained" component="label" onClick={saveData}>ENVIAR DATOS</Button>
-                    </div>
-                ) : null
-            }
+            <div className={styles["files-container"]} id="documents">
+                <RenderDocuments/>
+                <Sign setSign={(url)=>{
+                    setSignURL(url);
+                }} setAudio={(blob) => {
+                    setAudioURL(blob);
+                }} showButton={(value) => setShowMainButton(value)}/>
+                {
+                    signURL  && !contractLoaded ? (
+                    <>
+                        <BlobProvider document={<Doc signURL={signURL}/>}>
+                            {({ blob }) => {
+                                if (blob) {
+                                    setContractBlob(blob);
+                                    setContractLoaded(true);
+                                }
+                            }}
+                        </BlobProvider>
+                    </>
+                    
+                    ): null
+                }
+                {
+                    signURL  && !promissoryLoaded ? (
+                    <>
+                        <BlobProvider document={<Promissorynote signURL={signURL}/>}>
+                            {({ blob }) => {
+                                if (blob) {
+                                    setPromiseBlob(blob);
+                                    setPromissoryLoaded(true);
+                                }
+                            }}
+                        </BlobProvider>
+                    </>
+                    
+                    ): null
+                }
+                {
+                    showMainButton ? (
+                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: "10px"}}>
+                            <Button variant="contained" component="label" onClick={saveData}>ENVIAR DATOS</Button>
+                        </div>
+                    ) : null
+                }
+            </div>
+            
            
             
         </>

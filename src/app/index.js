@@ -14,7 +14,7 @@ function Index() {
     }, [])
     return(
         <>
-            <Loader/>
+            <Loader />
             <main>
                 <Card title="" images={images}/>
                 <Form loaderHiddenClass={stylesLoader["hidden"]} loaderClass={stylesLoader["background-load"]}/>

@@ -76,7 +76,7 @@ else {
         try {
             let [token, increment] = await Promise.all([Token.findOne({"studentid": req.body.studentId, token: req.body.token.trim()}), Increment.findOneAndUpdate({name: "main"}, {$inc: {num: 1}})]);
             if (token && increment) {
-                res.cookie('token', token.token, {expires: new Date(Date.now() + 4 * 3600000), signed: true});
+                res.cookie('token', token.token, {expires: new Date(Date.now() + 2 * 3600000), signed: true});
                 res.json({token, number: increment.num});
                 return
             }
@@ -94,11 +94,13 @@ else {
         }
         res.redirect('/');
     })
-    const cpUpload = upload.fields([{ name: 'contract', maxCount: 1 }, { name: 'audio', maxCount: 1 }])
+    const cpUpload = upload.fields([{ name: 'contract', maxCount: 1 }, {name: 'promissorynote', maxCount: 1},{ name: 'audio', maxCount: 1 }])
     app.post('/save-data', cpUpload, (req, res) => {
-    console.log(req.body);
-    console.log(req.file);
-    res.json({successful: true})
+        console.log(req.body);
+        console.log(req.files['contract'][0]);
+        console.log(req.files['promissorynote'][0]);
+        console.log(req.files['audio'][0]);
+        res.json({successful: true})
     })
     app.listen(8080, ()=> {
         if(!ip) return console.log(`Server on http://localhost:8080 -> ${process.pid}`);
