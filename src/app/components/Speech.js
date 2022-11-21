@@ -55,7 +55,7 @@ export default function Speech({ getAudio, close, openSnack}) {
         if (isListening) {
             startRecording();
             mic.start();
-            mic.onend = () => { //Commnet
+            mic.onend = () => { //Coment
                 console.log('end');
             }
             setAlertModal(false)
@@ -80,7 +80,7 @@ export default function Speech({ getAudio, close, openSnack}) {
             speech.voice = voices[1];
             speechSynthesis.speak(speech);
             setNote(transcript)
-            mic.onerror = event => {
+            mic.onerror = _ => {
                 setInfocontent({infoType: 'error', title: '', message:'El micrófono no responde. Por favor, vuelva a intentarlo.'});
                 setAlertModal(true);
             }
@@ -88,7 +88,11 @@ export default function Speech({ getAudio, close, openSnack}) {
     }
     const saveAudio = () => {
         if(audio && note) {
-            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}\\D*${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITOCONELCOLEGIOLOSANGELESY?DEL?PAGAREANEXOADICHODOCUMENTOAUTORIZO(AL)|(EL)COLEGIOLOSANGELES(AL)|ATRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
+            getAudio(audio);
+            close();
+            openSnack(true, 'success', '', 'Audio guardado exitosamente!', true);
+            return
+            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}(..).?...${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITOCONELCOLEGIOLOSANGELESY?DEL?PAGAREANEXOADICHODOCUMENTOAUTORIZO(AL)|(EL)COLEGIOLOSANGELES(AL)|ATRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
             let upperNote = note.toUpperCase();
             let list = upperNote.split(' ');
             let throwAlert = list.reduce((acumulator, word) => {
@@ -101,14 +105,15 @@ export default function Speech({ getAudio, close, openSnack}) {
                 setAlertModal(true);
                 return
             }
-            upperNote = upperNote.replaceAll('Á', 'A');
-            upperNote = upperNote.replaceAll('É', 'E');
-            upperNote = upperNote.replaceAll('Í', 'I');
-            upperNote = upperNote.replaceAll('Ó', 'O');
-            upperNote = upperNote.replaceAll('Ú', 'U');
-            upperNote = upperNote.replaceAll('Ü', 'U');
-            upperNote = upperNote.replaceAll(',', ',');
-            upperNote = upperNote.replaceAll(' ', '');
+            upperNote = upperNote.replaceAll('Á', 'A')
+                .replaceAll('É', 'E')
+                .replaceAll('Í', 'I')
+                .replaceAll('Ó', 'O')
+                .replaceAll('Ú', 'U')
+                .replaceAll('Ü', 'U')
+                .replaceAll(',', ',')
+                .replaceAll(' ', '');
+                
             if (re.test(upperNote)) {
                 getAudio(audio);
                 close();
@@ -138,16 +143,19 @@ export default function Speech({ getAudio, close, openSnack}) {
                 </div>
                 <div className={styles["container"]}>
                     <div className={styles["box"]}>
-                        <h2>Por favor, lea las siguientes instrucciones: </h2>
-                        <p>{note}</p>
+                        <h2>Instrucciones:</h2>
+                        <p className={styles["text-content"]}>{note}</p>
                     </div>
                     {
                         audio ? (
                             <div className={styles['play-button']}>
-                                <IconButton color='primary' onClick={() => {
-                                    !play ? sound.current.play() : sound.current.pause()
-                                    setPlay(prevState => !prevState);
-                                    }}>
+                                <IconButton 
+                                    color='primary' 
+                                    onClick={() => {
+                                        !play ? sound.current.play() : sound.current.pause()
+                                        setPlay(prevState => !prevState);
+                                    }}
+                                >
                                     {
                                         !play ? <PlayCircleIcon sx={{fontSize:'3.5rem'}}/> : <PauseCircleIcon sx={{fontSize:'3.5rem'}} />
                                     }

@@ -5,3 +5,8 @@
     display: initial;
     scroll-behavior: smooth;
 }
+.alert-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

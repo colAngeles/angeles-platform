@@ -1,28 +1,48 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { render } from 'react-dom';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { useQuery } from "react-query";
 import { BlobProvider } from '@react-pdf/renderer';
 import SliderView from './components/SliderView';
 import RenderDocuments from './components/RenderDocuments.js';
+import Loader from './components/Loader';
 import Sign from './components/Sign';
 import Doc from './components/Doc';
 import Promissorynote from './components/Promissorynote';
 import Button from '@mui/material/Button';
-import styles from './css/contract.module.css'
+import styles from './css/contract.module.css';
+import Alert from '@mui/material/Alert';
+import AlertTitle from "@mui/material/AlertTitle";
+import Collapse from "@mui/material/Collapse";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { ReactQueryDevtools } from 'react-query/devtools'
+const queryClient = new QueryClient();
+
 function Contract() {
     const [signURL, setSignURL] = useState(null);
     const [contractLoaded, setContractLoaded] = useState(false);
     const [promissoryLoaded, setPromissoryLoaded ] = useState(false);
-    const [audioURL, setAudioURL] = useState(null);
+    const [audio, setAudio] = useState(null);
     const [showMainButton, setShowMainButton] = useState(false);
     const [contractBlob, setContractBlob] = useState(null);
     const [promisePayBlob, setPromiseBlob] = useState(null);
-    let formData = new FormData()
+    const [loading, setLoading] = useState(true);
+    const [open, setOpen] = useState(false);
+    let formData = new FormData();
     let saveData = () => {
+        let data =  JSON.parse(localStorage.getItem('data'));
+        formData.set('audio', audio, 'audio.weba');
         formData.set("contract", contractBlob, "contract.pdf");
         formData.set("promissorynote", promisePayBlob, "promissorynote.pdf");
+        formData.set("signedAt", data.createdAt);
+        formData.set("studentid", data.studentid);
+        formData.set("token", data.token);
         let pdf = formData.get('contract');
-        let audio = formData.get('audio');
-        if (!pdf || !audio) {
+        let promissorynote = formData.get('promissorynote');
+        let audioConf = formData.get('audio');
+        if (!pdf || !promissorynote || !audioConf) {
+            console.log(pdf, promissorynote, audioConf);
             console.error('Pdf or Audio empty');
             return
         }
@@ -30,19 +50,19 @@ function Contract() {
             method: 'POST',
             body: formData,
         })
-        .then( res => res.json())
-        .then( data => {
-            if (data.successful) {
-                console.log(data);
+        .then( res => {
+            if (res.status == 500) {
+                window.location.href = `${window.origin}/error-handler`;
                 return
             }
-            else if (data.error) {
-                console.log(data.error);
+            if (res.status == 200) {
+                window.location.href = `${window.origin}/success`
                 return
             }
         })
         .catch( e => {
             console.log(e);
+            setOpen(true);
             return
         })
     }
@@ -68,25 +88,66 @@ function Contract() {
             image: './media/04.jpg'
         },
     ]
-    
     useEffect(() => {
-        if(audioURL) {
-            formData.set('audio', audioURL, 'audio.weba');
+        setLoading(false);
+    }, [])
+    useEffect(() => {
+        if(audio) {
             console.log("The job is done!");
         }
-    }, [audioURL])
+    }, [audio])
+
+    let bannerImages = async () => {
+        let [data1, data2, data3, data4, data5] = await Promise.all([fetch('media/slider1.png', {
+            method: 'GET'
+        }), fetch('media/sphere.png', {
+            method: 'GET'
+        }),fetch('media/slider2.png', {
+            method: 'GET'
+        }),fetch('media/slider3.png', {
+            method: 'GET'
+        }), fetch('media/slider4.png', {
+            method: 'GET'
+        })])
+        let [image1, image2, image3, image4, image5] = await Promise.all([data1.blob(), data2.blob(), data3.blob(), data4.blob(), data5.blob()])
+
+        return [image1, image2, image3, image4, image5]
+    }
+    let {data: bannerData, error, isLoading} = useQuery('bannerimages', bannerImages);
+    if (isLoading || !bannerData) {
+        return (
+            <Loader /> 
+        )
+    }
+    let image1Url = URL.createObjectURL(bannerData[0]);
+    let image2Url = URL.createObjectURL(bannerData[1]);
+    let image3Url = URL.createObjectURL(bannerData[2]);
+    let image4Url = URL.createObjectURL(bannerData[3]);
+    let image5Url = URL.createObjectURL(bannerData[4]);
     return (
         <>  
+            
             <div style={{backgroundColor: '#162F54'}}>
-                <SliderView content={sliderviewContent}/>
+                <SliderView content={sliderviewContent} images={[image1Url, image2Url, image3Url, image4Url, image5Url]} />
             </div>
             <div className={styles["files-container"]} id="documents">
-                <RenderDocuments/>
-                <Sign setSign={(url)=>{
-                    setSignURL(url);
-                }} setAudio={(blob) => {
-                    setAudioURL(blob);
-                }} showButton={(value) => setShowMainButton(value)}/>
+                <RenderDocuments/> 
+                {
+                    !showMainButton ? (
+                        <Sign
+                            setSign={(url)=>{
+                                setSignURL(url);
+                            }} 
+                            setAudio={(blob) => {
+                                setAudio(blob);
+                            }} 
+                            showButton={(value) => setShowMainButton(value)}
+                        />
+                    ): null
+                }
+                
+                
+
                 {
                     signURL  && !contractLoaded ? (
                     <>
@@ -102,6 +163,7 @@ function Contract() {
                     
                     ): null
                 }
+
                 {
                     signURL  && !promissoryLoaded ? (
                     <>
@@ -114,21 +176,47 @@ function Contract() {
                             }}
                         </BlobProvider>
                     </>
-                    
                     ): null
                 }
                 {
                     showMainButton ? (
-                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: "10px"}}>
-                            <Button variant="contained" component="label" onClick={saveData}>ENVIAR DATOS</Button>
-                        </div>
+                        <>
+                            <div className={styles["alert-container"]}>
+                                <Collapse in={open}>
+                                <Alert severity="error" action={<IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => {
+                                            setOpen(false);
+                                        }}
+                                        >
+                                            <CloseIcon fontSize="inherit" />
+                                        </IconButton>
+                                    }
+                                    sx={{ mb: 1 }}
+                                >
+                                    <AlertTitle><strong>Error</strong> </AlertTitle>
+                                    No se ha podido contactar con el servidor. Por favor, inténtelo más tarde.
+                                </Alert>
+                                </Collapse>
+                            </div>
+                            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: "10px"}}>
+                                <Button variant="contained" component="label" onClick={saveData}>ENVIAR DATOS</Button>
+                            </div>
+                        </>
+                        
                     ) : null
                 }
+                
             </div>
-            
-           
-            
         </>
     )
 }
-render(<Contract/>, document.querySelector('body'))
+render(
+    <QueryClientProvider client={queryClient}>
+        <Contract />
+        <ReactQueryDevtools />
+    </QueryClientProvider>, 
+    document.querySelector('body')
+);

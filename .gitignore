@@ -1,9 +1,12 @@
 node_modules
+.editorconfig
 test.js
+regex.js
 server_copy.js
 createToken_copy.js
 autocannon.js
 modules.py
+Recorder.js
 # Logs
 logs
 *.log

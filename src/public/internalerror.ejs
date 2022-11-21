@@ -8,14 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="./css/main.css">
     <title>Colegio Los Ángeles</title>
-    <script>
-        let validateCookie = document.cookie;
-        if(validateCookie === '') {
-            window.location.href = `${window.origin}/`
-        }
-    </script>
 </head>
 <body>
-    <script src="./js/contract.bundle.js"></script>
+        <input id="title" type="hidden" value="<%= title %>" />
+        <input id="info" type="hidden" value="<%= info %>" />
+        <main>
+            <script src="./js/handler.bundle.js"></script>
+        </main>
 </body>
 </html>

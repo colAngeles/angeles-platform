@@ -11,8 +11,15 @@
     align-items: center;
     gap: 30px;
 }
+ 
 .alert-container {
     width: max-content;
     margin: 0 auto;
     margin-top: 10px;
+}
+
+@media all and (max-width: 900px) {
+    .button-description {
+        display: none;
+    }
 }

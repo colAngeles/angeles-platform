@@ -97,7 +97,7 @@ export default function Form(props) {
             else if (data.error) {
                 console.error(data.error)
                 loader.classList.add(props["loaderHiddenClass"])
-                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, intentelos más tarde.'})
+                setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, inténtelo más tarde.'})
                 setOpen(true)
                 return
             }

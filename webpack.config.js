@@ -4,6 +4,7 @@ module.exports = {
     entry: { 
       index: '/src/app/Index.js',
       contract: '/src/app/Contract.js',
+      handler: '/src/app/Handler.js',
     },
     output: {
       path: __dirname + '/src/public/js',
@@ -27,6 +28,10 @@ module.exports = {
         {
           test: /\.css$/,
           use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+        },
+        {
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
         },
       ] 
     }

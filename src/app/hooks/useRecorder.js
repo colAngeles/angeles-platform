@@ -22,7 +22,8 @@ export default function useRecorder() {
     // Manage recorder state.
     if (isRecording) {
       recorder.start();
-    } else {
+    } 
+    else {
       recorder.stop();
     }
 

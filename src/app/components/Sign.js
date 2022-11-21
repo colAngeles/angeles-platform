@@ -108,17 +108,20 @@ export default function Sign(props) {
                     showSignButton ? (
                         <Popup modal nested closeOnDocumentClick={false} trigger={<MyIconButton color="primary" aria-label="sign"><FontAwesomeIcon icon={faPenToSquare} size='xs' /></MyIconButton>} position="right center">
                             { close => (
-                                <>
+                                <div className={stylesCanvas["main-container"]}>
                                     <SignatureCanvas ref={canvas}  minDistance={1} throttle={10} canvasProps={{className: stylesCanvas['sign-canvas']}} />
                                     <div className={stylesCanvas["alert-container"]}>
                                         <Collapse in={alertCanvas}>
-                                            <Alert severity="warning" action={<IconButton
-                                                    aria-label="close"
-                                                    color="inherit"
-                                                    size="small"
-                                                    onClick={() => {
-                                                        setAlertCanvas(false);
-                                                    }}
+                                            <Alert 
+                                                severity="warning" 
+                                                action= {
+                                                    <IconButton
+                                                        aria-label="close"
+                                                        color="inherit"
+                                                        size="small"
+                                                        onClick={() => {
+                                                            setAlertCanvas(false);
+                                                        }}
                                                     >
                                                         <CloseIcon fontSize="inherit" />
                                                     </IconButton>
@@ -126,22 +129,22 @@ export default function Sign(props) {
                                                 sx={{ mb: 1 }}
                                             >
                                                 <AlertTitle><strong>Campo vacio</strong> </AlertTitle>
-                                                No se ha detectado una firma. Por favor, intentelo de nuevo.
+                                                Por favor, intentelo de nuevo.
                                             </Alert>
                                         </Collapse>
                                     </div>
                                     <div className={stylesCanvas["options-container"]}>
                                         <MyButton variant="contained" component="label" sx={{marginTop: "10px"}} onClick={tryAgain}>
-                                            <FontAwesomeIcon icon={faRotateRight} size='xs' />&nbsp;Firmar de nuevo
+                                            <FontAwesomeIcon icon={faRotateRight} size='xs' />&nbsp;<b className={stylesCanvas['button-description']}>Firmar de nuevo</b>
                                         </MyButton>
                                         <MyButton variant="contained" component="label" sx={{marginTop: "10px"}} onClick={saveSign.bind(null, close)}>
-                                            <SaveIcon /> Guardar
+                                            <SaveIcon /> <b className={stylesCanvas['button-description']}>Guardar</b>
                                         </MyButton>
                                         <MyButton variant="contained" component="label" sx={{marginTop: "10px"}} onClick={close}>
-                                            Cerrar <CloseIcon />
+                                            <b className={stylesCanvas['button-description']}>Cerrar</b> <CloseIcon />
                                         </MyButton>
                                     </div>
-                                </>
+                                </div>
                             )
                             }
                         </Popup>
@@ -150,22 +153,26 @@ export default function Sign(props) {
                 
                 {
                    showAudioButton ? (
-                    <Popup modal={mic} contentStyle={{width: '80%'}} closeOnDocumentClick={false}  trigger={<MyIconButton color="primary" disabled={mic ? false: true} aria-label="edit"><RecordVoiceOverIcon /></MyIconButton>} position="right center">
+                    <Popup modal={mic} contentStyle={{width: '80%', height: '90%'}} closeOnDocumentClick={false}  trigger={<MyIconButton color="primary" disabled={mic ? false: true} aria-label="edit"><RecordVoiceOverIcon /></MyIconButton>} position="right center">
                         { close => (
                             !mic ? <div>Por favor, diligencie la firma para habilitar esta opción.</div>
                             : (
-                                <Speech getAudio={(blob) => {
-                                    setAudio(blob);
-                                }} close={close} openSnack={(value, infoType, title, message, hideButtom) => {
-                                    setInfocontent({infoType, title, message});
-                                    setOpenSnack(value);
-                                    if (hideButtom) {
-                                        setTimeout(() => {
-                                            setOpenSnack(false)
-                                        }, 6500)
-                                        setShowAudioButton(false);
-                                    }
-                                }}/>
+                                <Speech getAudio={ (blob) => {
+                                            setAudio(blob);
+                                        }} 
+                                        close={close} 
+                                        openSnack={ (value, infoType, title, message, hideButtom) => {
+                                                        setInfocontent({infoType, title, message});
+                                                        setOpenSnack(value);
+                                                        if (hideButtom) {
+                                                            setTimeout(() => {
+                                                                setOpenSnack(false);
+                                                            }, 6500)
+                                                            setShowAudioButton(false);
+                                                        }
+                                                    }
+                                        } 
+                                />
                             )
                         )
                         }

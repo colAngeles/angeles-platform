@@ -1,7 +1,16 @@
 // require('../connect')
 const db = require("mongoose")
+const mongoosePaginate = require('mongoose-paginate-v2');
 const { Schema } = db
 const student = new Schema({
+    active: {type: Boolean, default: false},
+    preActive: {type: Boolean, default: false},
+    urlFiles: {
+        contract: {type: String, trim: true},
+        promissorynote: {type: String, trim: true},
+        audio: {type: String, trim: true},
+    },
+    signedAt: String,
     name: {type: String, required: true},
     surname: {type: String, required: true},
     gender: String,
@@ -21,7 +30,6 @@ const student = new Schema({
         id: {type: String, required: true, trim: true},
         type: {type: String, required: true}
     },
-    enrolled: {type: Boolean, default: false},
     parents: {
         mother: {
             name: String,
@@ -69,8 +77,8 @@ const student = new Schema({
     }
     
 })
-
-module.exports = db.model("students", student)
+student.plugin(mongoosePaginate);
+module.exports = db.model("students", student);
 
 // !async function(){
 //     await Student.create([{

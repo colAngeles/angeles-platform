@@ -11,26 +11,30 @@ import Divider from '@mui/material/Divider';
 import useIntersect from '../hooks/useIntersect';
 
 export default function RenderDocuments() {
-    let [entry, setRoot, seNode] = useIntersect({})
-    const zoomPluginInstance = zoomPlugin();
-    const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
+    const zoom1 = zoomPlugin();
+    const zoom2= zoomPlugin();
+    const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoom1;
+    const { ZoomInButton: ZoomInButton2, ZoomOutButton: ZoomOutButton2, ZoomPopover: ZoomPopover2 } = zoom2;
     return (
       <>
         <Worker workerUrl="./js/pdf.worker.min.js">
         </Worker>
         <div
           style={{
+              width: 'max-content',
+              margin: '0 auto',
+              marginTop: '50px',
               alignItems: 'center',
               backgroundColor: '#eeeeee',
+              color: 'red',
               borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
               display: 'flex',
               justifyContent: 'center',
               padding: '4px',
-              position: 'fixed',
-              bottom: '1rem',
-              right: '1rem',
+              position: 'sticky',
+              top: '0',
               borderRadius: '5px',
-              zIndex: 1000
+              zIndex: 1
           }}
         >
           <ZoomOutButton />
@@ -44,25 +48,45 @@ export default function RenderDocuments() {
                 return (
                   <>
                     <div className={styles['pdf-container']}>
-                          <Viewer fileUrl={url} plugins={[zoomPluginInstance]}/>
+                          <Viewer fileUrl={url} plugins={[zoom1]}/>
                     </div>
                   </>
                 )
               }
             }}
         </BlobProvider>
-
         <div style={{width: '75vw', margin: '0 auto'}}>
           <Divider component="li" sx={{listStyle: 'none'}}/>
         </div>
-
+        <div
+          style={{
+              width: 'max-content',
+              margin: '0 auto',
+              marginTop: '50px',
+              alignItems: 'center',
+              backgroundColor: '#eeeeee',
+              color: 'red',
+              borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '4px',
+              position: 'sticky',
+              top: '0',
+              borderRadius: '5px',
+              zIndex: 1
+          }}
+        >
+          <ZoomOutButton2 />
+          <ZoomPopover2 />
+          <ZoomInButton2 />
+        </div>
         <BlobProvider document={<Promissorynote />}>
             {({ url }) => {
               if (url) {
                 return (
                   <>
                     <div className={styles['pdf-container']}>
-                        <Viewer fileUrl={url} plugins={[zoomPluginInstance]} />
+                        <Viewer fileUrl={url} plugins={[zoom2]} />
                     </div>
                   </>
                 )

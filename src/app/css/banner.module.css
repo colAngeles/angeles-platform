@@ -1,0 +1,38 @@
+.banner-container {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    width: 100%;
+    min-height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color: #162F54;
+}
+    .banner-image-container {
+        width: 100%;
+        height: 100%;
+        grid-column-start: 1;
+        grid-row-start: 1;
+    }
+        .banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: scale-down;
+        }
+        .mix-blend {
+            mix-blend-mode: screen;
+        }
+        .animated {
+            transform-box: fill-box;
+            transform: rotateY(25deg);
+            transform-origin: 54% 58%;
+            animation: move-circule 35s linear 0s infinite;
+        }
+@keyframes move-circule {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
