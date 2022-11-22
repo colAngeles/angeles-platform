@@ -1,5 +1,6 @@
 node_modules
 .editorconfig
+autocannon.js
 test.js
 regex.js
 server_copy.js
