@@ -3,9 +3,9 @@ import styles from "../css/cards.module.css";
 export default function Card({ images, setLoaderState }){
     let count = useRef(1)
     useEffect(()=>{
-        let $cardsContainer = document.getElementById('trigger-load');
+        let $cardsContainer = document.querySelector(`.${styles["cards-container"]}`);
         let childrenSize = $cardsContainer.children.length;
-        let image = document.querySelector(`.${styles['image1']}`);
+        let image = document.getElementById('trigger-load');
         image.onload = (event) => {
             setLoaderState(false);
         }
