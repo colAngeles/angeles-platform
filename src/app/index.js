@@ -9,9 +9,7 @@ function Index() {
     let images = ["./media/cardimg1.jpg", "./media/cardimg2.jpg", "./media/cardimg3.jpg", "./media/cardimg4.jpg", "./media/cardimg5.jpg"];
     let [loading, setLoading] = useState(true);
     useEffect(()=>{
-        localStorage.clear()
-        const loader = document.querySelector(`.${stylesLoader["background-load"]}`)
-        loader.classList.add(stylesLoader["hidden"])
+        localStorage.clear();
     }, [])
     return(
         <>  

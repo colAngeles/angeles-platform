@@ -7,6 +7,7 @@ export default function Card({ images, setLoaderState }){
         let childrenSize = $cardsContainer.children.length;
         let image = document.getElementById('trigger-load');
         image.onload = (event) => {
+            console.log('loaded')
             setLoaderState(false);
         }
         let timerHandle = ()=> {
