@@ -7,9 +7,9 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Collapse from "@mui/material/Collapse";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
+import Loader from "./Loader";
 export default function Form(props) {
-    let repeatSize = 0
+    let [loading, setLoading] = useState(false);
     const SendButton = styled(Button)({
         boxShadow: "none",
         textTransform: "none",
@@ -57,10 +57,8 @@ export default function Form(props) {
                 setOpen(true);
                 return
         }
-        const loader = document.querySelector(`.${props["loaderClass"]}`);
         let tokenInput = document.getElementById(styles["token"]);
-        loader.classList.remove(props["loaderHiddenClass"]);
-        
+        setLoading(true);
         fetch('/get-token', {
             method: 'POST',
             body: formData,
@@ -88,7 +86,7 @@ export default function Form(props) {
                 }
 
                 tokenInput.classList.remove(styles["hidden"])
-                loader.classList.add(props["loaderHiddenClass"])
+                setLoading(false)
                 setHandler(SignButton)
                 setInfocontent({infoType: 'success', title: 'Token Activado', message: 'Por favor, revisa tu correo electrónico.'})
                 setOpen(true)
@@ -96,27 +94,27 @@ export default function Form(props) {
             }
             else if (data.error) {
                 console.error(data.error)
-                loader.classList.add(props["loaderHiddenClass"])
+                setLoading(false)
                 setInfocontent({infoType: 'error', title: 'Error', message: 'Por favor, inténtelo más tarde.'})
                 setOpen(true)
                 return
             }
             else if (data.emailerror) {
                 console.log(data.emailerror)
-                loader.classList.add(props["loaderHiddenClass"])
+                setLoading(false)
                 setInfocontent({infoType: 'error', title: 'Email Error', message: 'Por favor, intentelo más tarde.'})
                 setOpen(true)
                 return
             }
             if (data.refused) {
-                loader.classList.add(props["loaderHiddenClass"])
+                setLoading(false)
                 setInfocontent({infoType: 'error', title: '', message: 'Acceso Inválido. Por favor, verifica tus datos.'})
                 setOpen(true)
             }
         })
         .catch( e => {
             console.log(e)
-            loader.classList.add(props["loaderHiddenClass"])
+            setLoading(false)
             setInfocontent({infoType: 'error', title: 'Error de comunicación', message: 'Por favor, comuníquese con soporte.'})
             setOpen(true)
             return
@@ -140,9 +138,9 @@ export default function Form(props) {
                 return
         };
 
-        const loader = document.querySelector(`.${props["loaderClass"]}`);
+        
         let tokenInput = document.getElementById(styles["token"]);
-        loader.classList.remove(props["loaderHiddenClass"]);
+        setLoading(true)
         fetch('/validate-token', {
             method: 'POST',
             body: formData,
@@ -151,7 +149,7 @@ export default function Form(props) {
         .then(({token, number, refused}) => {
             console.log(token, number, refused)
             if (refused) {
-                loader.classList.add(props["loaderHiddenClass"])
+                setLoading(false)
                 setInfocontent({infoType: 'error', title: '', message: 'Acceso Inválido. Por favor, verifica tus datos.'})
                 setOpen(true)
                 return
@@ -164,7 +162,7 @@ export default function Form(props) {
         })
         .catch( e => {
             console.log(e)
-            loader.classList.add(props["loaderHiddenClass"])
+            setLoading(false)
             setInfocontent({infoType: 'error', title: 'Error de comunicación', message: 'Por favor, comuníquese con soporte.'})
             setOpen(true)
             return
@@ -193,6 +191,9 @@ export default function Form(props) {
     }, [])
     return (
         <div className={styles["form-container"]}>
+            {
+                loading ? <Loader /> : null
+            }
             <form className={styles["contact-form"]} id="contactform">
                     <span>
                         <img src="./media/whitelogo.png"/>

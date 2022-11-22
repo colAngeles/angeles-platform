@@ -18,7 +18,7 @@ function Index() {
             }
             <main>
                 <Card title="" images={images} setLoaderState={(val) => setLoading(val)}/>
-                <Form loaderHiddenClass={stylesLoader["hidden"]} loaderClass={stylesLoader["background-load"]}/>
+                <Form loaderHiddenClass={stylesLoader["hidden"]} loaderClass={stylesLoader["background-load"]} />
             </main>
         </>
 
