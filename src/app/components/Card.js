@@ -3,10 +3,9 @@ import styles from "../css/cards.module.css";
 export default function Card({ images, setLoaderState }){
     let count = useRef(1)
     useEffect(()=>{
-        let $cardsContainer = document.querySelector(`.${styles["cards-container"]}`);
+        let $cardsContainer = document.getElementById('trigger-load');
         let childrenSize = $cardsContainer.children.length;
         let image = document.querySelector(`.${styles['image1']}`);
-        console.log(image)
         image.onload = (event) => {
             setLoaderState(false);
         }
@@ -46,13 +45,13 @@ export default function Card({ images, setLoaderState }){
                     images.map((img, index)=>{
                         return (
                                 <div className={`${styles["item"]} ${styles["image" + (index + 1)]}`}>
-                                    <img src={img}/>
+                                    <img src={img} />
                                 </div>
                         )
                     })
                 }
                 <div className={`${styles["item"]} ${styles["image1"]}`}>
-                    <img src={images[0]}/>
+                    <img src={images[0]} id='trigger-load'/>
                 </div>
             </div>
         </section>
