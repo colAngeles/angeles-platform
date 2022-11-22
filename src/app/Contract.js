@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { render } from 'react-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { useQuery } from "react-query";
@@ -16,9 +16,10 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Collapse from "@mui/material/Collapse";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Snackbar from '@mui/material/Snackbar';
 import { ReactQueryDevtools } from 'react-query/devtools'
+import Footer from './components/Footer';
 const queryClient = new QueryClient();
-
 function Contract() {
     const [signURL, setSignURL] = useState(null);
     const [contractLoaded, setContractLoaded] = useState(false);
@@ -29,6 +30,8 @@ function Contract() {
     const [promisePayBlob, setPromiseBlob] = useState(null);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
+    const [openSnack, setOpenSnack] = useState(true);
+    const sources = useRef([]);
     let formData = new FormData();
     let saveData = () => {
         let data =  JSON.parse(localStorage.getItem('data'));
@@ -89,8 +92,12 @@ function Contract() {
         },
     ]
     useEffect(() => {
-        setLoading(false);
-    }, [])
+        if (showMainButton) {
+            setTimeout(() => {
+                setOpenSnack(false);
+            }, 6500)
+        }
+    }, [showMainButton])
     useEffect(() => {
         if(audio) {
             console.log("The job is done!");
@@ -114,21 +121,29 @@ function Contract() {
         return [image1, image2, image3, image4, image5]
     }
     let {data: bannerData, error, isLoading} = useQuery('bannerimages', bannerImages);
-    if (isLoading || !bannerData) {
-        return (
-            <Loader /> 
-        )
+    // if (isLoading || !bannerData) {
+    //     return (
+    //         <Loader /> 
+    //     )
+    // }
+    if ( bannerData || !isLoading ) {
+        let image1Url = URL.createObjectURL(bannerData[0]);
+        let image2Url = URL.createObjectURL(bannerData[1]);
+        let image3Url = URL.createObjectURL(bannerData[2]);
+        let image4Url = URL.createObjectURL(bannerData[3]);
+        let image5Url = URL.createObjectURL(bannerData[4]);
+        sources.current = [image1Url, image2Url, image3Url, image4Url, image5Url] 
     }
-    let image1Url = URL.createObjectURL(bannerData[0]);
-    let image2Url = URL.createObjectURL(bannerData[1]);
-    let image3Url = URL.createObjectURL(bannerData[2]);
-    let image4Url = URL.createObjectURL(bannerData[3]);
-    let image5Url = URL.createObjectURL(bannerData[4]);
+    
     return (
         <>  
-            
+            {
+                loading ? <Loader /> : null
+            }
             <div style={{backgroundColor: '#162F54'}}>
-                <SliderView content={sliderviewContent} images={[image1Url, image2Url, image3Url, image4Url, image5Url]} />
+                <SliderView content={sliderviewContent} images={sources.current} setLoading={(value) => {
+                    setLoading(value);
+                }} />
             </div>
             <div className={styles["files-container"]} id="documents">
                 <RenderDocuments/> 
@@ -141,13 +156,10 @@ function Contract() {
                             setAudio={(blob) => {
                                 setAudio(blob);
                             }} 
-                            showButton={(value) => setShowMainButton(value)}
+                            showSendButton={(value) => setShowMainButton(value)}
                         />
                     ): null
                 }
-                
-                
-
                 {
                     signURL  && !contractLoaded ? (
                     <>
@@ -204,11 +216,16 @@ function Contract() {
                             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: "10px"}}>
                                 <Button variant="contained" component="label" onClick={saveData}>ENVIAR DATOS</Button>
                             </div>
+                            <Snackbar open={openSnack} >
+                                <Alert severity='success' sx={{ width: '100%' }}>
+                                    El audio ha sido guardado con éxito!
+                                </Alert>
+                            </Snackbar>
                         </>
                         
                     ) : null
                 }
-                
+                <Footer />
             </div>
         </>
     )

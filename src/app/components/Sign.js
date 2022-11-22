@@ -80,7 +80,7 @@ export default function Sign(props) {
         props.setAudio(audio);
     }, [audio])
     useEffect(() => {
-        if (!showAudioButton) props.showButton(true);
+        if (!showAudioButton) props.showSendButton(true);
     }, [showAudioButton])
     const tryAgain = () => {
             canvas.current.clear()
@@ -161,13 +161,8 @@ export default function Sign(props) {
                                             setAudio(blob);
                                         }} 
                                         close={close} 
-                                        openSnack={ (value, infoType, title, message, hideButtom) => {
-                                                        setInfocontent({infoType, title, message});
-                                                        setOpenSnack(value);
-                                                        if (hideButtom) {
-                                                            setTimeout(() => {
-                                                                setOpenSnack(false);
-                                                            }, 6500)
+                                        hideButton={ ( hideButton ) => {
+                                                        if (hideButton) {
                                                             setShowAudioButton(false);
                                                         }
                                                     }

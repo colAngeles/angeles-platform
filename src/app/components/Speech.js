@@ -21,7 +21,7 @@ mic.continuous = true;
 mic.interimResults = false;
 mic.lang = 'es-ES';
 
-export default function Speech({ getAudio, close, openSnack}) {
+export default function Speech({ getAudio, close, hideButton}) {
     let data = localStorage.getItem('data');
     let objData = JSON.parse(data);
     const dateObj = new Date(objData.createdAt);
@@ -88,10 +88,6 @@ export default function Speech({ getAudio, close, openSnack}) {
     }
     const saveAudio = () => {
         if(audio && note) {
-            getAudio(audio);
-            close();
-            openSnack(true, 'success', '', 'Audio guardado exitosamente!', true);
-            return
             let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}(..).?...${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITOCONELCOLEGIOLOSANGELESY?DEL?PAGAREANEXOADICHODOCUMENTOAUTORIZO(AL)|(EL)COLEGIOLOSANGELES(AL)|ATRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
             let upperNote = note.toUpperCase();
             let list = upperNote.split(' ');
@@ -117,7 +113,7 @@ export default function Speech({ getAudio, close, openSnack}) {
             if (re.test(upperNote)) {
                 getAudio(audio);
                 close();
-                openSnack(true, 'success', '', 'Audio guardado exitosamente!', true);
+                hideButton(true);
                 return
             }
             setInfocontent({infoType: 'warning', title: '', message:'Se han detectado inconcistencias en audio. Por favor, vuelva a leer el texto de verificación.'});
@@ -142,9 +138,15 @@ export default function Speech({ getAudio, close, openSnack}) {
                         </IconButton>
                 </div>
                 <div className={styles["container"]}>
-                    <div className={styles["box"]}>
+                    <div className={`${styles["box"]} ${styles["instructions"]}`}>
                         <h2>Instrucciones:</h2>
-                        <p className={styles["text-content"]}>{note}</p>
+                        <p className={styles["text-content"]}><b>Para que éste proceso sea exitoso por favor tenga en cuenta las siguientes recomendaciónes:</b></p>
+                        <p className={styles["text-content"]}>
+                            <b>1.</b> Asegúrese de estar en un lugar aislado, libre de ruidos exteriores.<br />
+                            <b>2.</b> Para comenzar de clic en ícono del microfono y lea el texto de verificación en voz alta y clara. La inteligencia artificial detectará cualquier inconcistencia.<br />
+                            <b>3.</b> Puede detener la grabación dando en clic en el mismo ícono del microfono. Si lo desea puede volver a grabar.<br />
+                            <b>4.</b> Podrá escuchar la grabación dando clic en ícono de reproducción, éste estará visible una vez haya grabado el audio.<br />
+                        </p>
                     </div>
                     {
                         audio ? (

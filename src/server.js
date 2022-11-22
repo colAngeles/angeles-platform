@@ -54,7 +54,7 @@ else {
     });
     app.post('/get-token', upload.none(), async (req, res, next)=> {
         Students.findOne(
-            {$where: `this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
+            {$where: `this.active == false && this.preActive == false && this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
         })
         .then(data => {
             if (data) {
@@ -91,15 +91,6 @@ else {
             return
         }
         res.redirect(301, '/');
-    })
-    app.all('/test', (_, res) => {
-        res.cookie('token', token, {expires: new Date(Date.now() + 2 * 3600000), signed: true, domain: 'localhost'});
-        res.redirect(301, '/')
-    })
-    app.all('/clear', (_, res) => {
-        res.clearCookie('test', {path: '/'});
-        res.clearCookie('token', {path: '/'});
-        res.send('ok')
     })
     const cpUpload = upload.fields([{ name: 'contract', maxCount: 1 }, {name: 'promissorynote', maxCount: 1},{ name: 'audio', maxCount: 1 }])
     app.post('/save-data', cpUpload, async (req, res) => {

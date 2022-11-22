@@ -12,6 +12,7 @@ code {
   overflow-y: scroll;
 }
 .container {
+  height: 80%;
   position: relative;
   margin: 20px;
   display: grid;
@@ -28,6 +29,9 @@ code {
       padding: 20px;
       border-radius: 10px;
       background-color: #162F54;
+    }
+    .box.instructions {
+      overflow-y: scroll;
     }
         .box > h2 {
           color: #fff;

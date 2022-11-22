@@ -36,7 +36,7 @@ async function createToken(student, relativeId, sender) {
         let dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
         if (dbToken) {
             try {
-                // let conf = await sender.sendMail(email);
+                let conf = await sender.sendMail(email);
                 console.log(token);
                 return {successful: true};
             }
@@ -47,7 +47,7 @@ async function createToken(student, relativeId, sender) {
         dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
         if (dbToken) {
             try {
-                // let conf = await sender.sendMail(email);
+                let conf = await sender.sendMail(email);
                 console.log('Second try: ', token);
                 return {successful: true};
             }
