@@ -88,7 +88,7 @@ export default function Speech({ getAudio, close, hideButton}) {
     }
     const saveAudio = () => {
         if(audio && note) {
-            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}(..).?...${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITOCONELCOLEGIOLOSANGELESY?DEL?PAGAREANEXOADICHODOCUMENTOAUTORIZO(AL)|(EL)COLEGIOLOSANGELES(AL)|ATRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
+            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}(..).?...${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITOCONELCOLEGIOLOSANGELESY?DEL?PAGAREANEXOADICHODOCUMENTOAUTORIZ.(AL)|(EL)COLEGIOLOSANGELES(AL)|ATRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
             let upperNote = note.toUpperCase();
             let list = upperNote.split(' ');
             let throwAlert = list.reduce((acumulator, word) => {

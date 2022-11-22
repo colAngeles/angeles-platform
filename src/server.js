@@ -74,7 +74,7 @@ else {
         try {
             let [token, increment] = await Promise.all([Token.findOne({"studentid": req.body.studentId, token: req.body.token.trim()}), Increment.findOneAndUpdate({name: "main"}, {$inc: {num: 1}})]);
             if (token && increment) {
-                res.cookie('token', token.token, {expires: new Date(Date.now() + 2 * 3600000), signed: true, domain: 'localhost'});
+                res.cookie('token', token.token, {expires: new Date(Date.now() + 2 * 3600000), signed: true});
                 res.json({token, number: increment.num});
                 return
             }
