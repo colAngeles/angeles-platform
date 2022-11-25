@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { useQuery } from "react-query";
 import { BlobProvider } from '@react-pdf/renderer';
 import SliderView from './components/SliderView';
 import RenderDocuments from './components/RenderDocuments.js';
@@ -17,9 +16,10 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Snackbar from '@mui/material/Snackbar';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools';
 import Footer from './components/Footer';
 const queryClient = new QueryClient();
+
 function Contract() {
     const [signURL, setSignURL] = useState(null);
     const [contractLoaded, setContractLoaded] = useState(false);
@@ -41,6 +41,7 @@ function Contract() {
         formData.set("signedAt", data.createdAt);
         formData.set("studentid", data.studentid);
         formData.set("token", data.token);
+        formData.set("person", data.person.identification.id);
         let pdf = formData.get('contract');
         let promissorynote = formData.get('promissorynote');
         let audioConf = formData.get('audio');
@@ -230,10 +231,11 @@ function Contract() {
         </>
     )
 }
-render(
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
     <QueryClientProvider client={queryClient}>
         <Contract />
         <ReactQueryDevtools />
-    </QueryClientProvider>, 
-    document.querySelector('body')
+    </QueryClientProvider>
 );

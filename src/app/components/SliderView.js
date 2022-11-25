@@ -85,7 +85,7 @@ export default function SliderView(props) {
                         <div className={styles["description"]} data-page={1}>
                             <h3>Matriculas 2023</h3>
                             <p>
-                                En éste panel podrá encontrar las instrucciones que debera seguir para realizar el proceso de matricula de manera exitosa. Para ver cada una de ellas por favor utilice los botenes de paginación, ubicados el parte inferior. En cualquier moneto puede puede dar clic en COMENZAR para diligenciar los documentos.
+                                En éste panel podrá encontrar las instrucciones que deberá seguir para realizar el proceso de matricula de manera exitosa. Para ver cada una de ellas por favor utilice los botenes de paginación, ubicados el parte inferior. En cualquier momento puede puede dar clic en COMENZAR para diligenciar los documentos.
                             </p>
                             <a href="#documents" style={{textDecoration: 'none'}}>
                                 <Button variant="contained" component="label" sx={{marginTop: "10px"}} onClick={activefiles}>Comenzar</Button>

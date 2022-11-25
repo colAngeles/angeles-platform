@@ -5,7 +5,7 @@ const { Schema } = db
 const student = new Schema({
     active: {type: Boolean, default: false},
     preActive: {type: Boolean, default: false},
-    urlFiles: {
+    pathFiles: {
         contract: {type: String, trim: true},
         promissorynote: {type: String, trim: true},
         audio: {type: String, trim: true},
@@ -74,11 +74,20 @@ const student = new Schema({
         email: {type: String, required: true},
         phone: String,
         relationship: String
-    }
-    
+    },
+    person: String
+
 })
 student.plugin(mongoosePaginate);
 module.exports = db.model("students", student);
+
+
+// const Stundent = db.model("students", student);
+
+// !async function() {
+//     let userSize = await Stundent.find({})
+//     console.log(userSize.length, "This is a test");
+// }()
 
 // !async function(){
 //     await Student.create([{

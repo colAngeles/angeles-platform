@@ -14,6 +14,7 @@ if(cluster.isMaster){
 }
 else {
     require('./database/connect');
+    const SocketIo = require('socket.io');
     const Students = require('./database/models/student');
     const Token = require('./database/models/tokens');
     const Increment = require('./database/models/increment');
@@ -48,13 +49,18 @@ else {
     app.use(cookieParser('qnapcloud'));
     app.use(express.urlencoded({ extended: true }));
     app.use(express.static(resolve('src/public')));
+
     app.get('/', (req, res, next) => {
         res.clearCookie('test', {path: '/', signed: true})
         res.sendFile(resolve('src/public/index.html'));
     });
+
     app.post('/get-token', upload.none(), async (req, res, next)=> {
+        // Students.findOne(
+        //     {$where: `this.active == false && this.preActive == false && this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
+        // })
         Students.findOne(
-            {$where: `this.active == false && this.preActive == false && this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
+            {$where: `this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
         })
         .then(data => {
             if (data) {
@@ -70,6 +76,7 @@ else {
             res.json({error: "database"});
         });
     })
+
     app.post('/validate-token', upload.none(), async (req, res)=> {
         try {
             let [token, increment] = await Promise.all([Token.findOne({"studentid": req.body.studentId, token: req.body.token.trim()}), Increment.findOneAndUpdate({name: "main"}, {$inc: {num: 1}})]);
@@ -84,6 +91,7 @@ else {
             res.json({error: "database"});
         }
     })
+
     app.get('/signin', (req, res)=> {
         if(req.signedCookies.token === req.query.id){
             res.clearCookie('name', { path: '/' })
@@ -92,16 +100,17 @@ else {
         }
         res.redirect(301, '/');
     })
-    const cpUpload = upload.fields([{ name: 'contract', maxCount: 1 }, {name: 'promissorynote', maxCount: 1},{ name: 'audio', maxCount: 1 }])
+    
+    const cpUpload = upload.fields([{ name: 'contract', maxCount: 1 }, {name: 'promissorynote', maxCount: 1},{ name: 'audio', maxCount: 1 }]);
     app.post('/save-data', cpUpload, async (req, res) => {
-        let {signedAt, studentid, token} = req.body;
-        let urlFiles = {
+        let {signedAt, studentid, token, person} = req.body;
+        let pathFiles = {
                         contract: req.files['contract'][0].filename,
                         promissorynote: req.files['promissorynote'][0].filename,
                         audio: req.files['audio'][0].filename
             }
         if (req.signedCookies.token == token) {
-            const student = await Students.findOneAndUpdate({'identification.id': studentid}, {$set: {signedAt, preActive: true, urlFiles}})
+            const student = await Students.findOneAndUpdate({'identification.id': studentid}, {$set: {signedAt, preActive: true, pathFiles, person}})
             if (student) {
                 res.status(200).send('ok');
                 return
@@ -111,6 +120,7 @@ else {
             
         res.redirect('/');
     })
+
     app.get('/success', (req, res) => {
         if (req.signedCookies.token) {
             res.clearCookie('token', {path: '/'});
@@ -119,21 +129,43 @@ else {
         }
         res.redirect('/');
     })
-    app.all('/error-handler', (req, res) => {
-        res.status(500).render('internalerror', {title: 'Error 500', info: 'Nuestras más sinceras disculpas, se ha producido un error al tratar de guardar los documentos. Por favor, inténtelo más tarde.'});
+
+
+
+    app.get('/admin', (req, res) => {
+        res.sendFile(resolve('src/public/dashboard.html'));
+    });
+
+    app.get('/add-user', (req, res) => {
+        res.json({test: true});
     })
+
+
 
     app.all('*', (_, res) => {
         res.status(404).render('internalerror', {title: "Error 404", info: "Lo sentimos, la página que estás buscando no se encuentra disponible."});
     })
+
+    app.all('/error-handler', (req, res) => {
+        res.status(500).render('internalerror', {title: 'Error 500', info: 'Nuestras más sinceras disculpas, se ha producido un error al tratar de guardar los documentos. Por favor, inténtelo más tarde.'});
+    })
+
     app.use((err, _, res, next) => {
         res.clearCookie('token', {path: '/'});
         if(err) {
             res.status(500).render('internalerror', {title: 'Error 500', info: 'Nuestras más sinceras disculpas, se ha producido un error inesperado. Por favor, inténtelo más tarde.'});
         }
     })
-    app.listen(8080, ()=> {
+    
+    let server = app.listen(8080, ()=> {
         if(!ip) return console.log(`Server on http://localhost:8080 -> ${process.pid}`);
         console.log(`Server on http://${ip}:8080 -> ${process.pid}`);
+    })
+
+
+
+    let io = SocketIo(server);
+    io.on('connection', (socket) => {
+        console.log('Has been connect', socket.id);
     })
 }

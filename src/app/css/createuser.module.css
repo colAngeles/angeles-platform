@@ -1,0 +1,17 @@
+.form-container {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    color: #fff;
+}
+.form-container > form section{
+    display: grid;
+    gap: 18px 5px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}

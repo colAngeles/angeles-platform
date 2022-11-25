@@ -1,0 +1,9 @@
+.nav-link {
+    display: flex;
+    text-decoration: none;
+    color: #fff;
+}
+.nav-link .menu-item-p {
+    position: relative;
+    margin: 0;
+}

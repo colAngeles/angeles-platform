@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {render} from "react-dom"
+import ReactDOM from "react-dom/client"
 import Card from "./components/Card"
 import Form from "./components/Form"
 import Loader from "./components/Loader"
@@ -25,4 +25,5 @@ function Index() {
         
     )
 }
-render(<Index/>, document.querySelector('body'))
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Index/>);

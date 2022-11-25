@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import {render} from "react-dom"
+import ReactDOM from "react-dom/client"
 import SvgComponent from "./components/SvgComponent";
 import styles from "./css/handleerrors.module.css"
 import stylesLoader from "./css/loader.module.css"
@@ -21,4 +21,6 @@ function Handler() {
         </section>
     )
 }
-render(<Handler/>, document.querySelector('main'))
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Handler/>);
