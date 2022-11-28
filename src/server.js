@@ -1,8 +1,35 @@
 const cluster = require('cluster');
-if(cluster.isMaster){
+let bcrypt = require('bcryptjs');
+const http = require('http');
+const { Server: SocketServer } = require('socket.io');
+const { setupMaster, setupWorker } = require("@socket.io/sticky");
+const { createAdapter, setupPrimary } = require("@socket.io/cluster-adapter");
+const Students = require('./database/models/student');
+const addUser = require('./modules/addUser');7
+const uploadusers = require('./modules/uploadusers')
+const Token = require('./database/models/tokens');
+const Admin = require('./database/models/admin');
+const Increment = require('./database/models/increment');
+const { resolve } = require("path");
+const createToken = require('./modules/createToken');
+const Email = require('./dist/email');
+const express = require('express');
+const multer  = require('multer');
+
+if (cluster.isMaster) {
     const { cpus } = require('os');
     let numCPUs = cpus().length;
     console.log(`Primary ${process.pid} is running`);
+    const httpServer = http.createServer();
+
+    // setup sticky sessions
+    setupMaster(httpServer, {
+        loadBalancingMethod: "least-connection",
+    });
+
+    // setup connections between the workers
+    setupPrimary();
+
     // Fork workers.
     for (let i = 0; i < numCPUs; i++) {
         cluster.fork();
@@ -10,23 +37,10 @@ if(cluster.isMaster){
     cluster.on('exit', (worker, code, signal) => {
         console.log(`worker ${worker.process.pid} died`);
     });
+
 }
 else {
     require('./database/connect');
-    let bcrypt = require('bcryptjs');
-    const { Server: SocketServer } = require('socket.io');
-    const Students = require('./database/models/student');
-    const addUser = require('./modules/addUser');7
-    const uploadusers = require('./modules/uploadusers')
-    const Token = require('./database/models/tokens');
-    const Admin = require('./database/models/admin');
-    const Increment = require('./database/models/increment');
-    const { resolve } = require("path");
-    const createToken = require('./modules/createToken');
-    const Email = require('./dist/email');
-    const express = require('express');
-    const multer  = require('multer');
-    // const morgan = require('morgan');
     const cookieParser = require('cookie-parser');
     const ip = require("./modules/getIp");
     const upload = multer({ dest: 'src/uploads/' });
@@ -207,19 +221,20 @@ else {
             res.status(500).render('internalerror', {title: 'Error 500', info: 'Nuestras más sinceras disculpas, se ha producido un error inesperado. Por favor, inténtelo más tarde.'});
         }
     })
-    
+
     let httpServer = app.listen(8080, ()=> {
         if(!ip) return console.log(`Server on http://localhost:8080 -> ${process.pid}`);
         console.log(`Server on http://${ip}:8080 -> ${process.pid}`);
     })
-    // const httpServer = require('http').createServer(app);
+
     let io = new SocketServer(httpServer);
+    io.adapter(createAdapter());
+    setupWorker(io);
     io.on('connection', (socket) => {
         socket.on('upload', ({ fileName }) => {
             uploadusers(socket, fileName);
         })
     })
 
-    
     
 }

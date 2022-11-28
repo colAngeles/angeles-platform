@@ -29,6 +29,8 @@
     "@react-pdf-viewer/core": "^3.8.0",
     "@react-pdf-viewer/zoom": "^3.8.0",
     "@react-pdf/renderer": "^3.0.1",
+    "@socket.io/cluster-adapter": "^0.2.1",
+    "@socket.io/sticky": "^1.0.2",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "autocannon": "^7.10.0",
