@@ -1,5 +1,4 @@
 .editorconfig
-autocannon.js
 test.js
 regex.js
 server_copy.js
@@ -25,7 +24,6 @@ coverage.html
 .cover*
 
 # Dependency directory
-node_modules
 
 # Example build directory
 example/dist
@@ -41,3 +39,4 @@ example/dist
 .idea/
 *.DS_Store
 .vscode
+node_modules
