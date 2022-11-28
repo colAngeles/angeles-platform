@@ -2,11 +2,9 @@ const Student = require('../database/models/student');
 const parser = require('csv-parser');
 const fs = require('fs');
 const { resolve } = require('path');
-const { StayCurrentLandscapeTwoTone } = require('@mui/icons-material');
-
 function uploadusers(socketIo, fileName) {
     let count = 1;
-    let reader = fs.createReadStream(resolve(`src/uploads/${fileName}`));
+    let reader = fs.createReadStream(resolve(`src/dashboarduploads/${fileName}`));
     reader.pipe(parser({
         separator: ';',
         strict: true
@@ -96,7 +94,7 @@ function uploadusers(socketIo, fileName) {
             count++
         }
     }).on('end', () => {
-        fs.unlink(resolve(`src/uploads/${fileName}`), async (e) => {
+        fs.unlink(resolve(`src/dashboarduploads/${fileName}`), async (e) => {
                     if (e) throw e
         })
     }) 

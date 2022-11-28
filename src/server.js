@@ -1,12 +1,7 @@
 const cluster = require('cluster');
 let bcrypt = require('bcryptjs');
-const http = require('http');
-const { Server: SocketServer } = require('socket.io');
-const { setupMaster, setupWorker } = require("@socket.io/sticky");
-const { createAdapter, setupPrimary } = require("@socket.io/cluster-adapter");
 const Students = require('./database/models/student');
 const addUser = require('./modules/addUser');7
-const uploadusers = require('./modules/uploadusers')
 const Token = require('./database/models/tokens');
 const Admin = require('./database/models/admin');
 const Increment = require('./database/models/increment');
@@ -20,15 +15,6 @@ if (cluster.isMaster) {
     const { cpus } = require('os');
     let numCPUs = cpus().length;
     console.log(`Primary ${process.pid} is running`);
-    const httpServer = http.createServer();
-
-    // setup sticky sessions
-    setupMaster(httpServer, {
-        loadBalancingMethod: "least-connection",
-    });
-
-    // setup connections between the workers
-    setupPrimary();
 
     // Fork workers.
     for (let i = 0; i < numCPUs; i++) {
@@ -43,7 +29,7 @@ else {
     require('./database/connect');
     const cookieParser = require('cookie-parser');
     const ip = require("./modules/getIp");
-    const upload = multer({ dest: 'src/uploads/' });
+    const upload = multer({ dest: 'src/dashboarduploads/' });
     const app = express();
     app.set('view engine', 'ejs');
     app.set('views', resolve('src/public')) // specify the views directory
@@ -147,66 +133,7 @@ else {
         res.redirect('/');
     })
 
-    //Admin Section
-
-    app.get('/admin-login', (req, res) => {
-        res.clearCookie('sesskey', {path: '/'});
-        res.sendFile(resolve('src/public/admin.html'));
-    });
-    app.post('/admin', upload.none(), async (req, res) => {
-        const { user, pass } = req.body;
-        const userdb = await Admin.findOne({user});
-        if ( userdb ) {
-            let hash = await bcrypt.compare(pass, userdb.pass);
-            if ( hash ) {
-                res.cookie('sesskey', user, { expires: new Date(Date.now() + 8 * 3600000), signed: true});
-                res.status(200).json({conf: true});
-                return
-            }
-            res.status(403).json({refused: true});
-            return
-        }
-        res.status(403).json({refused: true})
-    })
-    app.get('/dashboard', (req, res) => {
-        if (req.signedCookies.sesskey) {
-            res.sendFile(resolve('src/public/dashboard.html'));
-            return
-        }
-        res.redirect('/admin-login');
-    });
-
-    app.put('/add-user', upload.none(), async (req, res) => {
-        if (req.signedCookies.sesskey) {
-            try {
-                let user = await addUser(req.body);
-                if (user) {
-                    res.json({success: true});
-                    return
-                }
-                res.json({error: "database"});
-            }
-            catch (err) {
-                res.json({error: "database"});
-            }
-        }
-    })
-    app.put('/upload-users', upload.single('csvfile'), (req, res) => {
-        if (req.signedCookies.sesskey) { 
-            res.json({fileName: req.file.filename});
-            return
-        }
-    })
-    app.get('/data-home', async (req, res) => {
-        if (req.signedCookies.sesskey) {
-            let amountUsers = await Students.find({}).count();
-            res.json({data: true});
-            return
-        }
-    })
-
-
-    // Errors handle
+    // Errors handlers
     app.all('*', (_, res) => {
         res.status(404).render('internalerror', {title: "Error 404", info: "Lo sentimos, la página que estás buscando no se encuentra disponible."});
     })
@@ -222,19 +149,8 @@ else {
         }
     })
 
-    let httpServer = app.listen(8080, ()=> {
+    app.listen(8080, ()=> {
         if(!ip) return console.log(`Server on http://localhost:8080 -> ${process.pid}`);
         console.log(`Server on http://${ip}:8080 -> ${process.pid}`);
     })
-
-    let io = new SocketServer(httpServer);
-    io.adapter(createAdapter());
-    setupWorker(io);
-    io.on('connection', (socket) => {
-        socket.on('upload', ({ fileName }) => {
-            uploadusers(socket, fileName);
-        })
-    })
-
-    
 }
