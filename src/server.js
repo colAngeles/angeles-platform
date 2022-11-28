@@ -1,5 +1,4 @@
 const cluster = require('cluster');
-const morgan = require('morgan');
 if(cluster.isMaster){
     const { cpus } = require('os');
     let numCPUs = cpus().length;
@@ -14,16 +13,20 @@ if(cluster.isMaster){
 }
 else {
     require('./database/connect');
-    const SocketIo = require('socket.io');
+    let bcrypt = require('bcryptjs');
+    const { Server: SocketServer } = require('socket.io');
     const Students = require('./database/models/student');
+    const addUser = require('./modules/addUser');7
+    const uploadusers = require('./modules/uploadusers')
     const Token = require('./database/models/tokens');
+    const Admin = require('./database/models/admin');
     const Increment = require('./database/models/increment');
     const { resolve } = require("path");
     const createToken = require('./modules/createToken');
     const Email = require('./dist/email');
     const express = require('express');
     const multer  = require('multer');
-    const morgan = require('morgan')
+    // const morgan = require('morgan');
     const cookieParser = require('cookie-parser');
     const ip = require("./modules/getIp");
     const upload = multer({ dest: 'src/uploads/' });
@@ -130,18 +133,66 @@ else {
         res.redirect('/');
     })
 
+    //Admin Section
 
-
-    app.get('/admin', (req, res) => {
-        res.sendFile(resolve('src/public/dashboard.html'));
+    app.get('/admin-login', (req, res) => {
+        res.clearCookie('sesskey', {path: '/'});
+        res.sendFile(resolve('src/public/admin.html'));
+    });
+    app.post('/admin', upload.none(), async (req, res) => {
+        const { user, pass } = req.body;
+        const userdb = await Admin.findOne({user});
+        if ( userdb ) {
+            let hash = await bcrypt.compare(pass, userdb.pass);
+            if ( hash ) {
+                res.cookie('sesskey', user, { expires: new Date(Date.now() + 8 * 3600000), signed: true});
+                res.status(200).json({conf: true});
+                return
+            }
+            res.status(403).json({refused: true});
+            return
+        }
+        res.status(403).json({refused: true})
+    })
+    app.get('/dashboard', (req, res) => {
+        if (req.signedCookies.sesskey) {
+            res.sendFile(resolve('src/public/dashboard.html'));
+            return
+        }
+        res.redirect('/admin-login');
     });
 
-    app.get('/add-user', (req, res) => {
-        res.json({test: true});
+    app.put('/add-user', upload.none(), async (req, res) => {
+        if (req.signedCookies.sesskey) {
+            try {
+                let user = await addUser(req.body);
+                if (user) {
+                    res.json({success: true});
+                    return
+                }
+                res.json({error: "database"});
+            }
+            catch (err) {
+                res.json({error: "database"});
+            }
+        }
+    })
+    app.put('/upload-users', upload.single('csvfile'), (req, res) => {
+        if (req.signedCookies.sesskey) { 
+            res.json({fileName: req.file.filename});
+            return
+        }
+    })
+    app.get('/data-home', async (req, res) => {
+        if (req.signedCookies.sesskey) {
+            let amountUsers = await Students.find({}).count();
+            res.json({data: true});
+            return
+        }
     })
 
 
-
+    // Errors handle
     app.all('*', (_, res) => {
         res.status(404).render('internalerror', {title: "Error 404", info: "Lo sentimos, la página que estás buscando no se encuentra disponible."});
     })
@@ -157,15 +208,18 @@ else {
         }
     })
     
-    let server = app.listen(8080, ()=> {
+    let httpServer = app.listen(8080, ()=> {
         if(!ip) return console.log(`Server on http://localhost:8080 -> ${process.pid}`);
         console.log(`Server on http://${ip}:8080 -> ${process.pid}`);
     })
-
-
-
-    let io = SocketIo(server);
+    // const httpServer = require('http').createServer(app);
+    let io = new SocketServer(httpServer);
     io.on('connection', (socket) => {
-        console.log('Has been connect', socket.id);
+        socket.on('upload', ({ fileName }) => {
+            uploadusers(socket, fileName);
+        })
     })
+
+    
+    
 }

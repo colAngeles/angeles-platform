@@ -32,6 +32,7 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
     "autocannon": "^7.10.0",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "csv-parser": "^3.0.0",
     "dotenv": "^16.0.1",
@@ -51,6 +52,7 @@
     "react-signature-canvas": "^1.0.6",
     "reactjs-popup": "^2.0.5",
     "socket.io": "^4.5.4",
+    "socket.io-client": "^4.5.4",
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4"
   },

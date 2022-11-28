@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient, useQuery } from 'react-query';
 import { BlobProvider } from '@react-pdf/renderer';
 import SliderView from './components/SliderView';
 import RenderDocuments from './components/RenderDocuments.js';

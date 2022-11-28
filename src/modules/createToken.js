@@ -33,31 +33,15 @@ async function createToken(student, relativeId, sender) {
         ` 
     }
     try {
-        let dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
-        if (dbToken) {
-            try {
-                let conf = await sender.sendMail(email);
-                console.log(token);
-                return {successful: true};
-            }
-            catch (e) {
-                return {emailerror: "error:email"};
-            }
+        await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
+        try {
+            await sender.sendMail(email);
+            console.log(token);
+            return {successful: true};
         }
-        dbToken = await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
-        if (dbToken) {
-            try {
-                let conf = await sender.sendMail(email);
-                console.log('Second try: ', token);
-                return {successful: true};
-            }
-            catch (e) {
-                return {emailerror: "error:email"};
-            }
+        catch (e) {
+            return {emailerror: "error:email"};
         }
-        console.log('Try error');
-        console.log(dbToken)
-        return {error: "database"};
     }
     catch (error) {
         console.log("Catch error");

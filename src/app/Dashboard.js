@@ -20,9 +20,10 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { mainListItems } from './dashboard-components/listItems';
+import Uploadusers from './dashboard-components/Uploadusers';
+import { io } from 'socket.io-client';
 
-
-
+const socket = io();
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -153,8 +154,9 @@ function DashboardContent() {
                   }}
               >
                 <Routes>
-                    <Route path='/admin' element={<Home />}/>
+                    <Route path='/dashboard' element={<Home />}/>
                     <Route path='/create-user' element={<Createuser />}/>
+                    <Route path='/upload-users' element={<Uploadusers socket={socket}/>}/>
                 </Routes>
             </Box>
           </Box>
@@ -163,7 +165,6 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
-  let socket = io();
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

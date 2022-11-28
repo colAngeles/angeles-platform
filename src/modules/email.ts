@@ -24,8 +24,8 @@ class Email {
                     pass: ""
             }
         };
-        this.initConfig.auth.user = this.config[0].user
-        this.initConfig.auth.pass = this.config[0].pass
+        this.initConfig.auth.user = this.config[0].user;
+        this.initConfig.auth.pass = this.config[0].pass;
         this.transporter = createTransport(this.initConfig);
     }
     async sendMail (email) {
@@ -33,25 +33,25 @@ class Email {
         //587
         let count: number = 1;
         if (this.changed) {
-            this.initConfig.auth.user = this.config[0].user
-            this.initConfig.auth.pass = this.config[0].pass
+            this.initConfig.auth.user = this.config[0].user;
+            this.initConfig.auth.pass = this.config[0].pass;
             this.transporter = createTransport(this.initConfig);
             this.changed = false;
         }
 
         while(true){
             try {
-                let info = await this.transporter.sendMail(email)
+                let info = await this.transporter.sendMail(email);
                 return info
             }
             catch(e) {
                 if (count >= this.size) throw e
-                this.transporter.close()
-                this.initConfig.auth.user = this.config[count].user
-                this.initConfig.auth.pass = this.config[count].pass
+                this.transporter.close();
+                this.initConfig.auth.user = this.config[count].user;
+                this.initConfig.auth.pass = this.config[count].pass;
                 this.transporter = createTransport(this.initConfig);
                 this.changed = true;
-                count += 1
+                count += 1;
                 continue
             }
         }

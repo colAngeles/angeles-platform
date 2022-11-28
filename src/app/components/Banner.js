@@ -11,8 +11,7 @@ export default function Banner({ images, sliderClassList, setLoader}) {
     
     useEffect(() => {
         let image = document.getElementById('trigger-load');
-        image.onload = (event) => {
-            console.log("Images loaded");
+        image.onload = () => {
             setLoaderState(true);
         }
     }, [])

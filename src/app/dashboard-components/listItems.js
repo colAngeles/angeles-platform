@@ -15,7 +15,7 @@ import NoAccountsIcon from '@mui/icons-material/NoAccounts';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 export const mainListItems = (
   <React.Fragment>
-    <NavLink to="/admin" className={styles["nav-link"]}>
+    <NavLink to="/dashboard" className={styles["nav-link"]}>
       <ListItemButton onClick={() => {console.log("Tolo")}}>
         <ListItemIcon>
           <DashboardIcon  sx={{color: '#fff'}}/>
