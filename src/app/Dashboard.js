@@ -159,12 +159,12 @@ function DashboardContent() {
               >
                 <Routes>
                     <Route path='/dashboard' element={<Home />}/>
-                    <Route path='/create-user' element={<Createuser />}/>
-                    <Route path='/upload-users' element={<Uploadusers socket={socket}/>}/>
-                    <Route path='/users' element={<Users />}/>
-                    <Route path='/active-users' element={<Activeusers />}/>
-                    <Route path='/preactive-users' element={<Preactiveusers />}/>
-                    <Route path='/inactive-users' element={<Inactiveusers />}/>
+                    <Route path='/dashboard/create-user' element={<Createuser />}/>
+                    <Route path='/dashboard/upload-users' element={<Uploadusers socket={socket}/>}/>
+                    <Route path='/dashboard/users' element={<Users />}/>
+                    <Route path='/dashboard/active-users' element={<Activeusers />}/>
+                    <Route path='/dashboard/preactive-users' element={<Preactiveusers />}/>
+                    <Route path='/dashboard/inactive-users' element={<Inactiveusers />}/>
                 </Routes>
             </Box>
           </Box>

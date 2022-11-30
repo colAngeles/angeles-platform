@@ -24,7 +24,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
     
-    <NavLink to="/create-user" className={styles["nav-link"]}>
+    <NavLink to="/dashboard/create-user" className={styles["nav-link"]}>
       <ListItemButton>
         <ListItemIcon sx={{color: '#fff'}}>
           <PersonAddIcon />
@@ -33,7 +33,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
     
-    <NavLink to="/upload-users" className={styles["nav-link"]}>
+    <NavLink to="/dashboard/upload-users" className={styles["nav-link"]}>
       <ListItemButton>
         <ListItemIcon sx={{color: '#fff'}}>
           <GroupAddIcon />
@@ -42,7 +42,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
 
-    <NavLink to="/users" className={styles["nav-link"]}>
+    <NavLink to="/dashboard/users" className={styles["nav-link"]}>
       <ListItemButton>
         <ListItemIcon sx={{color: '#fff'}}>
           <PeopleIcon />
@@ -51,7 +51,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
 
-    <NavLink to="/active-users" className={styles["nav-link"]}>
+    <NavLink to="/dashboard/active-users" className={styles["nav-link"]}>
       <ListItemButton>
         <ListItemIcon sx={{color: '#fff'}}>
           <VerifiedUserIcon />
@@ -60,7 +60,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
 
-    <NavLink to="/preactive-users" className={styles["nav-link"]}>
+    <NavLink to="/dashboard/preactive-users" className={styles["nav-link"]}>
       <ListItemButton>
           <ListItemIcon sx={{color: '#fff'}}>
             <SwitchAccountIcon  />
@@ -69,7 +69,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
 
-    <NavLink to="/inactive-users" className={styles["nav-link"]}>
+    <NavLink to="/dashboard/inactive-users" className={styles["nav-link"]}>
       <ListItemButton>
         <ListItemIcon sx={{color: '#fff'}}>
           <NoAccountsIcon />

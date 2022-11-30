@@ -172,33 +172,34 @@ export default function Student({ value, index, labelId, setSnack }) {
                                 {value.name} {value.surname}  {value.grade}
                             </span>
                             <span style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: 'rgb(156, 163, 175)'}}>
+                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}}>
                                     Audio
                                     <IconButton 
-                                        color='primary' 
+                                        sx={{color: 'rgb(156, 163, 175)'}}
                                         onClick={!sound.current ? loadAudio: handlePlay}
                                     >
                                         {
-                                            !play ? <PlayCircleIcon sx={{fontSize:'2.5rem'}}/> : <PauseCircleIcon sx={{fontSize:'2.5rem'}} />
+                                            !play ? <PlayCircleIcon sx={{fontSize:'2rem'}}/> : <PauseCircleIcon sx={{fontSize:'2.5rem'}} />
                                         }
                                     </IconButton>
                                 </ListItemIcon>
-                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: 'rgb(156, 163, 175)'}}>
+                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}} >
                                     Contrato
                                     <IconButton 
-                                        color='primary' 
                                         onClick={downloadContract}
+                                        sx={{color: 'rgb(156, 163, 175)'}}
                                     >
-                                        <PictureAsPdfIcon sx={{fontSize:'2.5rem'}}/>
+                                        <PictureAsPdfIcon sx={{fontSize:'2rem'}}/>
                                     </IconButton>
                                 </ListItemIcon>
-                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: 'rgb(156, 163, 175)'}}>
+                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}}>
                                     Pagare
                                     <IconButton 
                                         color='primary' 
                                         onClick={downloadPromissorynote}
+                                        sx={{color: 'rgb(156, 163, 175)'}}
                                     >
-                                        <PictureAsPdfIcon sx={{fontSize:'2.5rem'}}/>
+                                        <PictureAsPdfIcon sx={{fontSize:'2rem'}}/>
                                     </IconButton>
                                 </ListItemIcon>
                             </span>
