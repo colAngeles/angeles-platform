@@ -36,7 +36,6 @@ async function createToken(student, relativeId, sender) {
         await Token.findOneAndUpdate({studentid: student.identification.id}, {$set: {createdAt: new Date(), token, person, student}}, {upsert: true});
         try {
             await sender.sendMail(email);
-            console.log(token);
             return {successful: true};
         }
         catch (e) {

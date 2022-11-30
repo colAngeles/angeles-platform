@@ -122,11 +122,7 @@ function Contract() {
         return [image1, image2, image3, image4, image5]
     }
     let {data: bannerData, error, isLoading} = useQuery('bannerimages', bannerImages);
-    // if (isLoading || !bannerData) {
-    //     return (
-    //         <Loader /> 
-    //     )
-    // }
+
     if ( bannerData || !isLoading ) {
         let image1Url = URL.createObjectURL(bannerData[0]);
         let image2Url = URL.createObjectURL(bannerData[1]);

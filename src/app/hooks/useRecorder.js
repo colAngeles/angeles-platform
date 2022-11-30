@@ -14,7 +14,16 @@ export default function useRecorder() {
     // Lazily obtain recorder first time we're recording.
     if (recorder === null) {
       if (isRecording) {
-        requestRecorder().then(setRecorder, console.error);
+        // requestRecorder().then(setRecorder, console.error);
+        (async function (){
+           try {
+            let recorder = await requestRecorder();
+            setRecorder(recorder);
+          }
+          catch (e) {
+              alert('Recorder error');
+          }
+        })()
       }
       return
     }

@@ -16,12 +16,14 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Collapse from "@mui/material/Collapse";
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.SpeechRecognitionAlternative;
+
 const mic = new SpeechRecognition();
 mic.continuous = true;
 mic.interimResults = false;
 mic.lang = 'es-ES';
 
 export default function Speech({ getAudio, close, hideButton}) {
+    let [audio, _, startRecording, stopRecording] = useRecorder();
     let data = localStorage.getItem('data');
     let objData = JSON.parse(data);
     const dateObj = new Date(objData.createdAt);
@@ -29,8 +31,6 @@ export default function Speech({ getAudio, close, hideButton}) {
     const monthNum = dateObj.getMonth();
     const year = dateObj.getFullYear();
     const month = monthNum == 0  ? 'Enero' : monthNum == 1 ? 'Febrero' : monthNum == 2 ? 'Marzo': monthNum == 3 ? 'Abril': monthNum == 4 ? 'Mayo': monthNum == 5 ? 'Junio': monthNum == 6 ? 'Julio': monthNum == 7 ? 'Agosto': monthNum == 8 ? 'Septiembre': monthNum == 9 ? 'Octubre': monthNum == 10 ? 'Noviembre': monthNum == 11 ? 'Diciembre': ''
-    let [audio, _, startRecording, stopRecording] = useRecorder();
-    const voices = speechSynthesis.getVoices();
     const [isListening, setIsListening] = useState(false);
     const [play, setPlay] = useState(false);
     const [note, setNote] = useState(null);
@@ -53,71 +53,76 @@ export default function Speech({ getAudio, close, hideButton}) {
 
     const handleListen = () => {
         if (isListening) {
-            startRecording();
-            mic.start();
-            mic.onend = () => { //Coment
-                console.log('end');
+            try {
+                sound.current.pause();
+                setPlay(false);
             }
+            catch (e) {
+                
+            }
+            startRecording();
+            // mic.start();
+            // mic.onend = () => {
+            //     console.log('end');
+            // }
             setAlertModal(false)
         }
         else {
-            mic.stop();
-        }
-        mic.onstart = () => {
-            console.log('Mics on');
-        }
-        mic.onresult = event => {
+            // mic.stop();
             stopRecording();
-            isListening ? setIsListening(false) : null;
-            const transcript = Array.from(event.results)
-                .map(result => result[0])
-                .map(result => result.transcript).join('');
-            let speech = new SpeechSynthesisUtterance();
-            speech.text = 'El audio ha sido grabado con éxito!';
-            speech.volume = 1;
-            speech.rate = 1;
-            speech.pitch = 1;
-            speech.voice = voices[1];
-            speechSynthesis.speak(speech);
-            setNote(transcript)
-            mic.onerror = _ => {
-                setInfocontent({infoType: 'error', title: '', message:'El micrófono no responde. Por favor, vuelva a intentarlo.'});
-                setAlertModal(true);
-            }
         }
+        // mic.onstart = () => {
+        //     console.log('Mics on');
+        // }
+        // mic.onresult = event => {
+        //     console.log(mic.voiceURI);
+        //     isListening ? setIsListening(false) : null;
+        //     const transcript = Array.from(event.results).map(result => result[0]).map(result => result.transcript).join('');
+        //     setNote(transcript);
+        //     mic.onerror = _ => {
+        //         setInfocontent({infoType: 'error', title: '', message:'El micrófono no responde. Por favor, vuelva a intentarlo.'});
+        //         setAlertModal(true);
+        //     }
+        // }
     }
     const saveAudio = () => {
-        if(audio && note) {
-            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}...?...${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITO..?.?ELCOLEGIOLOSANGELESY?...?PAGAREANEXO.?A?DICHODOCUMENTOAUTORIZ.(AL)|(EL)COLEGIOLOSANGELES..?TRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
-            let upperNote = note.toUpperCase();
-            let list = upperNote.split(' ');
-            let throwAlert = list.reduce((acumulator, word) => {
-                                        if (acumulator) return acumulator; 
-                                        let conf = ['NO', 'RECHAZO', 'NIEGO', 'DESAUTORIZO'].includes(word);
-                                        return conf
-                                    }, false)
-            if (throwAlert) {
-                setInfocontent({infoType: 'warning', title: '', message:'Para continuar se deben aceptar los terminos y condiciones. Por favor, vuelva a leer el texto de verificación.'});
-                setAlertModal(true);
-                return
-            }
-            upperNote = upperNote.replaceAll('Á', 'A')
-                .replaceAll('É', 'E')
-                .replaceAll('Í', 'I')
-                .replaceAll('Ó', 'O')
-                .replaceAll('Ú', 'U')
-                .replaceAll('Ü', 'U')
-                .replaceAll(',', ',')
-                .replaceAll(' ', '');
+        // if(audio && note) {
+        //     let re = new RegExp(`...?${date}\\D*${month.toUpperCase()}...?...${year}\\D*(ACEPT){1}.?(LOS)?TERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITO..?.?ELCOLEGIOLOSANGELESY?...?PAGAREANEXO.?A?DICHODOCUMENTOAUTORIZ.(AL)|(EL)COLEGIOLOSANGELES..?TRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
+        //     let upperNote = note.toUpperCase();
+        //     let list = upperNote.split(' ');
+        //     let throwAlert = list.reduce((acumulator, word) => {
+        //                                 if (acumulator) return acumulator; 
+        //                                 let conf = ['NO', 'RECHAZO', 'NIEGO', 'DESAUTORIZO'].includes(word);
+        //                                 return conf
+        //                             }, false)
+        //     if (throwAlert) {
+        //         setInfocontent({infoType: 'warning', title: '', message:'Para continuar se deben aceptar los terminos y condiciones. Por favor, vuelva a leer el texto de verificación.'});
+        //         setAlertModal(true);
+        //         return
+        //     }
+        //     upperNote = upperNote.replaceAll('Á', 'A')
+        //         .replaceAll('É', 'E')
+        //         .replaceAll('Í', 'I')
+        //         .replaceAll('Ó', 'O')
+        //         .replaceAll('Ú', 'U')
+        //         .replaceAll('Ü', 'U')
+        //         .replaceAll(',', ',')
+        //         .replaceAll(' ', '');
                 
-            if (re.test(upperNote)) {
-                getAudio(audio);
-                close();
-                hideButton(true);
-                return
-            }
-            setInfocontent({infoType: 'warning', title: '', message:'Se han detectado inconcistencias en audio. Por favor, vuelva a leer el texto de verificación.'});
-            setAlertModal(true);
+        //     if (re.test(upperNote)) {
+        //         getAudio(audio);
+        //         close();
+        //         hideButton(true);
+        //         return
+        //     }
+        //     setInfocontent({infoType: 'warning', title: '', message:'Se han detectado inconcistencias en audio. Por favor, vuelva a leer el texto de verificación.'});
+        //     setAlertModal(true);
+        //     return
+        // }
+        if (audio) {
+            getAudio(audio);
+            close();
+            hideButton(true);
             return
         }
         setInfocontent({infoType: 'error', title: '', message:'No se ha detectado ningún dato. Por favor, intentelo de nuevo.'});
@@ -139,13 +144,14 @@ export default function Speech({ getAudio, close, hideButton}) {
                 </div>
                 <div className={styles["container"]}>
                     <div className={`${styles["box"]} ${styles["instructions"]}`}>
-                        <h2>Instrucciones:</h2>
+                        <h2 style={{marginTop: '1rem'}}>Instrucciones:</h2>
                         <p className={styles["text-content"]}><b>Para que éste proceso sea exitoso por favor tenga en cuenta las siguientes recomendaciónes:</b></p>
                         <p className={styles["text-content"]}>
                             <b>1.</b> Asegúrese de estar en un lugar aislado, libre de ruidos exteriores.<br />
-                            <b>2.</b> Para comenzar de clic en ícono del micrófono y lea el texto de verificación en voz alta y clara. La inteligencia artificial detectará cualquier inconsistencia.<br />
-                            <b>3.</b> Puede detener la grabación dando en clic en el mismo ícono del micrófono. Si lo desea, puede volver a grabar.<br />
-                            <b>4.</b> Podrá escuchar la grabación dando clic en ícono de reproducción, éste estará visible una vez haya grabado el audio.<br />
+                            <b>2.</b> El audio será analizado, si se detecta alguna inconsistencia tendrá que volver a realizar el proceso.<br />
+                            <b>3.</b> Para comenzar de clic en ícono del micrófono y lea el texto de verificación en voz alta y clara.<br />
+                            <b>4.</b> Puede detener la grabación dando en clic en el mismo ícono del micrófono. Si lo desea, puede volver a grabar.<br />
+                            <b>5.</b> Podrá escuchar la grabación dando clic en ícono de reproducción, éste estará visible una vez haya grabado el audio.<br />
                         </p>
                     </div>
                     {
@@ -154,7 +160,8 @@ export default function Speech({ getAudio, close, hideButton}) {
                                 <IconButton 
                                     color='primary' 
                                     onClick={() => {
-                                        !play ? sound.current.play() : sound.current.pause()
+                                        setIsListening(false);
+                                        !play ? sound.current.play() : sound.current.pause();
                                         setPlay(prevState => !prevState);
                                     }}
                                 >
