@@ -1,9 +1,6 @@
 const cluster = require('cluster');
-let bcrypt = require('bcryptjs');
 const Students = require('./database/models/student');
-const addUser = require('./modules/addUser');7
 const Token = require('./database/models/tokens');
-const Admin = require('./database/models/admin');
 const Increment = require('./database/models/increment');
 const { resolve } = require("path");
 const createToken = require('./modules/createToken');
@@ -13,7 +10,7 @@ const multer  = require('multer');
 
 if (cluster.isMaster) {
     const { cpus } = require('os');
-    let numCPUs = cpus().length;
+    let numCPUs = cpus().length - 1;
     console.log(`Primary ${process.pid} is running`);
 
     // Fork workers.
@@ -29,10 +26,10 @@ else {
     require('./database/connect');
     const cookieParser = require('cookie-parser');
     const ip = require("./modules/getIp");
-    const upload = multer({ dest: 'src/dashboarduploads/' });
+    const upload = multer({ dest: 'src/uploads/' });
     const app = express();
     app.set('view engine', 'ejs');
-    app.set('views', resolve('src/public')) // specify the views directory
+    app.set('views', resolve('src/public'));
     let initConfig = [
         {
             user: "matriculas@colegiolosangelestunja.com",
@@ -47,23 +44,20 @@ else {
             pass: "ygjpwmulsxtskkzi"
         }
     ]
-    const sender = new Email(initConfig)
+    const sender = new Email(initConfig);
     app.use(express.json());
     app.use(cookieParser('qnapcloud'));
     app.use(express.urlencoded({ extended: true }));
     app.use(express.static(resolve('src/public')));
 
     app.get('/', (req, res, next) => {
-        res.clearCookie('test', {path: '/', signed: true})
+        res.clearCookie('test', {path: '/', signed: true});
         res.sendFile(resolve('src/public/index.html'));
     });
 
     app.post('/get-token', upload.none(), async (req, res, next)=> {
-        // Students.findOne(
-        //     {$where: `this.active == false && this.preActive == false && this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
-        // })
         Students.findOne(
-            {$where: `this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
+            {$where: `this.active == false && this.preActive == false && this.identification.id == ${req.body.studentId} && (this.parents.mother.identification.id == ${req.body.relativeId} || this.parents.father.identification.id == ${req.body.relativeId} || this.relative.identification.id == ${req.body.relativeId})`
         })
         .then(data => {
             if (data) {

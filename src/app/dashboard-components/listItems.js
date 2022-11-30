@@ -51,7 +51,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
 
-    <NavLink to="/actived-users" className={styles["nav-link"]}>
+    <NavLink to="/active-users" className={styles["nav-link"]}>
       <ListItemButton>
         <ListItemIcon sx={{color: '#fff'}}>
           <VerifiedUserIcon />
@@ -60,7 +60,7 @@ export const mainListItems = (
       </ListItemButton>
     </NavLink>
 
-    <NavLink to="/preactived-users" className={styles["nav-link"]}>
+    <NavLink to="/preactive-users" className={styles["nav-link"]}>
       <ListItemButton>
           <ListItemIcon sx={{color: '#fff'}}>
             <SwitchAccountIcon  />

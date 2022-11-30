@@ -156,15 +156,15 @@ export default function Doc({signURL}){
                                 <View style={styles.signs} wrap={false}>
                                     <Text style={styles.boldSign}>LA RECTORA</Text>
                                     <View style={styles.view}>
-                                        <Image src={signURL} style={styles.sign}/>
+                                        <Image src='/media/3c7ecba91f021f3fd4e9301307f13adf' style={styles.sign}/>
                                     </View>
                                     <Text style={styles.boldSign}>DERLLY ROSMERY GOMEZ AMARILLO</Text>
-                                    <Text style={styles.boldSign}>C. C 40.034.729 de Tunja</Text>
+                                    <Text style={styles.boldSign}>C.C. 40.034.729 de Tunja</Text>
                                 </View>
                                 <View style={styles.signs} wrap={false}>
                                     <Text style={styles.boldSign}>Representante legal y/o acudiente</Text>
                                     <Text style={styles.textSign}>Nombre: {objData.person.name} {objData.person.surname}</Text>
-                                    <Text style={styles.textSign}>Cédula: {objData.person.identification.id}</Text>
+                                    <Text style={styles.textSign}>{objData.person.identification.type ? objData.person.identification.type : <Text>Documento: </Text>}{objData.person.identification.id}</Text>
                                     <Text style={styles.textSign}>Dirección: {objData.person.location.address}</Text>
                                     <Text style={styles.textSign}>E-mail: {objData.person.email}</Text>
                                     <View style={styles.view}>

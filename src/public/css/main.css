@@ -50,13 +50,21 @@ body {
     position: relative;
     background-color: transparent;
 }
- .css-1b5ei7m {
+.css-1b5ei7m {
     color: rgb(158, 163, 169) !important;
     border:  rgba(40, 85, 154, 0.5)!important;
 }
 
 .css-1b5ei7m.Mui-selected {
     border: 1px solid rgba(247, 144, 30, 0.4) !important;
+}
+.css-19xm0h7-MuiButtonBase-root-MuiPaginationItem-root {
+    color: inherit !important;
+}
+.css-19xm0h7-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+        color: #1976d2;
+        border: 1px solid rgba(25, 118, 210, 0.5);
+        background-color: rgba(25, 118, 210, 0.12);
 }
 @keyframes mic {
     0% {

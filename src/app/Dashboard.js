@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { QueryClientProvider, QueryClient, useQuery } from 'react-query';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -21,6 +21,10 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { mainListItems } from './dashboard-components/listItems';
 import Uploadusers from './dashboard-components/Uploadusers';
+import Activeusers from './dashboard-components/Activeusers'
+import Users from './dashboard-components/Users'
+import Preactiveusers from './dashboard-components/Preactiveusers';
+import Inactiveusers from './dashboard-components/Inactiveusers';
 import { io } from 'socket.io-client';
 
 const socket = io();
@@ -157,6 +161,10 @@ function DashboardContent() {
                     <Route path='/dashboard' element={<Home />}/>
                     <Route path='/create-user' element={<Createuser />}/>
                     <Route path='/upload-users' element={<Uploadusers socket={socket}/>}/>
+                    <Route path='/users' element={<Users />}/>
+                    <Route path='/active-users' element={<Activeusers />}/>
+                    <Route path='/preactive-users' element={<Preactiveusers />}/>
+                    <Route path='/inactive-users' element={<Inactiveusers />}/>
                 </Routes>
             </Box>
           </Box>

@@ -196,22 +196,22 @@ function Contract() {
                         <>
                             <div className={styles["alert-container"]}>
                                 <Collapse in={open}>
-                                <Alert severity="error" action={<IconButton
-                                        aria-label="close"
-                                        color="inherit"
-                                        size="small"
-                                        onClick={() => {
-                                            setOpen(false);
-                                        }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 1 }}
-                                >
-                                    <AlertTitle><strong>Error</strong> </AlertTitle>
-                                    No se ha podido contactar con el servidor. Por favor, inténtelo más tarde.
-                                </Alert>
+                                    <Alert severity="error" action={<IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            size="small"
+                                            onClick={() => {
+                                                setOpen(false);
+                                            }}
+                                            >
+                                                <CloseIcon fontSize="inherit" />
+                                            </IconButton>
+                                        }
+                                        sx={{ mb: 1 }}
+                                    >
+                                        <AlertTitle><strong>Error</strong> </AlertTitle>
+                                        No se ha podido contactar con el servidor. Por favor, inténtelo más tarde.
+                                    </Alert>
                                 </Collapse>
                             </div>
                             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: "10px"}}>

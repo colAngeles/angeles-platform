@@ -51,6 +51,11 @@ export default function Uploadusers({ socket }) {
                 socket.emit('upload', {fileName});
             }
         })
+        .catch(e => {
+            setInfocontent({infoType: 'error', title: '', message: 'Error de comunicación. Por favor, inténtelo más tarde.'});
+            setOpen(true);
+            setClick(true);
+        })
     }
     useEffect(() => {
         if (enUpload) {
@@ -95,7 +100,7 @@ export default function Uploadusers({ socket }) {
                 amountData.current = 1;
                 setProgress(0.01);
                 setFileName('Seleccionar archivo csv');
-                setInfocontent({infoType: 'success', title: '', message: 'Usuarios guardados exitosamente!.'});
+                setInfocontent({infoType: 'success', title: '', message: 'Usuarios guardados exitosamente!'});
                 setOpen(true);
                 setEnUpload(true);
                 setClick(true);

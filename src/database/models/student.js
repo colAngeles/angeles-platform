@@ -13,8 +13,7 @@ const student = new Schema({
     signedAt: String,
     name: {type: String, required: true},
     surname: {type: String, required: true},
-    gender: String,
-    grade: String,
+    grade: {type: String, required: true},
     address: String,
     annualAmountText: String,
     annualAmount: String,
@@ -27,7 +26,7 @@ const student = new Schema({
     anotherAmountText: String,
     anotherAmount: String,
     identification: {
-        id: {type: String, required: true, trim: true},
+        id: {type: String, required: true},
         type: {type: String, required: true}
     },
     parents: {
@@ -35,8 +34,8 @@ const student = new Schema({
             name: String,
             surname: String,
             identification: {
-                type: {type: String, trim: true},
                 id: String,
+                type: {type: String},
             },
             location: {
                 address: String,
@@ -49,8 +48,8 @@ const student = new Schema({
             name: String,
             surname: String,
             identification: {
-                type: {type: String, trim: true},
                 id: String,
+                type: {type: String},
             },
             location: {
                 address: String,
@@ -64,7 +63,7 @@ const student = new Schema({
         name: String,
         surname: String,
         identification: {
-            id: {type: String, required: true, trim: true},
+            id: {type: String, required: true},
             type: {type: String},
         },
         location: {

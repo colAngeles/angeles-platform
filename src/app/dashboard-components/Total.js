@@ -7,12 +7,12 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Total() {
+export default function Total({ data }) {
   return (
     <React.Fragment>
       <Title>Total De Usuarios</Title>
       <Typography component="p" variant="h4">
-        1800
+        {data.amountUsers}
       </Typography>
       <Typography  sx={{ flex: 1 }}>
         on 15 March, 2019

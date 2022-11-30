@@ -77,7 +77,7 @@ const dateObj = new Date(data.createdAt);
                 </View>
                 <Text style={styles.textSign}>FIRMA DEUDOR</Text>
                 <Text style={styles.textSign}>Nombre: {data.person.name} {data.person.surname}</Text>
-                <Text style={styles.textSign}>C.C {data.person.identification.id}</Text>
+                <Text style={styles.textSign}>{data.person.identification.type ? data.person.identification.type : <Text>Documento: </Text>}{data.person.identification.id}</Text>
                 <Text style={styles.textSign}>DIRECCIÓN: {data.person.location.address}</Text>
                 <Text style={styles.textSign}>TELÉFONO: {data.person.phone}</Text>
             </View>
@@ -107,7 +107,7 @@ const dateObj = new Date(data.createdAt);
                 </View>
                 <Text style={styles.textSign}>FIRMA DEUDOR</Text>
                 <Text style={styles.textSign}>Nombre: {data.person.name} {data.person.surname}</Text>
-                <Text style={styles.textSign}>C.C {data.person.identification.id}</Text>
+                <Text style={styles.textSign}>{data.person.identification.type ? data.person.identification.type : <Text>Documento: </Text>}{data.person.identification.id}</Text>
                 <Text style={styles.textSign}>DIRECCIÓN: {data.person.location.address}</Text>
                 <Text style={styles.textSign}>TELÉFONO: {data.person.phone}</Text>
             </View>

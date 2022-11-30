@@ -5,15 +5,16 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Total from './Total';
-import Orders from './Orders';
 import Copyright from "./Copyright";
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 function CircularProgressWithLabel(props) {
+    
     return (
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-        <CircularProgress variant="determinate" value={50} />
+        <CircularProgress variant="determinate" value={props.value} />
         <Box
           sx={{
             top: 0,
@@ -33,24 +34,18 @@ function CircularProgressWithLabel(props) {
       </Box>
     );
 }
-
 export default function Home() {
-
     let getData = async () => {
         let res = await fetch('/data-home', {
                       method: 'GET'
                   })
         return res.json()
     }
-    const {data, error, isLoading} = useQuery('amount', getData)
-    if (data) {
-        console.log(data);
-    }
-
+    const {data, error, isLoading} = useQuery('amount', getData);
     return (
             <>
             <Toolbar />
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 , height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
                 <Grid container spacing={3}>
                     {/* Chart */}
                     <Grid item xs={12} md={8} lg={9}>
@@ -67,13 +62,13 @@ export default function Home() {
                         }}
                     >
                         <div style={{display: 'flex', alignItems: 'center'}}>
-                            <CircularProgressWithLabel value={20} variant="determinate" /> <b style={{paddingLeft: '5px'}}>Usuarios Activados</b>
+                            <CircularProgressWithLabel value={data ? data.amountUsers == 0 ? 0 : data.activeUsers / data.amountUsers * 100 : 0} variant="determinate" /> <b style={{paddingLeft: '5px'}}>Usuarios Activados</b>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center'}}>
-                            <CircularProgressWithLabel value={10} variant="determinate" /> <b style={{paddingLeft: '5px'}}>Usuarios Preactivados</b>
+                            <CircularProgressWithLabel value={data ? data.amountUsers == 0 ? 0 : data.preActiveUser / data.amountUsers * 100 : 0} variant="determinate" /> <b style={{paddingLeft: '5px'}}>Usuarios Preactivados</b>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center'}}>
-                            <CircularProgressWithLabel value={70} variant="determinate" /> <b style={{paddingLeft: '5px'}}>Usuarios Sin Estado</b>
+                            <CircularProgressWithLabel value={data ? data.amountUsers == 0 ? 0 : ((data.amountUsers - (data.activeUsers + data.preActiveUser)) / data.amountUsers * 100) : 0}  variant="determinate" /> <b style={{paddingLeft: '5px'}}>Usuarios Sin Estado</b>
                         </div>
                     </Paper>
                     </Grid>
@@ -88,8 +83,11 @@ export default function Home() {
                         backgroundColor: 'rgb(17, 24, 39)',
                         color: 'rgb(178, 186, 194)'
                         }}
-                    >
-                        <Total />
+                    >  
+                        {
+                            data ? <Total data={data}/> : <Skeleton variant="rectangular" width="100%" height='100%' />
+                        }
+                        
                     </Paper>
                     </Grid>
                     {/* Recent Orders */}
@@ -106,7 +104,7 @@ export default function Home() {
                     </Paper>
                     </Grid> */}
                 </Grid>
-                <Copyright sx={{ pt: 4 }} />
+                <Copyright sx={{ pt: 4,  color: '#F7901E'}} />
             </Container>
     </>
     )

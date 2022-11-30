@@ -88,7 +88,7 @@ export default function Speech({ getAudio, close, hideButton}) {
     }
     const saveAudio = () => {
         if(audio && note) {
-            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}(..).?...${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITOCONELCOLEGIOLOSANGELESY?DEL?PAGAREANEXOADICHODOCUMENTOAUTORIZ.(AL)|(EL)COLEGIOLOSANGELES(AL)|ATRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
+            let re = new RegExp(`HOY${date}\\D*${month.toUpperCase()}...?...${year}\\D*(ACEPT){1}.?LOSTERMINOSCONDICIONESY?CLAUSULASDEL?CONTRATODEPRESTACIONDEL?SERVICIOS?EDUCATIVOS?SUSCRITO..?.?ELCOLEGIOLOSANGELESY?...?PAGAREANEXO.?A?DICHODOCUMENTOAUTORIZ.(AL)|(EL)COLEGIOLOSANGELES..?TRATAMIENTODEMISDATOSPERSONALESDEACUERDOCON(LAS)|(LOS)DISPOSICIONESLEGAL(ES)?`)
             let upperNote = note.toUpperCase();
             let list = upperNote.split(' ');
             let throwAlert = list.reduce((acumulator, word) => {
@@ -143,8 +143,8 @@ export default function Speech({ getAudio, close, hideButton}) {
                         <p className={styles["text-content"]}><b>Para que éste proceso sea exitoso por favor tenga en cuenta las siguientes recomendaciónes:</b></p>
                         <p className={styles["text-content"]}>
                             <b>1.</b> Asegúrese de estar en un lugar aislado, libre de ruidos exteriores.<br />
-                            <b>2.</b> Para comenzar de clic en ícono del microfono y lea el texto de verificación en voz alta y clara. La inteligencia artificial detectará cualquier inconcistencia.<br />
-                            <b>3.</b> Puede detener la grabación dando en clic en el mismo ícono del microfono. Si lo desea puede volver a grabar.<br />
+                            <b>2.</b> Para comenzar de clic en ícono del micrófono y lea el texto de verificación en voz alta y clara. La inteligencia artificial detectará cualquier inconsistencia.<br />
+                            <b>3.</b> Puede detener la grabación dando en clic en el mismo ícono del micrófono. Si lo desea, puede volver a grabar.<br />
                             <b>4.</b> Podrá escuchar la grabación dando clic en ícono de reproducción, éste estará visible una vez haya grabado el audio.<br />
                         </p>
                     </div>

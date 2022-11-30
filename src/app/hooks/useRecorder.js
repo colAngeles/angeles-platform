@@ -16,7 +16,7 @@ export default function useRecorder() {
       if (isRecording) {
         requestRecorder().then(setRecorder, console.error);
       }
-      return;
+      return
     }
 
     // Manage recorder state.
@@ -44,6 +44,6 @@ export default function useRecorder() {
     setIsRecording(false);
   };
 
-  return [audio, isRecording, startRecording, stopRecording];
+  return [audio, isRecording, startRecording, stopRecording]
 };
 

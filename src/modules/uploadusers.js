@@ -7,7 +7,6 @@ function uploadusers(socketIo, fileName) {
     let reader = fs.createReadStream(resolve(`src/dashboarduploads/${fileName}`));
     reader.pipe(parser({
         separator: ';',
-        strict: true
     })).on('data', async (data) => {
         let studentData = {
             name: data['nombre'], 
@@ -15,7 +14,7 @@ function uploadusers(socketIo, fileName) {
             grade: data['grado'],
             identification: {
                 id: data['identificacion'], 
-                type: data['tipo identification']
+                type: data['tipo identificacion']
             },
             annualAmountText: data['texto valor anual'],
             annualAmount: data['valor anual'],

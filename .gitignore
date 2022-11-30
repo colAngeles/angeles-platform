@@ -7,6 +7,7 @@ createToken_copy.js
 autocannon.js
 modules.py
 Recorder.js
+testing.js
 # Logs
 logs
 *.log
@@ -25,7 +26,7 @@ coverage.html
 .cover*
 
 # Dependency directory
-
+node_modules
 # Example build directory
 example/dist
 .publish
