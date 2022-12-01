@@ -1,5 +1,4 @@
 require('./database/connect');
-var compression = require('compression')
 const { Server } = require('socket.io');
 const { resolve } = require("path");
 const deleteFile = require('./modules/deleteFile');
@@ -18,7 +17,6 @@ const cookieParser = require('cookie-parser');
 const ip = require("./modules/getIp");
 const upload = multer({ dest: 'src/dashboarduploads/' });
 const app = express();
-app.use(compression());
 let initConfig = [
     {
         user: "noreply@colegiolosangelestunja.com",
