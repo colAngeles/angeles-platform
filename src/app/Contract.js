@@ -16,7 +16,6 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Snackbar from '@mui/material/Snackbar';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import Footer from './components/Footer';
 const queryClient = new QueryClient();
 
@@ -159,7 +158,6 @@ function Contract() {
                 }
                 {
                     signURL  && !contractLoaded ? (
-                    <>
                         <BlobProvider document={<Doc signURL={signURL}/>}>
                             {({ blob }) => {
                                 if (blob) {
@@ -168,14 +166,11 @@ function Contract() {
                                 }
                             }}
                         </BlobProvider>
-                    </>
-                    
                     ): null
                 }
 
                 {
                     signURL  && !promissoryLoaded ? (
-                    <>
                         <BlobProvider document={<Promissorynote signURL={signURL}/>}>
                             {({ blob }) => {
                                 if (blob) {
@@ -184,7 +179,6 @@ function Contract() {
                                 }
                             }}
                         </BlobProvider>
-                    </>
                     ): null
                 }
                 {
@@ -232,6 +226,5 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <QueryClientProvider client={queryClient}>
         <Contract />
-        <ReactQueryDevtools />
     </QueryClientProvider>
 );

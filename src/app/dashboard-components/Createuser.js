@@ -86,10 +86,12 @@ export default function Createuser() {
                     formData.delete('anotherAmountText');
                     continue
                 }
+                if (pair[0].includes('mother') || pair[0].includes('father')) continue
                 setInfocontent({infoType: 'warning', title: '', message: 'Hay campos requeridos sin diligenciar.'});
                 setOpen(true);
                 return
             }
+            
         }
         fetch('/add-user', {
             method: 'PUT',

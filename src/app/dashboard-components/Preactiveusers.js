@@ -35,7 +35,7 @@ export default function Preactiveusers(){
                         {data['docs'].map((value, index) => {
                             const labelId = `checkbox-list-label-${value}`;
                             return (
-                                <div id={value.identification.id} style={{backgroundColor: '#162f54', width: '100%', maxWidth: '90%', borderRadius: '10px', margin: '15px 0'}}>
+                                <div key={index} id={value.identification.id} style={{backgroundColor: '#162f54', width: '100%', maxWidth: '90%', borderRadius: '10px', margin: '15px 0'}}>
                                     <List sx={{position: 'static',  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"', bgcolor: 'background.paper',backgroundColor: '#00000075', color: 'rgb(237, 242, 247)'}}>
                                         <Student value={value}  index={index} labelId={labelId} setSnack={(open, info) => {
                                                 info ? setInfo(info): null

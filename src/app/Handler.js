@@ -8,8 +8,8 @@ function Handler() {
     let info = document.getElementById('info').value;
     return(
         <section>
-            <div class={styles["background"]}></div>
-            <div class={styles["description"]}>
+            <div className={styles["background"]}></div>
+            <div className={styles["description"]}>
                 <h1>{title}</h1>
                 <p>
                     {info}

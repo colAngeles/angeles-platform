@@ -18,8 +18,7 @@ import Createuser from './dashboard-components/Createuser';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { mainListItems } from './dashboard-components/listItems';
+import { MainListItems } from './dashboard-components/listItems';
 import Uploadusers from './dashboard-components/Uploadusers';
 import Activeusers from './dashboard-components/Activeusers'
 import Users from './dashboard-components/Users'
@@ -112,7 +111,7 @@ function DashboardContent() {
                   noWrap
                   sx={{ flexGrow: 1 }}
                 >
-                  Colegio Los Ángeles
+                  
                 </Typography>
                 <IconButton color="inherit">
                   <Badge badgeContent={4} color="secondary">
@@ -139,9 +138,7 @@ function DashboardContent() {
               </Toolbar>
               <Divider sx={{borderTop: '0.5px solid rgba(178, 186, 194, 0.5)'}}/>
               <List component="nav" sx={{color: '#fff', justifyContent: 'center'}}>
-                {mainListItems}
-                {/* <Divider sx={{ my: 1, backgroundColor: 'rgb(17, 24, 39)'}} /> */}
-                {/* {secondaryListItems} */}
+                {<MainListItems/>}
               </List>
             </Drawer>
             <Box
@@ -178,7 +175,6 @@ export default function Dashboard() {
       <BrowserRouter>
         <DashboardContent />
       </BrowserRouter>
-      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }

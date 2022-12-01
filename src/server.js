@@ -36,13 +36,25 @@ else {
             pass: "zofczrflfjlsgyfq"
         },
         {
+            user: "noreply@colegiolosangelestunja.com",
+            pass: "xezhnrnokmmebfst"
+        },
+        {
+            user: "no-reply@colegiolosangelestunja.com",
+            pass: "xreidpdzedgpijgu"
+        },
+        {
+            user: "no.reply@colegiolosangelestunja.com",
+            pass: "htslqnfeypumdwsq"
+        },
+        {
             user: "duvanmotavita@colegiolosangelestunja.com",
             pass: "nepdrwmneaqcjwhs"
         },
         {
             user: "angelesmoodle@gmail.com",
             pass: "ygjpwmulsxtskkzi"
-        }
+        },
     ]
     const sender = new Email(initConfig);
     app.use(express.json());
@@ -52,7 +64,7 @@ else {
 
     app.get('/', (req, res, next) => {
         res.clearCookie('test', {path: '/', signed: true});
-        res.sendFile(resolve('src/public/index.html'));
+        res.render('index', {name: 'index'});
     });
 
     app.post('/get-token', upload.none(), async (req, res, next)=> {

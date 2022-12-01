@@ -1,7 +1,7 @@
 let tolo = /\.css$/;
 module.exports = {
-    // mode: 'production',
-    mode: 'development',
+    mode: 'production',
+    // mode: 'development',
     entry: { 
       index: '/src/app/Index.js',
       contract: '/src/app/Contract.js',

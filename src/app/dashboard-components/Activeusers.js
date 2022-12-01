@@ -9,6 +9,7 @@ import ActiveUserComponent from './ActiveUserComponent'
 import Pagination from '@mui/material/Pagination';
 import { Snackbar } from "@mui/material";
 import Alert from "@mui/material/Alert";
+import Downloadfile from './Downloadfile'
 export default function Preactiveusers(){
     let [page, setPage] = useState(1);
     let [limit, setLimit] = useState(30);
@@ -24,7 +25,7 @@ export default function Preactiveusers(){
                   })
         return res.json()
     }
-    const {data, error, isLoading} = useQuery(['preactiveusers', page, limit], getData);
+    const {data, error, isLoading} = useQuery(['activeusers', page, limit], getData);
     return (
         <>
             <div className={styles['main-container']}>
@@ -32,10 +33,12 @@ export default function Preactiveusers(){
                 !data ? <Skeleton variant="rectangular" width="100%" height='100%' /> : (
                     <>
                         <Toolbar />
+                        <h2 style={{width: '100%', color: 'rgb(237, 242, 247)', fontSize: '2rem', paddingLeft: '25px'}}>Usuarios Activos</h2>
+                        <Downloadfile />
                         {data['docs'].map((value, index) => {
                             const labelId = `checkbox-list-label-${value}`;
                             return (
-                                <div id={value.identification.id} style={{backgroundColor: '#162f54', width: '100%', maxWidth: '90%', borderRadius: '10px', margin: '15px 0'}}>
+                                <div key={index} id={value.identification.id} style={{backgroundColor: '#162f54', width: '100%', maxWidth: '90%', borderRadius: '10px', margin: '15px 0'}}>
                                     <List sx={{position: 'static',  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"', bgcolor: 'background.paper',backgroundColor: '#00000075', color: 'rgb(237, 242, 247)'}}>
                                         <ActiveUserComponent value={value}  index={index} labelId={labelId} setSnack={(open, info) => {
                                                 info ? setInfo(info): null

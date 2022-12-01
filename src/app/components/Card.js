@@ -7,7 +7,6 @@ export default function Card({ images, setLoaderState }){
         let childrenSize = $cardsContainer.children.length;
         let image = document.getElementById('trigger-load');
         image.onload = (event) => {
-            console.log('loaded')
             setLoaderState(false);
         }
         let timerHandle = ()=> {
@@ -45,7 +44,7 @@ export default function Card({ images, setLoaderState }){
                 {
                     images.map((img, index)=>{
                         return (
-                                <div className={`${styles["item"]} ${styles["image" + (index + 1)]}`}>
+                                <div key={index} className={`${styles["item"]} ${styles["image" + (index + 1)]}`}>
                                     <img src={img} />
                                 </div>
                         )

@@ -93,15 +93,13 @@ export default function SliderView(props) {
                         </div>
                         {props.content.map((element, index) => {
                                 return (
-                                    <>
-                                        <div className={styles["description"]} data-page={index + 2}>
-                                            <h3>{element.title}</h3>
-                                            <p>{element.description}</p>
-                                            <a href="#documents" style={{textDecoration: 'none'}}>
-                                                <Button variant="contained" component="label" sx={{marginTop: "10px"}} onClick={activefiles}>Comenzar</Button>
-                                            </a>
-                                        </div>
-                                    </>
+                                    <div key={index} className={styles["description"]} data-page={index + 2}>
+                                        <h3>{element.title}</h3>
+                                        <p>{element.description}</p>
+                                        <a href="#documents" style={{textDecoration: 'none'}}>
+                                            <Button variant="contained" component="label" sx={{marginTop: "10px"}} onClick={activefiles}>Comenzar</Button>
+                                        </a>
+                                    </div>
                                 )
                         })}
                     </div>
@@ -113,7 +111,7 @@ export default function SliderView(props) {
             <div className={styles["slider-main-image-container"]}>
                     {props.content.map((element, index) => {
                         return (
-                            <div className={`${styles["image-container"]} image${index + 2}`}>
+                            <div key={index} className={`${styles["image-container"]} image${index + 2}`}>
                                 <img src={element.image} className={`${styles["image"]}`} />
                             </div>
                         )

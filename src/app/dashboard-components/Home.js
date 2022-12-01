@@ -39,7 +39,7 @@ export default function Home() {
         let res = await fetch('/data-home', {
                       method: 'GET'
                   })
-        return res.json()
+        return res.json();
     }
     const {data, error, isLoading} = useQuery('amount', getData);
     return (

@@ -1,4 +1,5 @@
 require('./database/connect');
+var compression = require('compression')
 const { Server } = require('socket.io');
 const { resolve } = require("path");
 const deleteFile = require('./modules/deleteFile');
@@ -10,13 +11,27 @@ const addUser = require('./modules/addUser');
 const Admin = require('./database/models/admin');
 const updateStatus = require('./modules/updateStatus');
 const uploadusers = require('./modules/uploadusers');
+const createWorkbook = require('./modules/createWorkbook');
 const express = require('express');
 const multer  = require('multer');
 const cookieParser = require('cookie-parser');
 const ip = require("./modules/getIp");
 const upload = multer({ dest: 'src/dashboarduploads/' });
 const app = express();
+app.use(compression());
 let initConfig = [
+    {
+        user: "noreply@colegiolosangelestunja.com",
+        pass: "xezhnrnokmmebfst"
+    },
+    {
+        user: "no.reply@colegiolosangelestunja.com",
+        pass: "htslqnfeypumdwsq"
+    },
+    {
+        user: "no-reply@colegiolosangelestunja.com",
+        pass: "xreidpdzedgpijgu"
+    },
     {
         user: "matriculas@colegiolosangelestunja.com",
         pass: "zofczrflfjlsgyfq"
@@ -28,7 +43,7 @@ let initConfig = [
     {
         user: "angelesmoodle@gmail.com",
         pass: "ygjpwmulsxtskkzi"
-    }
+    },
 ]
 const sender = new Email(initConfig)
 
@@ -38,12 +53,13 @@ app.use(express.json());
 app.use(cookieParser('qnapcloud'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(resolve('src/public')));
-
+app.get('/', (req, res) => {
+    res.render('index', {name: 'adminlog'});
+});
 app.get('/admin-login', (req, res) => {
     res.clearCookie('sesskey', {path: '/'});
     res.sendFile(resolve('src/public/admin.html'));
 });
-
 app.post('/admin', upload.none(), async (req, res) => {
     const { user, pass } = req.body;
     const userdb = await Admin.findOne({user});
@@ -60,7 +76,7 @@ app.post('/admin', upload.none(), async (req, res) => {
     res.status(403).json({refused: true})
 })
 
-app.get('/dashboard/:path', (req, res) => {
+app.get(/\/dashboard\/?(:path)?/, (req, res) => {
     if (req.signedCookies.sesskey) {
         res.sendFile(resolve('src/public/dashboard.html'));
         return
@@ -104,7 +120,6 @@ app.get('/active-users', async (req, res) => {
         let result = await Students.paginate({active: true, preActive: true}, {limit, page});
         res.json(result);
     }
-    // req.query.id
 })
 app.get('/preactive-users', async (req, res) => {
     let { limit, page } = req.query;
@@ -112,7 +127,6 @@ app.get('/preactive-users', async (req, res) => {
         let result = await Students.paginate({active: false, preActive: true}, {limit, page});
         res.json(result);
     }
-    // req.query.id
 })
 app.get('/inactive-users', async (req, res) => {
     let { limit, page } = req.query;
@@ -138,7 +152,8 @@ app.get('/download-file', (req, res) => {
         res.sendFile(resolve(`src/uploads/${req.query.filename}`));
     }
 })
-app.get('/download-active-users', async (req, res) => {
+app.get('/download-active-users-csv', async (req, res) => {
+    if (req.signedCookies.sesskey) { 
         let data = await Students.find({active: true, preActive: true});
         if (data) {
             let file = fs.createWriteStream(resolve('src/dashboarduploads/active_users.csv'))
@@ -149,6 +164,17 @@ app.get('/download-active-users', async (req, res) => {
             file.end()
             res.download(resolve('src/dashboarduploads/active_users.csv'));
         }
+    }
+})
+app.get('/download-active-users-excel', async (req, res) => {
+    if (req.signedCookies.sesskey) { 
+        let data = await Students.find({active: true, preActive: true});
+        if (data) {
+            createWorkbook('Usuarios Activos', data, res);
+            return
+        }
+        res.status(404).send();
+    }
 })
 app.post('/approve', upload.none(), async (req, res) => {
     if (req.signedCookies.sesskey) {
@@ -202,8 +228,8 @@ app.use((err, _, res, next) => {
 })
 
 let httpServer = app.listen(4000, ()=> {
-    if(!ip) return console.log(`Server on http://localhost:3000 -> ${process.pid}`);
-    console.log(`Server on http://${ip}:3000 -> ${process.pid}`);
+    if(!ip) return console.log(`Server on http://localhost:4000`);
+    console.log(`Server on http://${ip}:4000-> ${process.pid}`);
 })
 
 let io = new Server(httpServer);

@@ -233,7 +233,7 @@ export default function Student({ value, index, labelId, setSnack }) {
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 />
                                     </ListItemIcon>
-                                {value.name} {value.surname}  {value.grade}
+                                {value.name} {value.surname}
                             </span>
                             <span style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
                                 <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: 'rgb(156, 163, 175)'}}>

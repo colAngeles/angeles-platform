@@ -158,7 +158,7 @@ export default function Student({ value, index, labelId, setSnack }) {
                         sx={{borderTop: '0.5px solid rgba(45, 55, 72, 0.2)', borderBottom: '0.5px solid rgba(45, 55, 72, 0.2)', height: '80px' }}
                         disablePadding
                     >
-                        <ListItemButton role={undefined}  sx={{display: 'grid', gridTemplateColumns: '50% 1fr auto', overflowX: 'scroll'}}>
+                        <ListItemButton role={undefined}  sx={{display: 'grid', gridTemplateColumns: '1fr', overflowX: 'scroll'}}>
                             <span>
                             <ListItemIcon>
                                 <Checkbox
@@ -168,39 +168,7 @@ export default function Student({ value, index, labelId, setSnack }) {
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 />
                                     </ListItemIcon>
-                                {value.name} {value.surname}
-                            </span>
-                            <span style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}}>
-                                    Audio
-                                    <IconButton 
-                                        sx={{color: 'rgb(156, 163, 175)'}}
-                                        onClick={!sound.current ? loadAudio: handlePlay}
-                                    >
-                                        {
-                                            !play ? <PlayCircleIcon sx={{fontSize:'2rem'}}/> : <PauseCircleIcon sx={{fontSize:'2.5rem'}} />
-                                        }
-                                    </IconButton>
-                                </ListItemIcon>
-                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}} >
-                                    Contrato
-                                    <IconButton 
-                                        onClick={downloadContract}
-                                        sx={{color: 'rgb(156, 163, 175)'}}
-                                    >
-                                        <PictureAsPdfIcon sx={{fontSize:'2rem'}}/>
-                                    </IconButton>
-                                </ListItemIcon>
-                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}}>
-                                    Pagare
-                                    <IconButton 
-                                        color='primary' 
-                                        onClick={downloadPromissorynote}
-                                        sx={{color: 'rgb(156, 163, 175)'}}
-                                    >
-                                        <PictureAsPdfIcon sx={{fontSize:'2rem'}}/>
-                                    </IconButton>
-                                </ListItemIcon>
+                                {value.name} {value.surname} 
                             </span>
                         </ListItemButton>
                     </ListItem>

@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Stack from '@mui/material/Stack';
 import styles from '../css/preactiveusers.module.css'
 import Skeleton from '@mui/material/Skeleton';
-import Student from './Student'
+import InActiveUserComponent from './InActiveUserComponent'
 import Pagination from '@mui/material/Pagination';
 import { Snackbar } from "@mui/material";
 import Alert from "@mui/material/Alert";
@@ -24,7 +24,7 @@ export default function Preactiveusers(){
                   })
         return res.json()
     }
-    const {data, error, isLoading} = useQuery(['preactiveusers', page, limit], getData);
+    const {data, error, isLoading} = useQuery(['inactiveusers', page, limit], getData);
     return (
         <>
             <div className={styles['main-container']}>
@@ -35,9 +35,9 @@ export default function Preactiveusers(){
                                     {data['docs'].map((value, index) => {
                                         const labelId = `checkbox-list-label-${value}`;
                                         return (
-                                            <div id={value.identification.id} style={{backgroundColor: '#162f54', width: '100%', maxWidth: '90%', borderRadius: '10px', margin: '15px 0'}}>
+                                            <div key={index} id={value.identification.id} style={{backgroundColor: '#162f54', width: '100%', maxWidth: '90%', borderRadius: '10px', margin: '15px 0'}}>
                                                 <List sx={{position: 'static',  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"', bgcolor: 'background.paper',backgroundColor: '#00000075', color: 'rgb(237, 242, 247)'}}>
-                                                    <Student value={value}  index={index} labelId={labelId} setSnack={(open, info) => {
+                                                    <InActiveUserComponent value={value}  index={index} labelId={labelId} setSnack={(open, info) => {
                                                             info ? setInfo(info): null
                                                             setOpenSnack(open);
                                                     }}/>

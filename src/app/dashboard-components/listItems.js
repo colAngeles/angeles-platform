@@ -13,77 +13,80 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import NoAccountsIcon from '@mui/icons-material/NoAccounts';
 import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
-export const mainListItems = (
-  <React.Fragment>
-    <NavLink to="/dashboard" className={styles["nav-link"]}>
-      <ListItemButton onClick={() => {console.log("Tolo")}}>
-        <ListItemIcon>
-          <DashboardIcon  sx={{color: '#fff'}}/>
-        </ListItemIcon>
-        <ListItemText primary="Inicio" />
-      </ListItemButton>
-    </NavLink>
+export const MainListItems = () => {
+    let location = useLocation();
+    return (
+      <React.Fragment>
+        <NavLink to="/dashboard" className={styles["nav-link"]}>
+          <ListItemButton >
+            <ListItemIcon>
+              <DashboardIcon  sx={{color: location.pathname == '/dashboard' ? '#F7901E' : '#fff'}}/>
+            </ListItemIcon>
+            <ListItemText primary="Inicio" />
+          </ListItemButton>
+        </NavLink>
+        
+        <NavLink to="/dashboard/create-user" className={styles["nav-link"]}>
+          <ListItemButton>
+            <ListItemIcon sx={{color: '#fff'}}>
+              <PersonAddIcon sx={{color: location.pathname == '/dashboard/create-user' ? '#F7901E' : '#fff'}}/>
+            </ListItemIcon>
+            <ListItemText primary="Crear Usuario" />
+          </ListItemButton>
+        </NavLink>
+        
+        <NavLink to="/dashboard/upload-users" className={styles["nav-link"]}>
+          <ListItemButton>
+            <ListItemIcon sx={{color: '#fff'}}>
+              <GroupAddIcon sx={{color: location.pathname == '/dashboard/upload-users' ? '#F7901E' : '#fff'}}/>
+            </ListItemIcon>
+            <ListItemText primary="Subir Usuarios" />
+          </ListItemButton>
+        </NavLink>
     
-    <NavLink to="/dashboard/create-user" className={styles["nav-link"]}>
-      <ListItemButton>
-        <ListItemIcon sx={{color: '#fff'}}>
-          <PersonAddIcon />
-        </ListItemIcon>
-        <ListItemText primary="Crear Usuario" />
-      </ListItemButton>
-    </NavLink>
+        <NavLink to="/dashboard/users" className={styles["nav-link"]}>
+          <ListItemButton>
+            <ListItemIcon sx={{color: '#fff'}}>
+              <PeopleIcon sx={{color: location.pathname == '/dashboard/users' ? '#F7901E' : '#fff'}}/>
+            </ListItemIcon>
+            <ListItemText primary="Usuarios" />
+          </ListItemButton>
+        </NavLink>
     
-    <NavLink to="/dashboard/upload-users" className={styles["nav-link"]}>
-      <ListItemButton>
-        <ListItemIcon sx={{color: '#fff'}}>
-          <GroupAddIcon />
-        </ListItemIcon>
-        <ListItemText primary="Subir Usuarios" />
-      </ListItemButton>
-    </NavLink>
-
-    <NavLink to="/dashboard/users" className={styles["nav-link"]}>
-      <ListItemButton>
-        <ListItemIcon sx={{color: '#fff'}}>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Usuarios" />
-      </ListItemButton>
-    </NavLink>
-
-    <NavLink to="/dashboard/active-users" className={styles["nav-link"]}>
-      <ListItemButton>
-        <ListItemIcon sx={{color: '#fff'}}>
-          <VerifiedUserIcon />
-        </ListItemIcon>
-        <ListItemText primary="Usuarios Activados" />
-      </ListItemButton>
-    </NavLink>
-
-    <NavLink to="/dashboard/preactive-users" className={styles["nav-link"]}>
-      <ListItemButton>
-          <ListItemIcon sx={{color: '#fff'}}>
-            <SwitchAccountIcon  />
-          </ListItemIcon>
-          <ListItemText primary="Usuarios Preactivados" />
-      </ListItemButton>
-    </NavLink>
-
-    <NavLink to="/dashboard/inactive-users" className={styles["nav-link"]}>
-      <ListItemButton>
-        <ListItemIcon sx={{color: '#fff'}}>
-          <NoAccountsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Usuarios Faltantes" />
-      </ListItemButton>
-    </NavLink>
-  </React.Fragment>
-);
+        <NavLink to="/dashboard/active-users" className={styles["nav-link"]}>
+          <ListItemButton>
+            <ListItemIcon sx={{color: '#fff'}}>
+              <VerifiedUserIcon sx={{color: location.pathname == '/dashboard/active-users' ? '#F7901E' : '#fff'}}/>
+            </ListItemIcon>
+            <ListItemText primary="Usuarios Activados" />
+          </ListItemButton>
+        </NavLink>
+    
+        <NavLink to="/dashboard/preactive-users" className={styles["nav-link"]}>
+          <ListItemButton>
+              <ListItemIcon sx={{color: '#fff'}}>
+                <SwitchAccountIcon  sx={{color: location.pathname == '/dashboard/preactive-users' ? '#F7901E' : '#fff'}}/>
+              </ListItemIcon>
+              <ListItemText primary="Usuarios Preactivados" />
+          </ListItemButton>
+        </NavLink>
+    
+        <NavLink to="/dashboard/inactive-users" className={styles["nav-link"]}>
+          <ListItemButton>
+            <ListItemIcon sx={{color: '#fff'}}>
+              <NoAccountsIcon sx={{color: location.pathname == '/dashboard/inactive-users' ? '#F7901E' : '#fff'}}/>
+            </ListItemIcon>
+            <ListItemText primary="Usuarios Faltantes" />
+          </ListItemButton>
+        </NavLink>
+      </React.Fragment>
+    );
+  }
+  
 
 export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
-      Saved reports
     </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
