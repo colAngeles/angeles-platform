@@ -1,4 +1,5 @@
 dashboarduploads
+node_modules
 uploads
 .editorconfig
 test.js
