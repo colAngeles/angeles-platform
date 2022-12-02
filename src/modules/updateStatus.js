@@ -11,7 +11,7 @@ async function updateStatus({person, files, identification, success},  sender) {
                     <p>¡Cordial saludo ${person.name.split(' ')[0]} ${person.surname.split(' ')[0]}!</p>
     
                     <p>Queremos confirmarle que el proceso de la firma del contrato ha sido exitoso.</p>
-                    <p>Ahora podrá continuar con la siguiente etapa consistente en la descarga del recibo para el pago en sucursales <a href="http://colegiolosangelestunja.com/colangeles/index.php?r=site/matricula">Bancolombia (dando clic aquí)</a>. También podrá efectuarlo  via <a href="https://www.psepagos.co/PSEHostingUI/ShowTicketOffice.aspx?ID=4075">PSE (dando clic aquí)</a>. En caso que ya haya hecho el pago, diríjase al último y tercer paso linkcompucol </p>
+                    <p>Ahora podrá continuar con la siguiente etapa consistente en la descarga del recibo para el pago en sucursales <a href="http://colegiolosangelestunja.com/colangeles/index.php?r=site/matricula">Bancolombia (dando clic aquí)</a>. También podrá efectuarlo  via <a href="https://www.psepagos.co/PSEHostingUI/ShowTicketOffice.aspx?ID=4075">PSE (dando clic aquí)</a>. En caso que ya haya hecho el pago, diríjase al último y tercer paso en <a href="https://edain.compucol.co/colegios/tunjacolegiolosangeles/">compucol (dando clic aquí)</a> </p>
     
                     <p><a href="www.avcla.com">Matriculas ${new Date().getFullYear()} - Colegio Los Ángeles</a></p>
 
