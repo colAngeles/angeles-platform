@@ -11,7 +11,7 @@ async function updateStatus({person, files, identification, success},  sender) {
                     <p>¡Cordial saludo ${person.name.split(' ')[0]} ${person.surname.split(' ')[0]}!</p>
     
                     <p>Queremos confirmarle que el proceso de la firma del contrato ha sido exitoso.</p>
-                    <p>En 24 horas podrá continuar con la siguiente etapa consistente en la descarga del recibo de pago de matrícula desde nuestra página web</p>
+                    <p>Ahora podrá continuar con la siguiente etapa consistente en la descarga del recibo para el pago en sucursales <a href="http://colegiolosangelestunja.com/colangeles/index.php?r=site/matricula">Bancolombia (dando clic aquí)</a>. También podrá efectuarlo  via <a href="https://www.psepagos.co/PSEHostingUI/ShowTicketOffice.aspx?ID=4075">PSE (dando clic aquí)</a>. En caso que ya haya hecho el pago, diríjase al último y tercer paso linkcompucol </p>
     
                     <p><a href="www.avcla.com">Matriculas ${new Date().getFullYear()} - Colegio Los Ángeles</a></p>
 
@@ -69,9 +69,7 @@ async function updateStatus({person, files, identification, success},  sender) {
 
                 <p>Queremos informarle que los documentos diligenciados en la plataforma de matricula han sido revisados. Se han encontrado algunas inconsistencias, por ende, recomendamos volver a realizar el proceso siguiendo cada una de las intrucciones dadas.</p>
 
-                <p><a href="www.avcla.com">Matriculas ${new Date().getFullYear()} - Colegio Los Ángeles</a></p>
-
-                <p style="text-align: justify;">Si tiene alguna petición, puede escribirnos al correo <a style="color: #f7901e;" href="wa.me//+573228317980">admin@colegiolosangelestunja.com</a></p>
+                <p><a href="www.matriculascolegiolosangelestunja.com">Matriculas ${new Date().getFullYear()} - Colegio Los Ángeles</a></p>
                 
                 <p>Cordialmente,</p> 
                 <br/>

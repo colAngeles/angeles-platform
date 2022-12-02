@@ -88,7 +88,7 @@ export default function Form(props) {
                 tokenInput.classList.remove(styles["hidden"])
                 setLoading(false)
                 setHandler(SignButton)
-                setInfocontent({infoType: 'success', title: 'Token Activado', message: 'Por favor, revisa tu correo electrónico.'})
+                setInfocontent({infoType: 'success', title: 'Token Activado', message: 'Por favor, revisa tu correo electrónico. En caso de no recibir el token, escribenos a matriculas@colegiolosangelestunja.com'})
                 setOpen(true)
                 return
             }

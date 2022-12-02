@@ -49,6 +49,7 @@ function Contract() {
             console.error('Pdf or Audio empty');
             return
         }
+        setLoading(true);
         fetch('/save-data', {
             method: 'POST',
             body: formData,
@@ -63,34 +64,13 @@ function Contract() {
                 return
             }
         })
-        .catch( e => {
-            console.log(e);
+        .catch( _ => {
+            setLoading(false);
             setOpen(true);
             return
         })
     }
-    let sliderviewContent = [
-        {
-            title: 'Matriculas 2023', 
-            description: 'En éste panel podrá encontrar las instrucciones que debera seguir para realizar el proceso de matricula de manera exitosa. Para ver cada una de ellas por favor utilice los botenes de paginación, ubicados el parte inferior.\nEn cualquier moneto puede puede dar clic en COMENZAR para diligenciar los documentos.', 
-            image: './media/01.jpg'
-        },
-        {
-            title: 'Instalación y Monitoreo de Alarmas',
-            description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem quas, aut nisi distinctio minus adipisci cumque nesciunt doloribus laboriosam eveniet, maiores inventore assumenda nihil. Quaerat reprehenderit modi consectetur iste animi!', 
-            image: './media/02.jpg'
-        },
-        {
-            title: 'Venta e instalación de cámaras',
-            description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem quas, aut nisi distinctio minus adipisci cumque nesciunt doloribus laboriosam eveniet, maiores inventore assumenda nihil. Quaerat reprehenderit modi consectetur iste animi!', 
-            image: './media/03.jpg'
-        },
-        {
-            title: 'Video Vigilancia',
-            description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem quas, aut nisi distinctio minus adipisci cumque nesciunt doloribus laboriosam eveniet, maiores inventore assumenda nihil. Quaerat reprehenderit modi consectetur iste animi!', 
-            image: './media/04.jpg'
-        },
-    ]
+    let sliderviewContent = []
     useEffect(() => {
         if (showMainButton) {
             setTimeout(() => {
