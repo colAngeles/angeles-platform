@@ -3,10 +3,10 @@ module.exports = {
     mode: 'production',
     // mode: 'development',
     entry: { 
-      index: '/src/app/Index.js',
-      contract: '/src/app/Contract.js',
-      handler: '/src/app/Handler.js',
-      adminlog: '/src/app/AdminLog.js',
+      // index: '/src/app/Index.js',
+      // contract: '/src/app/Contract.js',
+      // handler: '/src/app/Handler.js',
+      // adminlog: '/src/app/AdminLog.js',
       dashboard: '/src/app/Dashboard.js',
     },
     output: {
