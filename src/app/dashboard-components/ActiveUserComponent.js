@@ -160,15 +160,15 @@ export default function Student({ value, index, labelId, setSnack }) {
                     >
                         <ListItemButton role={undefined}  sx={{display: 'grid', gridTemplateColumns: '50% 1fr auto', overflowX: 'scroll'}}>
                             <span>
-                            <ListItemIcon>
-                                <Checkbox
-                                sx={{color: 'rgb(156, 163, 175)'}}
-                                edge="start"
-                                disableRipple
-                                inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                                    </ListItemIcon>
-                                {value.name} {value.surname}
+                                <ListItemIcon>
+                                    <Checkbox
+                                    sx={{color: 'rgb(156, 163, 175)'}}
+                                    edge="start"
+                                    disableRipple
+                                    inputProps={{ 'aria-labelledby': labelId }}
+                                    />
+                                </ListItemIcon>
+                                {value.name} {value.surname} ID: {value.identification.id}
                             </span>
                             <span style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
                                 <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}}>
@@ -186,6 +186,16 @@ export default function Student({ value, index, labelId, setSnack }) {
                                     Contrato
                                     <IconButton 
                                         onClick={downloadContract}
+                                        sx={{color: 'rgb(156, 163, 175)'}}
+                                    >
+                                        <PictureAsPdfIcon sx={{fontSize:'2rem'}}/>
+                                    </IconButton>
+                                </ListItemIcon>
+                                <ListItemIcon sx={{display: 'flex', alignItems: 'center', color: '#fff'}}>
+                                    Pagare
+                                    <IconButton 
+                                        color='primary' 
+                                        onClick={downloadPromissorynote}
                                         sx={{color: 'rgb(156, 163, 175)'}}
                                     >
                                         <PictureAsPdfIcon sx={{fontSize:'2rem'}}/>

@@ -35,6 +35,14 @@ export default function Preactiveusers(){
                         <Toolbar />
                         <h2 style={{width: '100%', color: 'rgb(237, 242, 247)', fontSize: '2rem', paddingLeft: '25px'}}>Usuarios Activos</h2>
                         <Downloadfile />
+                        <div style={{backgroundColor: '#162f54', width: '100%', maxWidth: '90%', height: '50px', borderRadius: '10px', margin: '15px 0', display: 'grid', gridTemplateColumns: '50% 1fr auto', overflowX: 'scroll'}}>
+                            <span>
+                                Nombre de Usuario
+                            </span>
+                            <span>
+                                Nombre de Usuario
+                            </span>
+                        </div>
                         {data['docs'].map((value, index) => {
                             const labelId = `checkbox-list-label-${value}`;
                             return (

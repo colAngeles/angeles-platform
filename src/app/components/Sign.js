@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import 'reactjs-popup/dist/index.css';
-import '../css/modal.css'
+import '../css/modal.css';
 import styles from '../css/sign.module.css';
 import Popup from 'reactjs-popup';
 import SignatureCanvas from 'react-signature-canvas';
