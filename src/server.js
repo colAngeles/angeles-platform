@@ -10,7 +10,7 @@ const multer  = require('multer');
 
 if (cluster.isMaster) {
     const { cpus } = require('os');
-    let numCPUs = cpus().length - 1;
+    let numCPUs = cpus().length / 2;
     console.log(`Primary ${process.pid} is running`);
 
     // Fork workers.

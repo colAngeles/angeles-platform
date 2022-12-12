@@ -12,7 +12,7 @@ export default function useRecorder() {
 
   useEffect(() => {
     // Lazily obtain recorder first time we're recording.
-    if (recorder === null) {
+    if (!recorder) {
       if (isRecording) {
         // requestRecorder().then(setRecorder, console.error);
         (async function (){

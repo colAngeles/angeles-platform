@@ -15,12 +15,13 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from "@mui/material/AlertTitle";
 import Collapse from "@mui/material/Collapse";
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.SpeechRecognitionAlternative;
 
-const mic = new SpeechRecognition();
-mic.continuous = true;
-mic.interimResults = false;
-mic.lang = 'es-ES';
+// const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.SpeechRecognitionAlternative;
+
+// const mic = new SpeechRecognition();
+// mic.continuous = true;
+// mic.interimResults = false;
+// mic.lang = 'es-ES';
 
 export default function Speech({ getAudio, close, hideButton}) {
     let [audio, _, startRecording, stopRecording] = useRecorder();
@@ -33,7 +34,7 @@ export default function Speech({ getAudio, close, hideButton}) {
     const month = monthNum == 0  ? 'Enero' : monthNum == 1 ? 'Febrero' : monthNum == 2 ? 'Marzo': monthNum == 3 ? 'Abril': monthNum == 4 ? 'Mayo': monthNum == 5 ? 'Junio': monthNum == 6 ? 'Julio': monthNum == 7 ? 'Agosto': monthNum == 8 ? 'Septiembre': monthNum == 9 ? 'Octubre': monthNum == 10 ? 'Noviembre': monthNum == 11 ? 'Diciembre': ''
     const [isListening, setIsListening] = useState(false);
     const [play, setPlay] = useState(false);
-    const [note, setNote] = useState(null);
+    // const [note, setNote] = useState(null);
     const [alertModal, setAlertModal] = useState(false);
     const [infoContent, setInfocontent] = useState("");
     let sound = useRef('');

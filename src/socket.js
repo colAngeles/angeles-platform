@@ -107,7 +107,7 @@ app.put('/upload-users', upload.single('csvfile'), (req, res) => {
 
 app.get('/data-home', async (req, res) => {
     if (req.signedCookies.sesskey) {
-        let [amountUsers, activeUsers, preActiveUser] = await Promise.all([Students.find({}).count(), Students.find({$where: 'this.active == true && this.preActive == false'}).count(), Students.find({$where: 'this.active == false && this.preActive == true'}).count()]) 
+        let [amountUsers, activeUsers, preActiveUser] = await Promise.all([Students.find({}).count(), Students.find({$where: 'this.active == true && this.preActive == true'}).count(), Students.find({$where: 'this.active == false && this.preActive == true'}).count()]) 
         res.json({amountUsers, activeUsers, preActiveUser});
         return
     }
@@ -178,16 +178,16 @@ app.post('/approve', upload.none(), async (req, res) => {
     if (req.signedCookies.sesskey) {
         let person = JSON.parse(req.body.person);
         let files = JSON.parse(req.body.files);
-        let identification = req.body.identification;
-        let conf = await updateStatus({person, files, identification, success: true}, sender);
+        let student = JSON.parse(req.body.student);
+        let conf = await updateStatus({person, files, student, success: true}, sender);
         res.json(conf);
     }
 })
 app.post('/disapprove', upload.none(), async (req, res) => {
     let person = JSON.parse(req.body.person);
     let files = JSON.parse(req.body.files);
-    let identification = req.body.identification;
-    let conf = await updateStatus({person, files, identification, success: false}, sender);
+    let student = JSON.parse(req.body.student);
+    let conf = await updateStatus({person, files, student, success: false}, sender);
     if (conf.success) {
         let [result1, result2, result3] = await Promise.all([deleteFile(resolve(`src/uploads/${files.contract}`)), deleteFile(resolve(`src/uploads/${files.promissorynote}`)), deleteFile(resolve(`src/uploads/${files.audio}`))]);
         if (result1 && result2 && result3) {

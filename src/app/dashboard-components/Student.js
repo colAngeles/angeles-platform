@@ -24,7 +24,7 @@ export default function Student({ value, index, labelId, setSnack }) {
         let formData = new FormData();
         formData.set('person', JSON.stringify(person));
         formData.set('files', JSON.stringify(value.pathFiles));
-        formData.set('identification', value.identification.id);
+        formData.set('student', JSON.stringify({id: value.identification.id, name: value.name, surname: value.surname}));
         fetch('/approve', {
             method: 'POST',
             body: formData
@@ -88,7 +88,7 @@ export default function Student({ value, index, labelId, setSnack }) {
         let formData = new FormData();
         formData.set('person', JSON.stringify(person));
         formData.set('files', JSON.stringify(value.pathFiles));
-        formData.set('identification', JSON.stringify(value.identification.id));
+        formData.set('student', JSON.stringify({id: value.identification.id, name: value.name, surname: value.surname}));
         fetch('/disapprove', {
             method: 'POST',
             body: formData
@@ -177,7 +177,6 @@ export default function Student({ value, index, labelId, setSnack }) {
         })
     }
     let loadAudio = () => {
-        console.log("loading Audio")
         if (!audio) {
             fetch (`/get-audio?name=${value.pathFiles.audio}`)
             .then(res => res.blob())
@@ -199,7 +198,6 @@ export default function Student({ value, index, labelId, setSnack }) {
         }
     }
     let handlePlay = () => {
-        console.log("handle Audio")
         !play ?  sound.current.play() : sound.current.pause();
         setPlay(prev => !prev)
     }

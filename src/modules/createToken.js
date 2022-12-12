@@ -16,13 +16,13 @@ async function createToken(student, relativeId, sender) {
 
                 <p>Queremos confirmarle los datos que le permitirán acceder a la plataforma de matriculas.</p>
 
-                <p>NOTA: Este Token de validación sólo tendrá vigencia de una hora, desde el momento de la recepción de éste correo. Despues de éste tiempo tendrá que volver a generarlo.</p>
+                <p>NOTA: Este Token de validación sólo tendrá vigencia de una hora, desde el momento de la recepción de éste correo, después de éste tiempo tendrá que volver a generarlo.</p>
 
                 <p><b>Token:</b> <b style="color: #f7901e; font-family: Arial, Helvetica, sans-serif;"> ${token} </b></p>
                 
-                <p><a href="www.avcla.com">Matriculas 2023 - Colegio Los Ángeles</a></p>
+                <p><a href="www.matriculascolegiolosangelestunja.com">Matriculas 2023 - Colegio Los Ángeles</a></p>
                 
-                <p style="text-align: justify;">Si tiene algún problema a la hora de acceder a la plataforma, puede escribir al correo admin@colegiolosangelestunja.com o al número de <a style="color: #f7901e;" href="wa.me//+573228317980">WhatsApp</a></p>
+                <p style="text-align: justify;">Si tiene algún problema a la hora de acceder a la plataforma, puede escribir al correo <a href="mailto:matriculas@colegiolosangelestunja.com">matriculas@colegiolosangelestunja.com</a></p>
                 
                 <p>Cordialmente,</p> 
                 <br/>
@@ -43,7 +43,6 @@ async function createToken(student, relativeId, sender) {
         }
     }
     catch (error) {
-        console.log("Catch error");
         return {error: "database"};
     }
 }
